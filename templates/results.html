@@ -1,0 +1,37 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Results and Analysis Form
+{% endblock %}
+
+{% block content %}
+    <h1>Results and Analysis Form</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.results_interpretation.label }}
+            {{ form.results_interpretation(class="form-control") }}
+            {% if form.results_interpretation.errors %}
+                <ul>
+                    {% for error in form.results_interpretation.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.charts_figures.label }}
+            {{ form.charts_figures(class="form-control") }}
+            {% if form.charts_figures.errors %}
+                <ul>
+                    {% for error in form.charts_figures.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

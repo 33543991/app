@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Data Analysis Form
+{% endblock %}
+
+{% block content %}
+    <h1>Data Analysis Form</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.qpcr_analysis_program.label }}
+            {{ form.qpcr_analysis_program(class="form-control") }}
+            {% if form.qpcr_analysis_program.errors %}
+                <ul>
+                    {% for error in form.qpcr_analysis_program.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.cq_method_determination.label }}
+            {{ form.cq_method_determination(class="form-control") }}
+            {% if form.cq_method_determination.errors %}
+                <ul>
+                    {% for error in form.cq_method_determination.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        
+        <div>
+            {{ form.identification_handling_outliers.label }}
+            {{ form.identification_handling_outliers(class="form-control") }}
+            {% if form.identification_handling_outliers.errors %}
+                <ul>
+                    {% for error in form.identification_handling_outliers.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.ntc_results.label }}
+            {{ form.ntc_results(class="form-control") }}
+            {% if form.ntc_results.errors %}
+                <ul>
+                    {% for error in form.ntc_results.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reference_genes_justification.label }}
+            {{ form.reference_genes_justification(class="form-control") }}
+            {% if form.reference_genes_justification.errors %}
+                <ul>
+                    {% for error in form.reference_genes_justification.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.normalization_method_description.label }}
+            {{ form.normalization_method_description(class="form-control") }}
+            {% if form.normalization_method_description.errors %}
+                <ul>
+                    {% for error in form.normalization_method_description.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.biological_replicates_number_concordance.label }}
+            {{ form.biological_replicates_number_concordance(class="form-control") }}
+            {% if form.biological_replicates_number_concordance.errors %}
+                <ul>
+                    {% for error in form.biological_replicates_number_concordance.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.technical_replicates_number_stage.label }}
+            {{ form.technical_replicates_number_stage(class="form-control") }}
+            {% if form.technical_replicates_number_stage.errors %}
+                <ul>
+                    {% for error in form.technical_replicates_number_stage.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.intra_assay_variation_repeatability.label }}
+            {{ form.intra_assay_variation_repeatability(class="form-control") }}
+            {% if form.intra_assay_variation_repeatability.errors %}
+                <ul>
+                    {% for error in form.intra_assay_variation_repeatability.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.inter_assay_variation_reproducibility.label }}
+            {{ form.inter_assay_variation_reproducibility(class="form-control") }}
+            {% if form.inter_assay_variation_reproducibility.errors %}
+                <ul>
+                    {% for error in form.inter_assay_variation_reproducibility.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.power_analysis.label }}
+            {{ form.power_analysis(class="form-control") }}
+            {% if form.power_analysis.errors %}
+                <ul>
+                    {% for error in form.power_analysis.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.statistical_methods_significance.label }}
+            {{ form.statistical_methods_significance(class="form-control") }}
+            {% if form.statistical_methods_significance.errors %}
+                <ul>
+                    {% for error in form.statistical_methods_significance.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.software_source_version.label }}
+            {{ form.software_source_version(class="form-control") }}
+            {% if form.software_source_version.errors %}
+                <ul>
+                    {% for error in form.software_source_version.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.cq_or_raw_data_rdml_submission.label }}
+            {{ form.cq_or_raw_data_rdml_submission(class="form-control") }}
+            {% if form.cq_or_raw_data_rdml_submission.errors %}
+                <ul>
+                    {% for error in form.cq_or_raw_data_rdml_submission.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}
+        

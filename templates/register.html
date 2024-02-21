@@ -1,0 +1,94 @@
+<!-- register.html -->
+
+{% extends "layout.html" %}
+
+{% block title %}Agregar Registro - My App{% endblock %}
+
+{% block content %}
+    <h2>Agregar Registro</h2>
+    <form method="post" action="">
+        {{ form.hidden_tag() }}
+
+        <div>
+            {{ form.username.label }}<br>
+            {{ form.username(size=32) }}<br>
+            {% for error in form.username.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.nombre.label }}<br>
+            {{ form.nombre(size=32) }}<br>
+            {% for error in form.nombre.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.apellido_paterno.label }}<br>
+            {{ form.apellido_paterno(size=32) }}<br>
+            {% for error in form.apellido_paterno.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.apellido_materno.label }}<br>
+            {{ form.apellido_materno(size=32) }}<br>
+            {% for error in form.apellido_materno.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.telefono.label }}<br>
+            {{ form.telefono(size=15) }}<br>
+            {% for error in form.telefono.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.correo.label }}<br>
+            {{ form.correo(size=32) }}<br>
+            {% for error in form.correo.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.laboratorio.label }}<br>
+            {{ form.laboratorio(size=100) }}<br>
+            {% for error in form.laboratorio.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.institucion.label }}<br>
+            {{ form.institucion(size=100) }}<br>
+            {% for error in form.institucion.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.contrasena.label }}<br>
+            {{ form.contrasena(size=32) }}<br>
+            {% for error in form.contrasena.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <div>
+            {{ form.verificacion_contrasena.label }}<br>
+            {{ form.verificacion_contrasena(size=32) }}<br>
+            {% for error in form.verificacion_contrasena.errors %}
+                <span style="color: red;">{{ error }}</span><br>
+            {% endfor %}
+        </div>
+
+        <input type="submit" value="Agregar Registro">
+    </form>
+{% endblock %}

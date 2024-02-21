@@ -1,0 +1,82 @@
+<!-- oligo.html (primers) -->
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de qPCR Primers
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de qPCR Primers</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.primer_sequences.label }}
+            {{ form.primer_sequences(class="form-control") }}
+            {% if form.primer_sequences.errors %}
+                <ul>
+                    {% for error in form.primer_sequences.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.rtprimerdb_id.label }}
+            {{ form.rtprimerdb_id(class="form-control") }}
+            {% if form.rtprimerdb_id.errors %}
+                <ul>
+                    {% for error in form.rtprimerdb_id.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.probe_sequences.label }}
+            {{ form.probe_sequences(class="form-control") }}
+            {% if form.probe_sequences.errors %}
+                <ul>
+                    {% for error in form.probe_sequences.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.modification_location_identity.label }}
+            {{ form.modification_location_identity(class="form-control") }}
+            {% if form.modification_location_identity.errors %}
+                <ul>
+                    {% for error in form.modification_location_identity.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.oligo_manufacturer.label }}
+            {{ form.oligo_manufacturer(class="form-control") }}
+            {% if form.oligo_manufacturer.errors %}
+                <ul>
+                    {% for error in form.oligo_manufacturer.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.purification_method.label }}
+            {{ form.purification_method(class="form-control") }}
+            {% if form.purification_method.errors %}
+                <ul>
+                    {% for error in form.purification_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

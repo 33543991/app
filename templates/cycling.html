@@ -1,0 +1,81 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Thermal Cycling Conditions
+{% endblock %}
+
+{% block content %}
+    <h1>Thermal Cycling Conditions</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.equipment_used.label }}
+            {{ form.equipment_used(class="form-control") }}
+            {% if form.equipment_used.errors %}
+                <ul>
+                    {% for error in form.equipment_used.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.primers_used.label }}
+            {{ form.primers_used(class="form-control") }}
+            {% if form.primers_used.errors %}
+                <ul>
+                    {% for error in form.primers_used.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.pcr_conditions.label }}
+            {{ form.pcr_conditions(class="form-control") }}
+            {% if form.pcr_conditions.errors %}
+                <ul>
+                    {% for error in form.pcr_conditions.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reaction_volume.label }}
+            {{ form.reaction_volume(class="form-control") }}
+            {% if form.reaction_volume.errors %}
+                <ul>
+                    {% for error in form.reaction_volume.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.positive_control.label }}
+            {{ form.positive_control(class="form-control") }}
+            {% if form.positive_control.errors %}
+                <ul>
+                    {% for error in form.positive_control.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.negative_control.label }}
+            {{ form.negative_control(class="form-control") }}
+            {% if form.negative_control.errors %}
+                <ul>
+                    {% for error in form.negative_control.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

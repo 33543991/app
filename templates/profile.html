@@ -1,0 +1,24 @@
+<!-- profile.html -->
+
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Welcome, {{ username }}!</h2>
+
+<p>Tu registro ha sido exitoso. Aquí están los datos que proporcionaste:</p>
+<ul>
+    <li><strong>Nombre de usuario:</strong> {{ username }}</li>
+    <li><strong>Nombre:</strong> {{ nombre }}</li>
+    <li><strong>Apellido Paterno:</strong> {{ apellido_paterno }}</li>
+    <li><strong>Apellido Materno:</strong> {{ apellido_materno }}</li>
+    <li><strong>Teléfono:</strong> {{ telefono }}</li>
+    <li><strong>Correo:</strong> {{ correo }}</li>
+    <li><strong>Laboratorio:</strong> {{ laboratorio }}</li>
+    <li><strong>Institución:</strong> {{ institucion }}</li>
+</ul>
+<a href="{{ url_for('index') }}">Volver a la página de inicio</a>
+<p><a href="{{ url_for('logout') }}">Logout</a></p>
+{% endblock %}
+

@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de Validación de qPCR
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de Validación de qPCR</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.optimization_evidence.label }}
+            {{ form.optimization_evidence(class="form-control") }}
+            {% if form.optimization_evidence.errors %}
+                <ul>
+                    {% for error in form.optimization_evidence.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.specificity_evidence.label }}
+            {{ form.specificity_evidence(class="form-control") }}
+            {% if form.specificity_evidence.errors %}
+                <ul>
+                    {% for error in form.specificity_evidence.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.cq_nct_for_sybr_green.label }}
+            {{ form.cq_nct_for_sybr_green(class="form-control") }}
+            {% if form.cq_nct_for_sybr_green.errors %}
+                <ul>
+                    {% for error in form.cq_nct_for_sybr_green.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.standard_curves_slope_intercept.label }}
+            {{ form.standard_curves_slope_intercept(class="form-control") }}
+            {% if form.standard_curves_slope_intercept.errors %}
+                <ul>
+                    {% for error in form.standard_curves_slope_intercept.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+           {{ form.pcr_efficiency_slope_calculation.label }}
+           {{ form.pcr_efficiency_slope_calculation(class="form-control") }}
+           {% if form.pcr_efficiency_slope_calculation.errors %}
+                <ul>
+                   {% for error in form.pcr_efficiency_slope_calculation.errors %}
+                       <li>{{ error }}</li>
+                   {% endfor %}
+                </ul>
+           {% endif %}
+        </div>
+        <div>
+            {{ form.pcr_efficiency_confidence_interval.label }}
+            {{ form.pcr_efficiency_confidence_interval(class="form-control") }}
+            {% if form.pcr_efficiency_confidence_interval.errors %}
+                <ul>
+                    {% for error in form.pcr_efficiency_confidence_interval.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.r2_standard_curve.label }}
+            {{ form.r2_standard_curve(class="form-control") }}
+            {% if form.r2_standard_curve.errors %}
+                <ul>
+                    {% for error in form.r2_standard_curve.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.linear_dynamic_range.label }}
+            {{ form.linear_dynamic_range(class="form-control") }}
+            {% if form.linear_dynamic_range.errors %}
+                <ul>
+                    {% for error in form.linear_dynamic_range.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.cq_variation_lower_limit.label }}
+            {{ form.cq_variation_lower_limit(class="form-control") }}
+            {% if form.cq_variation_lower_limit.errors %}
+                <ul>
+                    {% for error in form.cq_variation_lower_limit.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.confidence_intervals_full_range.label }}
+            {{ form.confidence_intervals_full_range(class="form-control") }}
+            {% if form.confidence_intervals_full_range.errors %}
+                <ul>
+                    {% for error in form.confidence_intervals_full_range.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.lod_evidence.label }}
+            {{ form.lod_evidence(class="form-control") }}
+            {% if form.lod_evidence.errors %}
+                <ul>
+                    {% for error in form.lod_evidence.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.multiplex_efficiency_lod.label }}
+            {{ form.multiplex_efficiency_lod(class="form-control") }}
+            {% if form.multiplex_efficiency_lod.errors %}
+                <ul>
+                    {% for error in form.multiplex_efficiency_lod.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+           </div>
+     </form>
+{% endblock %}
