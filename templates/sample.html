@@ -1,0 +1,92 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de Muestra
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de Muestra</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.sample_type.label }}
+            {{ form.sample_type(class="form-control") }}
+            {% if form.sample_type.errors %}
+                <ul>
+                    {% for error in form.sample_type.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.sample_description.label }}
+            {{ form.sample_description(class="form-control") }}
+            {% if form.sample_description.errors %}
+                <ul>
+                    {% for error in form.sample_description.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.sample_volume_mass.label }}
+            {{ form.sample_volume_mass(class="form-control") }}
+            {% if form.sample_volume_mass.errors %}
+                <ul>
+                    {% for error in form.sample_volume_mass.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.sampling_procedure.label }}
+            {{ form.sampling_procedure(class="form-control") }}
+            {% if form.sampling_procedure.errors %}
+                <ul>
+                    {% for error in form.sampling_procedure.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.freezing_method.label }}
+            {{ form.freezing_method(class="form-control") }}
+            {% if form.freezing_method.errors %}
+                <ul>
+                    {% for error in form.freezing_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.fixation_method.label }}
+            {{ form.fixation_method(class="form-control") }}
+            {% if form.fixation_method.errors %}
+                <ul>
+                    {% for error in form.fixation_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.storage_conditions.label }}
+            {{ form.storage_conditions(class="form-control") }}
+            {% if form.storage_conditions.errors %}
+                <ul>
+                    {% for error in form.storage_conditions.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de Extracción de Ácido Nucleico
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de Extracción de Ácido Nucleico</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.extraction_procedure.label }}
+            {{ form.extraction_procedure(class="form-control") }}
+            {% if form.extraction_procedure.errors %}
+                <ul>
+                    {% for error in form.extraction_procedure.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.kit_details.label }}
+            {{ form.kit_details(class="form-control") }}
+            {% if form.kit_details.errors %}
+                <ul>
+                    {% for error in form.kit_details.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.additional_reagents.label }}
+            {{ form.additional_reagents(class="form-control") }}
+            {% if form.additional_reagents.errors %}
+                <ul>
+                    {% for error in form.additional_reagents.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.dnase_rnase_treatment.label }}
+            {{ form.dnase_rnase_treatment(class="form-control") }}
+            {% if form.dnase_rnase_treatment.errors %}
+                <ul>
+                    {% for error in form.dnase_rnase_treatment.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.contamination_evaluation.label }}
+            {{ form.contamination_evaluation(class="form-control") }}
+            {% if form.contamination_evaluation.errors %}
+                <ul>
+                    {% for error in form.contamination_evaluation.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.nucleic_acid_quantification_method.label }}
+            {{ form.nucleic_acid_quantification_method(class="form-control") }}
+            {% if form.nucleic_acid_quantification_method.errors %}
+                <ul>
+                    {% for error in form.nucleic_acid_quantification_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.nucleic_acid_purity.label }}
+            {{ form.nucleic_acid_purity(class="form-control") }}
+            {% if form.nucleic_acid_purity.errors %}
+                <ul>
+                    {% for error in form.nucleic_acid_purity.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.nucleic_acid_yield.label }}
+            {{ form.nucleic_acid_yield(class="form-control") }}
+            {% if form.nucleic_acid_yield.errors %}
+                <ul>
+                    {% for error in form.nucleic_acid_yield.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.integrity_assessment_method.label }}
+            {{ form.integrity_assessment_method(class="form-control") }}
+            {% if form.integrity_assessment_method.errors %}
+                <ul>
+                    {% for error in form.integrity_assessment_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.rin_rqi_cq_details.label }}
+            {{ form.rin_rqi_cq_details(class="form-control") }}
+            {% if form.rin_rqi_cq_details.errors %}
+                <ul>
+                    {% for error in form.rin_rqi_cq_details.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.electrophoresis_traces.label }}
+            {{ form.electrophoresis_traces(class="form-control") }}
+            {% if form.electrophoresis_traces.errors %}
+                <ul>
+                    {% for error in form.electrophoresis_traces.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.inhibition_testing.label }}
+            {{ form.inhibition_testing(class="form-control") }}
+            {% if form.inhibition_testing.errors %}
+                <ul>
+                    {% for error in form.inhibition_testing.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    General Information Form
+{% endblock %}
+
+{% block content %}
+    <h1>General Information Form</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.experiment_date.label }}
+            {{ form.experiment_date(class="form-control") }}
+            {% if form.experiment_date.errors %}
+                <ul>
+                    {% for error in form.experiment_date.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.experiment_number.label }}
+            {{ form.experiment_number(class="form-control") }}
+            {% if form.experiment_number.errors %}
+                <ul>
+                    {% for error in form.experiment_number.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.principal_investigator.label }}
+            {{ form.principal_investigator(class="form-control") }}
+            {% if form.principal_investigator.errors %}
+                <ul>
+                    {% for error in form.principal_investigator.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.institution_lab.label }}
+            {{ form.institution_lab(class="form-control") }}
+            {% if form.institution_lab.errors %}
+                <ul>
+                    {% for error in form.institution_lab.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            <input type="submit" value="Submit" class="btn btn-primary">
+        </div>
+    </form>
+{% endblock %}

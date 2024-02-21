@@ -1,0 +1,147 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de Protocolo qPCR
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de Protocolo qPCR</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.reaction_conditions.label }}
+            {{ form.reaction_conditions(class="form-control") }}
+            {% if form.reaction_conditions.errors %}
+                <ul>
+                    {% for error in form.reaction_conditions.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reaction_volume_dna_quantity.label }}
+            {{ form.reaction_volume_dna_quantity(class="form-control") }}
+            {% if form.reaction_volume_dna_quantity.errors %}
+                <ul>
+                    {% for error in form.reaction_volume_dna_quantity.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.primer_probe_concentrations.label }}
+            {{ form.primer_probe_concentrations(class="form-control") }}
+            {% if form.primer_probe_concentrations.errors %}
+                <ul>
+                    {% for error in form.primer_probe_concentrations.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.polymerase_identity_concentration.label }}
+            {{ form.polymerase_identity_concentration(class="form-control") }}
+            {% if form.polymerase_identity_concentration.errors %}
+                <ul>
+                    {% for error in form.polymerase_identity_concentration.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.buffer_kit_identity_manufacturer.label }}
+            {{ form.buffer_kit_identity_manufacturer(class="form-control") }}
+            {% if form.buffer_kit_identity_manufacturer.errors %}
+                <ul>
+                    {% for error in form.buffer_kit_identity_manufacturer.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.buffer_exact_chemical_constitution.label }}
+            {{ form.buffer_exact_chemical_constitution(class="form-control") }}
+            {% if form.buffer_exact_chemical_constitution.errors %}
+                <ul>
+                    {% for error in form.buffer_exact_chemical_constitution.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.additives.label }}
+            {{ form.additives(class="form-control") }}
+            {% if form.additives.errors %}
+                <ul>
+                    {% for error in form.additives.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.plates_tubes_manufacturer_catalog.label }}
+            {{ form.plates_tubes_manufacturer_catalog(class="form-control") }}
+            {% if form.plates_tubes_manufacturer_catalog.errors %}
+                <ul>
+                    {% for error in form.plates_tubes_manufacturer_catalog.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.thermocycling_parameters.label }}
+            {{ form.thermocycling_parameters(class="form-control") }}
+            {% if form.thermocycling_parameters.errors %}
+                <ul>
+                    {% for error in form.thermocycling_parameters.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reaction_configuration.label }}
+            {{ form.reaction_configuration(class="form-control") }}
+            {% if form.reaction_configuration.errors %}
+                <ul>
+                    {% for error in form.reaction_configuration.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.qpcr_instrument_manufacturer.label }}
+            {{ form.qpcr_instrument_manufacturer(class="form-control") }}
+            {% if form.qpcr_instrument_manufacturer.errors %}
+                <ul>
+                    {% for error in form.qpcr_instrument_manufacturer.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reaction_quality_control.label }}
+            {{ form.reaction_quality_control(class="form-control") }}
+            {% if form.reaction_quality_control.errors %}
+                <ul>
+                    {% for error in form.reaction_quality_control.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

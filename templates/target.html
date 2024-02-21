@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Formulario de qPCR Target Information
+{% endblock %}
+
+{% block content %}
+    <h1>Formulario de qPCR Target Information</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.gene_symbol.label }}
+            {{ form.gene_symbol(class="form-control") }}
+            {% if form.gene_symbol.errors %}
+                <ul>
+                    {% for error in form.gene_symbol.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.multiplex_efficiency_lod.label }}
+            {{ form.multiplex_efficiency_lod(class="form-control") }}
+            {% if form.multiplex_efficiency_lod.errors %}
+                <ul>
+                    {% for error in form.multiplex_efficiency_lod.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.sequence_accession_number.label }}
+            {{ form.sequence_accession_number(class="form-control") }}
+            {% if form.sequence_accession_number.errors %}
+                <ul>
+                    {% for error in form.sequence_accession_number.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.amplicon_location.label }}
+            {{ form.amplicon_location(class="form-control") }}
+            {% if form.amplicon_location.errors %}
+                <ul>
+                    {% for error in form.amplicon_location.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.amplicon_length.label }}
+            {{ form.amplicon_length(class="form-control") }}
+            {% if form.amplicon_length.errors %}
+                <ul>
+                    {% for error in form.amplicon_length.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.in_silico_specificity_screening.label }}
+            {{ form.in_silico_specificity_screening(class="form-control") }}
+            {% if form.in_silico_specificity_screening.errors %}
+                <ul>
+                    {% for error in form.in_silico_specificity_screening.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.pseudogenes_homologs.label }}
+            {{ form.pseudogenes_homologs(class="form-control") }}
+            {% if form.pseudogenes_homologs.errors %}
+                <ul>
+                    {% for error in form.pseudogenes_homologs.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.sequence_alignment.label }}
+            {{ form.sequence_alignment(class="form-control") }}
+            {% if form.sequence_alignment.errors %}
+                <ul>
+                    {% for error in form.sequence_alignment.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.amplicon_secondary_structure_analysis.label }}
+            {{ form.amplicon_secondary_structure_analysis(class="form-control") }}
+            {% if form.amplicon_secondary_structure_analysis.errors %}
+                <ul>
+                    {% for error in form.amplicon_secondary_structure_analysis.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.primer_location_exon_intron.label }}
+            {{ form.primer_location_exon_intron(class="form-control") }}
+            {% if form.primer_location_exon_intron.errors %}
+                <ul>
+                    {% for error in form.primer_location_exon_intron.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.splicing_variants_targeted.label }}
+            {{ form.splicing_variants_targeted(class="form-control") }}
+            {% if form.splicing_variants_targeted.errors %}
+                <ul>
+                    {% for error in form.splicing_variants_targeted.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

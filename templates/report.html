@@ -1,0 +1,188 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Report
+{% endblock %}
+
+{% block content %}
+    <h2>Welcome, {{ username }}!</h2>
+
+    <p>Tu registro ha sido exitoso. Aquí están los datos que proporcionaste:</p>
+
+    <h3>General Information:</h3>
+    <ul>
+        {% for info in general_info_data %}
+            <li><strong>Experiment Date:</strong> {{ info.experiment_date }}</li>
+            <li><strong>Experiment Number:</strong> {{ info.experiment_number }}</li>
+            <li><strong>Principal Investigator:</strong> {{ info.principal_investigator }}</li>
+            <li><strong>Institution (and Laboratory):</strong> {{ info.institution_lab }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Diseño experimental:</h3>
+    <ul>
+        {% for data in design_data %}
+            <li><strong>Definición del grupo control:</strong> {{ data.group_control_definition }}</li>
+            <li><strong>Definición del grupo experimental:</strong> {{ data.group_experimental_definition }}</li>
+            <li><strong>Número del grupo control:</strong> {{ data.group_control_number }}</li>
+            <li><strong>Número del grupo experimental:</strong> {{ data.group_experimental_number }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Muestra:</h3>
+    <ul>
+        {% for sample in sample_data %}
+            <li><strong>Tipo de muestra:</strong> {{ sample.sample_type }}</li>
+            <li><strong>Descripción:</strong> {{ sample.sample_description }}</li>
+            <li><strong>Volumen/Masa de la muestra procesada:</strong> {{ sample.sample_volume_mass }}</li>
+            <li><strong>Procedimiento de muestreo:</strong> {{ sample.sampling_procedure }}</li>
+            <li><strong>Método de congelación:</strong> {{ sample.freezing_method }}</li>
+            <li><strong>Método de fijación:</strong> {{ sample.fixation_method }}</li>
+            <li><strong>Condiciones de almacenamiento y duración:</strong> {{ sample.storage_conditions }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Extracción de Ácido Nucleico:</h3>
+    <ul>
+        {% for extraction in extraction_data %}
+            <li><strong>Procedimiento de extracción:</strong> {{ extraction.extraction_procedure }}</li>
+            <li><strong>Detalles del kit y modificaciones:</strong> {{ extraction.kit_details }}</li>
+            <li><strong>Fuente de reactivos adicionales utilizados:</strong> {{ extraction.additional_reagents }}</li>
+            <li><strong>Detalles del tratamiento de DNasa o RNasa:</strong> {{ extraction.dnase_rnase_treatment }}</li>
+            <li><strong>Evaluación de contaminación:</strong> {{ extraction.contamination_evaluation }}</li>
+            <li><strong>Método de cuantificación de ácido nucleico:</strong> {{ extraction.nucleic_acid_quantification_method }}</li>
+            <li><strong>Pureza de ácido nucleico:</strong> {{ extraction.nucleic_acid_purity }}</li>
+            <li><strong>Rendimiento de ácido nucleico:</strong> {{ extraction.nucleic_acid_yield }}</li>
+            <li><strong>Método de evaluación de integridad (ARN):</strong> {{ extraction.integrity_assessment_method }}</li>
+            <li><strong>RIN/RQI o Cq de transcripciones 3’ y 5’:</strong> {{ extraction.rin_rqi_cq_details }}</li>
+            <li><strong>Traces de electroforesis:</strong> {{ extraction.electrophoresis_traces }}</li>
+            <li><strong>Pruebas de inhibición:</strong> {{ extraction.inhibition_testing }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Transcripción Inversa:</h3>
+    <ul>
+        {% for reverse in reverse_data %}
+            <li><strong>Condiciones de reacción:</strong> {{ reverse.reaction_conditions }}</li>
+            <li><strong>Cantidad de ARN y volumen de reacción:</strong> {{ reverse.rna_quantity_volume }}</li>
+            <li><strong>Concentración de oligo de iniciación:</strong> {{ reverse.oligo_priming_concentration }}</li>
+            <li><strong>Concentración de transcripción inversa:</strong> {{ reverse.reverse_transcription_concentration }}</li>
+            <li><strong>Concentración del iniciador:</strong> {{ reverse.primer_concentration }}</li>
+            <li><strong>Temperatura y tiempo:</strong> {{ reverse.temperature_time }}</li>
+            <li><strong>Fabricante de reactivos y números de catálogo:</strong> {{ reverse.reagent_manufacturer_catalog }}</li>
+            <li><strong>Cqs con y sin transcripción inversa:</strong> {{ reverse.cqs_with_without_reverse_transcription }}</li>
+            <li><strong>Condiciones de almacenamiento de ADN:</strong> {{ reverse.dna_storage_conditions }}</li>
+            <li><strong>Marca comercial:</strong> {{ reverse.commercial_brand }}</li>
+            <li><strong>Lote:</strong> {{ reverse.batch }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Información del Objetivo de qPCR:</h3>
+<ul>
+    {% for target in target_data %}
+        <li><strong>Símbolo del Gen:</strong> {{ target.gene_symbol }}</li>
+        <li><strong>Efficiencia Multiplex y LOD para cada Ensayo:</strong> {{ target.multiplex_efficiency_lod }}</li>
+        <li><strong>Número de Acceso a la Secuencia:</strong> {{ target.sequence_accession_number }}</li>
+        <li><strong>Ubicación del Amplicón:</strong> {{ target.amplicon_location }}</li>
+        <li><strong>Longitud del Amplicón:</strong> {{ target.amplicon_length }}</li>
+        <li><strong>Selección de Especificidad In Silico (BLAST, etc.):</strong> {{ target.in_silico_specificity_screening }}</li>
+        <li><strong>Pseudogenes, Retropseudogenes u Otros Homólogos:</strong> {{ target.pseudogenes_homologs }}</li>
+        <li><strong>Alineación de Secuencia:</strong> {{ target.sequence_alignment }}</li>
+        <li><strong>Análisis de Estructura Secundaria del Amplicón:</strong> {{ target.amplicon_secondary_structure_analysis }}</li>
+        <li><strong>Ubicación del Iniciador por Exón o Intrón (si aplica):</strong> {{ target.primer_location_exon_intron }}</li>
+        <li><strong>Variantes de Empalme Targeteadas:</strong> {{ target.splicing_variants_targeted }}</li>
+    {% endfor %}
+</ul>
+
+<h3>qPCR Primers:</h3>
+<ul>
+    {% for primer in primer_data %}
+        <li><strong>Secuencias de los primers:</strong> {{ primer.primer_sequences }}</li>
+        <li><strong>Número de Identificación en RTPrimerDB:</strong> {{ primer.rtprimerdb_id }}</li>
+        <li><strong>Secuencias de la sonda (si corresponde):</strong> {{ primer.probe_sequences }}</li>
+        <li><strong>Ubicación y Identidad de la Modificación:</strong> {{ primer.modification_location_identity }}</li>
+        <li><strong>Fabricante del Oligo:</strong> {{ primer.oligo_manufacturer }}</li>
+        <li><strong>Método de Purificación:</strong> {{ primer.purification_method }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Protocolo qPCR:</h3>
+<ul>
+    {% for protocol in protocol_data %}
+        <li><strong>Condiciones de reacción:</strong> {{ protocol.reaction_conditions }}</li>
+        <li><strong>Volumen de reacción y cantidad de ADN:</strong> {{ protocol.reaction_volume_dna_quantity }}</li>
+        <li><strong>Concentraciones de cebadores y sondas:</strong> {{ protocol.primer_probe_concentrations }}</li>
+        <li><strong>Identidad de la polimerasa y concentración:</strong> {{ protocol.polymerase_identity_concentration }}</li>
+        <li><strong>Identidad y fabricante del buffer/kit:</strong> {{ protocol.buffer_kit_identity_manufacturer }}</li>
+        <li><strong>Constitución química exacta del buffer:</strong> {{ protocol.buffer_exact_chemical_constitution }}</li>
+        <li><strong>Aditivos:</strong> {{ protocol.additives }}</li>
+        <li><strong>Fabricante y número de catálogo de las placas/tubos:</strong> {{ protocol.plates_tubes_manufacturer_catalog }}</li>
+        <li><strong>Parámetros de termociclado:</strong> {{ protocol.thermocycling_parameters }}</li>
+        <li><strong>Configuración de la reacción (manual/automática):</strong> {{ protocol.reaction_configuration }}</li>
+        <li><strong>Fabricante del instrumento qPCR:</strong> {{ protocol.qpcr_instrument_manufacturer }}</li>
+        <li><strong>Control de calidad de la reacción:</strong> {{ protocol.reaction_quality_control }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Thermal Cycling Conditions:</h3>
+<ul>
+    {% for thermal in thermal_data %}
+        <li><strong>Equipo utilizado:</strong> {{ thermal.equipment_used }}</li>
+        <li><strong>Primers utilizados:</strong> {{ thermal.primers_used }}</li>
+        <li><strong>Condiciones PCR:</strong> {{ thermal.pcr_conditions }}</li>
+        <li><strong>Volumen de reacción:</strong> {{ thermal.reaction_volume }}</li>
+        <li><strong>Control positivo:</strong> {{ thermal.positive_control }}</li>
+        <li><strong>Control negativo:</strong> {{ thermal.negative_control }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Validación de qPCR:</h3>
+<ul>
+    {% for validation in validation_data %}
+        <li><strong>Evidencia de Optimización:</strong> {{ validation.optimization_evidence }}</li>
+        <li><strong>Evidencia de Especificidad:</strong> {{ validation.specificity_evidence }}</li>
+        <li><strong>Cq de NCT para SYBR Green I:</strong> {{ validation.cq_nct_for_sybr_green }}</li>
+        <li><strong>Curvas Estándar con Pendiente e Intercepto:</strong> {{ validation.standard_curves_slope_intercept }}</li>
+        <li><strong>PCR Efficiency Calculada a partir de la Pendiente:</strong> {{ validation.pcr_efficiency_slope_calculation }}</li>
+        <li><strong>Intervalo de Confianza para la Eficiencia de PCR:</strong> {{ validation.pcr_efficiency_confidence_interval }}</li>
+        <li><strong>R^2 de la Curva Estándar:</strong> {{ validation.r2_standard_curve }}</li>
+        <li><strong>Rango Dinámico Lineal:</strong> {{ validation.linear_dynamic_range }}</li>
+        <li><strong>Variación de Cq en el Límite Inferior:</strong> {{ validation.cq_variation_lower_limit }}</li>
+        <li><strong>Intervalos de Confianza en todo el Rango:</strong> {{ validation.confidence_intervals_full_range }}</li>
+        <li><strong>Evidencia de LOD:</strong> {{ validation.lod_evidence }}</li>
+        <li><strong>Si es Multiplex, Eficiencia y LOD para Cada Ensayo:</strong> {{ validation.multiplex_efficiency_lod }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Data Analysis:</h3>
+<ul>
+    {% for data_analysis in data_analysis_data %}
+        <li><strong>qPCR Analysis Program:</strong> {{ data_analysis.qpcr_analysis_program }}</li>
+        <li><strong>Cq Method Determination:</strong> {{ data_analysis.cq_method_determination }}</li>
+        <li><strong>Identification and Handling of Outliers:</strong> {{ data_analysis.identification_handling_outliers }}</li>
+        <li><strong>NTC Results:</strong> {{ data_analysis.ntc_results }}</li>
+        <li><strong>Justification of Number and Choice of Reference Genes:</strong> {{ data_analysis.reference_genes_justification }}</li>
+        <li><strong>Normalization Method Description:</strong> {{ data_analysis.normalization_method_description }}</li>
+        <li><strong>Number and Concordance of Biological Replicates:</strong> {{ data_analysis.biological_replicates_number_concordance }}</li>
+        <li><strong>Number and Stage of Technical Replicates:</strong> {{ data_analysis.technical_replicates_number_stage }}</li>
+        <li><strong>Repeatability (Intra-Assay Variation):</strong> {{ data_analysis.intra_assay_variation_repeatability }}</li>
+        <li><strong>Reproducibility (Inter-Assay Variation, %CV):</strong> {{ data_analysis.inter_assay_variation_reproducibility }}</li>
+        <li><strong>Power Analysis:</strong> {{ data_analysis.power_analysis }}</li>
+        <li><strong>Statistical Methods for Significance of Results:</strong> {{ data_analysis.statistical_methods_significance }}</li>
+        <li><strong>Software (source, version):</strong> {{ data_analysis.software_source_version }}</li>
+        <li><strong>Cq or Submission of Raw Data using RDML:</strong> {{ data_analysis.cq_or_raw_data_rdml_submission }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Results and Analysis:</h3>
+<ul>
+    {% for result in results_data %}
+        <li><strong>Results Interpretation:</strong> {{ result.results_interpretation }}</li>
+        <li><strong>Charts and Figures:</strong> {{ result.charts_figures }}</li>
+    {% endfor %}
+</ul>
+
+
+    <a href="{{ url_for('index') }}">Volver a la página de inicio</a>
+    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+{% endblock %}
