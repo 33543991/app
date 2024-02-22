@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Real-Time PCR Data Form
+{% endblock %}
+
+{% block content %}
+    <h1>Real-Time PCR Data Form</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.data_analysis_software.label }}
+            {{ form.data_analysis_software(class="form-control") }}
+            {% if form.data_analysis_software.errors %}
+                <ul>
+                    {% for error in form.data_analysis_software.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.quantification_method.label }}
+            {{ form.quantification_method(class="form-control") }}
+            {% if form.quantification_method.errors %}
+                <ul>
+                    {% for error in form.quantification_method.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.raw_data.label }}
+            {{ form.raw_data(class="form-control") }}
+            {% if form.raw_data.errors %}
+                <ul>
+                    {% for error in form.raw_data.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}

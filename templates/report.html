@@ -174,6 +174,15 @@
     {% endfor %}
 </ul>
 
+<h3>Real-Time PCR Data:</h3>
+<ul>
+    {% for data in real_time_pcr_data %}
+        <li><strong>Data Analysis Software:</strong> {{ data.data_analysis_software }}</li>
+        <li><strong>Quantification Method:</strong> {{ data.quantification_method }}</li>
+        <li><strong>Raw Data:</strong> {{ data.raw_data }}</li>
+    {% endfor %}
+</ul>
+
 <h3>Results and Analysis:</h3>
 <ul>
     {% for result in results_data %}

@@ -87,11 +87,6 @@ class SampleDataModel(db.Model):
     fixation_method = db.Column(db.String(100), nullable=False)
     storage_conditions = db.Column(db.String(100), nullable=False)
 
-from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired
-from flask_sqlalchemy import SQLAlchemy
-
 # NucleicAcidExtraction
 class NucleicAcidExtractionForm(FlaskForm):
     extraction_procedure = StringField('Extraction Procedure and/or Instrumentation', validators=[DataRequired()])
@@ -315,6 +310,20 @@ class qPCRValidationDataModel(db.Model):
     confidence_intervals_full_range = db.Column(db.String(100), nullable=False)
     lod_evidence = db.Column(db.String(100), nullable=False)
     multiplex_efficiency_lod = db.Column(db.String(100), nullable=False)
+
+# Real-Time PCR Data
+class RealTimePCRDataForm(FlaskForm):
+    data_analysis_software = StringField('Data Analysis Software', validators=[DataRequired()])
+    quantification_method = StringField('Quantification Method', validators=[DataRequired()])
+    raw_data = StringField('Raw Data: Threshold Cycle (Ct): Target Gene (name and Ct value) /Reference Gene (name and Ct value); Amplification Efficiency', validators=[DataRequired()])
+    submit = SubmitField('Enviar')
+
+class RealTimePCRDataModel(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    data_analysis_software = db.Column(db.String(255), nullable=False)
+    quantification_method = db.Column(db.String(255), nullable=False)
+    raw_data = db.Column(db.String(255), nullable=False)
+
 
 # Results and Analysis
 class ResultsAnalysisForm(FlaskForm):
@@ -554,6 +563,7 @@ def target():
         return redirect(url_for('index'))
     return render_template('target.html', form=form)
 
+
 # qPCR Primers
 @app.route('/oligo', methods=['GET', 'POST'])
 def oligo():
@@ -687,6 +697,28 @@ def validation():
 
     return render_template('validation.html', form=form)
 
+# Real-Time PCR Data
+@app.route('/data', methods=['GET', 'POST'])
+def data():
+    form = RealTimePCRDataForm()
+    if form.validate_on_submit():
+        try:
+            realtime_pcr_data = RealTimePCRDataModel(
+                data_analysis_software=form.data_analysis_software.data,
+                quantification_method=form.quantification_method.data,
+                raw_data=form.raw_data.data
+            )
+            db.session.add(realtime_pcr_data)
+            db.session.commit()
+            flash('Real-Time PCR data submitted successfully', 'success')
+            return redirect(url_for('index'))
+        except Exception as e:
+            flash(f'An error occurred while submitting Real-Time PCR data: {str(e)}', 'danger')
+            return render_template('error.html', error=str(e))
+
+    return render_template('data.html', form=form)
+
+
 # Results and Analysis
 @app.route('/results', methods=['GET', 'POST'])
 def results():
@@ -722,7 +754,8 @@ def report():
         validation_data = qPCRValidationDataModel.query.all()
         data_analysis_data = DataAnalysisModel.query.all()
         results_data = ResultsAnalysisModel.query.all()
-        return render_template('report.html', username=username, general_info_data=general_info_data, design_data=design_data, sample_data=sample_data, extraction_data=extraction_data, reverse_data=reverse_data, target_data=target_data, primer_data=primer_data, protocol_data=protocol_data, thermal_data=thermal_data, validation_data=validation_data, data_analysis_data=data_analysis_data, results_data=results_data)
+        real_time_pcr_data = RealTimePCRDataModel.query.all()
+        return render_template('report.html', username=username, general_info_data=general_info_data, design_data=design_data, sample_data=sample_data, extraction_data=extraction_data, reverse_data=reverse_data, target_data=target_data, primer_data=primer_data, protocol_data=protocol_data, thermal_data=thermal_data, validation_data=validation_data, data_analysis_data=data_analysis_data, results_data=results_data, real_time_pcr_data=real_time_pcr_data)
     else:
         # Manejo si el usuario no ha iniciado sesión
         return redirect(url_for('login'))
