@@ -1,3 +1,4 @@
+<!--reverse.html -->
 {% extends "layout.html" %}
 
 {% block title %}
@@ -8,129 +9,152 @@
     <h1>Formulario de Transcripción Inversa</h1>
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
+        <div class="form-group">
             {{ form.reaction_conditions.label }}
             {{ form.reaction_conditions(class="form-control") }}
             {% if form.reaction_conditions.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.reaction_conditions.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.rna_quantity_volume.label }}
-            {{ form.rna_quantity_volume(class="form-control") }}
-            {% if form.rna_quantity_volume.errors %}
-                <ul>
-                    {% for error in form.rna_quantity_volume.errors %}
+
+        <div class="form-group">
+            {{ form.rna_quantity.label }}
+            {{ form.rna_quantity(class="form-control") }}
+            {% if form.rna_quantity.errors %}
+                <ul class="errors">
+                    {% for error in form.rna_quantity.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.oligo_priming_concentration.label }}
-            {{ form.oligo_priming_concentration(class="form-control") }}
-            {% if form.oligo_priming_concentration.errors %}
-                <ul>
-                    {% for error in form.oligo_priming_concentration.errors %}
+
+        <div class="form-group">
+            {{ form.reaction_volumes.label }}
+            {{ form.reaction_volumes(class="form-control") }}
+            {% if form.reaction_volumes.errors %}
+                <ul class="errors">
+                    {% for error in form.reaction_volumes.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reverse_transcription_concentration.label }}
-            {{ form.reverse_transcription_concentration(class="form-control") }}
-            {% if form.reverse_transcription_concentration.errors %}
-                <ul>
-                    {% for error in form.reverse_transcription_concentration.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_oligo_priming.label }}
+            {{ form.reverse_transcriptase_oligo_priming(class="form-control") }}
+            {% if form.reverse_transcriptase_oligo_priming.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_oligo_priming.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.primer_concentration.label }}
-            {{ form.primer_concentration(class="form-control") }}
-            {% if form.primer_concentration.errors %}
-                <ul>
-                    {% for error in form.primer_concentration.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_oligo_concentration.label }}
+            {{ form.reverse_transcriptase_oligo_concentration(class="form-control") }}
+            {% if form.reverse_transcriptase_oligo_concentration.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_oligo_concentration.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.temperature_time.label }}
-            {{ form.temperature_time(class="form-control") }}
-            {% if form.temperature_time.errors %}
-                <ul>
-                    {% for error in form.temperature_time.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_type.label }}
+            {{ form.reverse_transcriptase_type(class="form-control") }}
+            {% if form.reverse_transcriptase_type.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_type.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reagent_manufacturer_catalog.label }}
-            {{ form.reagent_manufacturer_catalog(class="form-control") }}
-            {% if form.reagent_manufacturer_catalog.errors %}
-                <ul>
-                    {% for error in form.reagent_manufacturer_catalog.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_concentration.label }}
+            {{ form.reverse_transcriptase_concentration(class="form-control") }}
+            {% if form.reverse_transcriptase_concentration.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_concentration.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.cqs_with_without_reverse_transcription.label }}
-            {{ form.cqs_with_without_reverse_transcription(class="form-control") }}
-            {% if form.cqs_with_without_reverse_transcription.errors %}
-                <ul>
-                    {% for error in form.cqs_with_without_reverse_transcription.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_temperature.label }}
+            {{ form.reverse_transcriptase_temperature(class="form-control") }}
+            {% if form.reverse_transcriptase_temperature.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_temperature.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.dna_storage_conditions.label }}
-            {{ form.dna_storage_conditions(class="form-control") }}
-            {% if form.dna_storage_conditions.errors %}
-                <ul>
-                    {% for error in form.dna_storage_conditions.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_reaction_time.label }}
+            {{ form.reverse_transcriptase_reaction_time(class="form-control") }}
+            {% if form.reverse_transcriptase_reaction_time.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_reaction_time.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.commercial_brand.label }}
-            {{ form.commercial_brand(class="form-control") }}
-            {% if form.commercial_brand.errors %}
-                <ul>
-                    {% for error in form.commercial_brand.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_manufacturer.label }}
+            {{ form.reverse_transcriptase_manufacturer(class="form-control") }}
+            {% if form.reverse_transcriptase_manufacturer.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_manufacturer.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.batch.label }}
-            {{ form.batch(class="form-control") }}
-            {% if form.batch.errors %}
-                <ul>
-                    {% for error in form.batch.errors %}
+
+        <div class="form-group">
+            {{ form.reverse_transcriptase_catalog_number.label }}
+            {{ form.reverse_transcriptase_catalog_number(class="form-control") }}
+            {% if form.reverse_transcriptase_catalog_number.errors %}
+                <ul class="errors">
+                    {% for error in form.reverse_transcriptase_catalog_number.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+
+        <div class="form-group">
+            {{ form.cdna_storage_conditions.label }}
+            {{ form.cdna_storage_conditions(class="form-control") }}
+            {% if form.cdna_storage_conditions.errors %}
+                <ul class="errors">
+                    {% for error in form.cdna_storage_conditions.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </form>
 {% endblock %}

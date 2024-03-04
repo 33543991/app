@@ -17,6 +17,22 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
+                        <a class="nav-link" href="https://rdml.org/miqe.html">MIQE/RDML</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/about">Acerca de</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/contact">Contacto</a>
+                    </li>
+                    {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/profile">Perfil</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="/info">Información</a>
                     </li>
                     <li class="nav-item">
@@ -54,25 +70,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/results">Resultados</a>
-                    </li>
+                    </li>    
                     <li class="nav-item">
-                        <a class="nav-link" href="https://rdml.org/miqe.html">MIQE/RDML</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Acerca de</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contacto</a>
-                    </li>
-                    {% if 'username' in session %}
-                        <li class="nav-item">
                             <a class="nav-link" href="/report">Informe</a> <!-- Aquí agregamos el enlace a la página de informe -->
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/profile">Perfil</a>
                         </li>
                     {% endif %}
                 </ul>

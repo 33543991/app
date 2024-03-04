@@ -61,21 +61,23 @@
     </ul>
 
     <h3>Transcripción Inversa:</h3>
-    <ul>
-        {% for reverse in reverse_data %}
-            <li><strong>Condiciones de reacción:</strong> {{ reverse.reaction_conditions }}</li>
-            <li><strong>Cantidad de ARN y volumen de reacción:</strong> {{ reverse.rna_quantity_volume }}</li>
-            <li><strong>Concentración de oligo de iniciación:</strong> {{ reverse.oligo_priming_concentration }}</li>
-            <li><strong>Concentración de transcripción inversa:</strong> {{ reverse.reverse_transcription_concentration }}</li>
-            <li><strong>Concentración del iniciador:</strong> {{ reverse.primer_concentration }}</li>
-            <li><strong>Temperatura y tiempo:</strong> {{ reverse.temperature_time }}</li>
-            <li><strong>Fabricante de reactivos y números de catálogo:</strong> {{ reverse.reagent_manufacturer_catalog }}</li>
-            <li><strong>Cqs con y sin transcripción inversa:</strong> {{ reverse.cqs_with_without_reverse_transcription }}</li>
-            <li><strong>Condiciones de almacenamiento de ADN:</strong> {{ reverse.dna_storage_conditions }}</li>
-            <li><strong>Marca comercial:</strong> {{ reverse.commercial_brand }}</li>
-            <li><strong>Lote:</strong> {{ reverse.batch }}</li>
+<ul>
+        {% for data in reverse_transcription_data %}
+            <li><strong>Condiciones de Reacción:</strong> {{ data.reaction_conditions }}</li>
+            <li><strong>Cantidad de RNA:</strong> {{ data.rna_quantity }}</li>
+            <li><strong>Volumenes de Reacción:</strong> {{ data.reaction_volumes }}</li>
+            <li><strong>Oligonucleótidos de Cebado:</strong> {{ data.reverse_transcriptase_oligo_priming }}</li>
+            <li><strong>Concentración de Oligonucleótidos de Cebado:</strong> {{ data.reverse_transcriptase_oligo_concentration }}</li>
+            <li><strong>Tipo de Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_type }}</li>
+            <li><strong>Concentración de Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_concentration }}</li>
+            <li><strong>Temperatura de Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_temperature }}</li>
+            <li><strong>Tiempo de Reacción de Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_reaction_time }}</li>
+            <li><strong>Fabricante de la Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_manufacturer }}</li>
+            <li><strong>Número de Catálogo de la Transcriptasa Inversa:</strong> {{ data.reverse_transcriptase_catalog_number }}</li>
+            <li><strong>Condiciones de Almacenamiento del cDNA:</strong> {{ data.cdna_storage_conditions }}</li>
         {% endfor %}
-    </ul>
+</ul>
+    
 
     <h3>Información del Objetivo de qPCR:</h3>
 <ul>
@@ -97,7 +99,8 @@
 <h3>qPCR Primers:</h3>
 <ul>
     {% for primer in primer_data %}
-        <li><strong>Secuencias de los primers:</strong> {{ primer.primer_sequences }}</li>
+        <li><strong>Secuencia forward:</strong> {{ primer.forward_sequence }}</li>
+        <li><strong>Secuencia reverse:</strong> {{ primer.reverse_sequence }}</li>
         <li><strong>Número de Identificación en RTPrimerDB:</strong> {{ primer.rtprimerdb_id }}</li>
         <li><strong>Secuencias de la sonda (si corresponde):</strong> {{ primer.probe_sequences }}</li>
         <li><strong>Ubicación y Identidad de la Modificación:</strong> {{ primer.modification_location_identity }}</li>
@@ -192,6 +195,8 @@
 </ul>
 
 
-    <a href="{{ url_for('index') }}">Volver a la página de inicio</a>
-    <p><a href="{{ url_for('logout') }}">Logout</a></p>
+<a href="{{ url_for('generate_pdf') }}" class="btn btn-primary">Generar PDF</a>
+<p><a href="{{ url_for('index') }}">Volver a la página de inicio</a></p>
+<p><a href="{{ url_for('logout') }}">Logout</a></p>
+
 {% endblock %}

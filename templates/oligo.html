@@ -10,11 +10,22 @@
     <form method="POST">
         {{ form.hidden_tag() }}
         <div>
-            {{ form.primer_sequences.label }}
-            {{ form.primer_sequences(class="form-control") }}
-            {% if form.primer_sequences.errors %}
+            {{ form.forward_sequence.label }}
+            {{ form.forward_sequence(class="form-control") }}
+            {% if form.forward_sequence.errors %}
                 <ul>
-                    {% for error in form.primer_sequences.errors %}
+                    {% for error in form.forward_sequence.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div>
+            {{ form.reverse_sequence.label }}
+            {{ form.reverse_sequence(class="form-control") }}
+            {% if form.reverse_sequence.errors %}
+                <ul>
+                    {% for error in form.reverse_sequence.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
