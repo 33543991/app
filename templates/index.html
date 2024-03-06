@@ -1,10 +1,112 @@
-<!-- index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestión PCR</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        /* Estilos adicionales */
+        .hero-content {
+            text-align: center;
+        }
 
-{% extends 'layout.html' %}
+        .hero-content h2,
+        .hero-content p,
+        .hero-content img {
+            opacity: 0; /* Inicialmente, establece la opacidad en 0 para ocultar los elementos */
+            animation: fadeIn 1s ease forwards; /* Aplica la animación de desvanecimiento */
+        }
 
-{% block title %}Página de Inicio{% endblock %}
+        /* Define la animación de desvanecimiento */
+        @keyframes fadeIn {
+            from {
+                opacity: 0; /* Comienza con opacidad 0 */
+            }
+            to {
+                opacity: 1; /* Termina con opacidad 1 */
+            }
+        }
 
-{% block content %}
-<h1>RDML/MIQE</h1>
-<p>Sístema de gestion de pruebas de Biología Molecular</p>
-{% endblock %}
+        /* Aplica un retraso diferente para cada elemento */
+        .hero-content h2 {
+            animation-delay: 0.5s;
+        }
+
+        .hero-content p {
+            animation-delay: 1s;
+            max-width: 600px; /* Ajusta el ancho máximo del párrafo */
+            margin: 0 auto; /* Centra el párrafo horizontalmente */
+            text-align: justify; /* Justifica el texto */
+        }
+
+        .hero-content img {
+            animation-delay: 1.5s;
+        }
+
+        /* Estilos para el encabezado y la navegación */
+        header {
+            display: flex;
+            align-items: center;
+        }
+
+        nav {
+            margin-left: auto;
+        }
+
+        .nav {
+            display: flex;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .nav-item {
+            margin-right: 20px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: black;
+        }
+
+        .login {
+            margin-left: 10px; /* Ajusta el margen entre las pestañas de navegación y el botón de inicio de sesión */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="logo">Sistema de gestión de pruebas PCR</h1>
+        <nav>
+            <!-- Coloca el botón de inicio de sesión antes de las pestañas de navegación -->
+            <a href="{{ url_for('login') }}" class="button login">Iniciar sesión</a>
+            <!-- Agrega las pestañas de navegación aquí -->
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="https://rdml.org/miqe.html">MIQE/RDML</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">Acerca de</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/contact">Contacto</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>BIENVENIDO</h2>
+                    <p>Esta página web se plantea que la adopción de las guías MIQE, el estándar RDML para la generación de informes de experimentos de NAATs, con el fin de aumentar la calidad, transparencia y reproducibilidad de los resultados entre laboratorios, mejorando así la estandarización y la fiabilidad de esta técnica diagnóstica.</p>
+                    <img src="{{ url_for('static', filename='uaemex.webp') }}" alt="Universidad" class="centered-image">
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

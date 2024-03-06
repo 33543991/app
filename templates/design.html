@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Formulario de Diseño Experimental
+    Diseño experimental
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de Diseño Experimental</h1>
-    <form method="POST">
+    <h1>Diseño experimental</h1>
+    <form action="/design" method="POST">
         {{ form.hidden_tag() }}
         <div>
             {{ form.group_control_definition.label }}

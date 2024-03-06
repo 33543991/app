@@ -1,0 +1,114 @@
+/* style.css */
+
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #2a5eecd2;
+}
+
+/* Estilos para el encabezado */
+header {
+    background: linear-gradient(to right, #0f4da9, #2a5eecd2); /* Degradado de color */
+    color: #ffffff;
+    padding: 25px;
+    text-align: center;
+    overflow: hidden; /* Para limpiar el float */
+    display: flex;
+    justify-content: space-between; /* Alinear elementos al inicio y al final */
+    /* Centrar verticalmente los elementos */
+    clip-path: polygon(0 0, 120% 0, 100% 70%, 0 100%); /* Crea una forma diagonal */
+    border-radius: 0 0 40px 10px; /* Añade bordes redondeados solo en la parte inferior */
+}
+
+.logo {
+    float: left;
+}
+
+nav {
+    float: right;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-left: 10px;
+    color: #fff;
+    background-color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #555;
+}
+
+/* Estilos para la sección de héroe */
+.hero {
+    text-align: center;
+    background-color: #f9f9f9;
+    padding: 50px 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.centered-image {
+    display: block;
+    margin: 20px auto;
+    width: 100%;
+}
+
+/* Estilos adicionales para los botones de inicio de sesión y registro */
+nav .button.login {
+    background-color: #080808;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #361dc7;
+    border-radius: 4px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #555;
+}

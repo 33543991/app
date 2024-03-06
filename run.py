@@ -6,9 +6,6 @@ from wtforms.validators import DataRequired, Email, EqualTo
 from flask_bcrypt import Bcrypt
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-#import os
-#from flask import send_file
-#import pdfkit
 from datetime import datetime
 from uuid import uuid4 
 from Bio import Entrez
@@ -49,10 +46,10 @@ class RegistroForm(FlaskForm):
 
 # General Information
 class GeneralInfoForm(FlaskForm):
-    experiment_date = StringField('Experiment Date', validators=[DataRequired()])
-    experiment_number = StringField('Experiment Number', validators=[DataRequired()])
+    experiment_date = StringField('Fecha del experimento', validators=[DataRequired()])
+    experiment_number = StringField('Número de experimento', validators=[DataRequired()])
     principal_investigator = StringField('Principal Investigator', validators=[DataRequired()])
-    institution_lab = StringField('Institution (and Laboratory)', validators=[DataRequired()])
+    institution_lab = StringField('Institución (y Laboratorio)', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 class GeneralInfoDataModel(db.Model):
@@ -64,10 +61,10 @@ class GeneralInfoDataModel(db.Model):
 
 # Experimental Design
 class ExperimentalDesignForm(FlaskForm):
-    group_control_definition = StringField('Group Control Definition', validators=[DataRequired()])
-    group_experimental_definition = StringField('Group Experimental Definition', validators=[DataRequired()])
-    group_control_number = StringField('Group Control Number', validators=[DataRequired()])
-    group_experimental_number = StringField('Group Experimental Number', validators=[DataRequired()])
+    group_control_definition = StringField('Definición del grupo control', validators=[DataRequired()])
+    group_experimental_definition = StringField('Definición del grupo experimental', validators=[DataRequired()])
+    group_control_number = StringField('Número de grupo de control', validators=[DataRequired()])
+    group_experimental_number = StringField('Número de grupo experimental', validators=[DataRequired()])
     submit = SubmitField('Enviar')
     
 class DesignDataModel(db.Model):
@@ -95,16 +92,6 @@ class SampleForm(FlaskForm):
     fixation_method = SelectField('Fixation Method', choices=fixation_method_sample_choices, validators=[DataRequired()], default='None')
     storage_conditions = SelectField('Storage Conditions and Duration', choices=storage_conditions_choices, validators=[DataRequired()], default='Cooler4')
     submit = SubmitField('Enviar')
-
-#class SampleForm(FlaskForm):
- #   sample_type = StringField('Sample Type', validators=[DataRequired()])
-  #  sample_description = TextAreaField('Description', validators=[DataRequired()])
-   # sample_volume_mass = StringField('Volume/Mass of Processed Sample', validators=[DataRequired()])
-   # sampling_procedure = StringField('Sampling Procedure', validators=[DataRequired()])
-   # freezing_method = StringField('Freezing Method', validators=[DataRequired()])
-   # fixation_method = StringField('Fixation Method', validators=[DataRequired()])
-   # storage_conditions = StringField('Storage Conditions and Duration', validators=[DataRequired()])
-   # submit = SubmitField('Enviar')
 
 class SampleDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -264,20 +251,6 @@ class NucleicAcidExtractionForm(FlaskForm):
     
     submit = SubmitField('Enviar')
 
-#class NucleicAcidExtractionForm(FlaskForm):
- #   extraction_procedure = StringField('Extraction Procedure and/or Instrumentation', validators=[DataRequired()])
- #   kit_details = StringField('Kit Details and Any Modifications', validators=[DataRequired()])
- #   additional_reagents = StringField('Source of Additional Reagents Used', validators=[DataRequired()])
- #   dnase_rnase_treatment = StringField('Details of DNase or RNase Treatment', validators=[DataRequired()])
- #  contamination_evaluation = StringField('Contamination Evaluation (DNA or RNA)', validators=[DataRequired()])
- #   nucleic_acid_quantification_method = StringField('Nucleic Acid Quantification Method (Instrument and Method)', validators=[DataRequired()])
- #   nucleic_acid_purity = StringField('Nucleic Acid Purity (A260/A280)', validators=[DataRequired()])
- #   nucleic_acid_yield = StringField('Nucleic Acid Yield', validators=[DataRequired()])
- #   integrity_assessment_method = StringField('Integrity Assessment Method (RNA)', validators=[DataRequired()])
- #   rin_rqi_cq_details = StringField('RIN/RQI or Cq of 3’ and 5’ Transcriptions', validators=[DataRequired()])
- #   electrophoresis_traces = StringField('Electrophoresis Traces', validators=[DataRequired()])
- #   inhibition_testing = StringField('Inhibition Testing (Cq dilutions, peaks, or others)', validators=[DataRequired()])
- #   submit = SubmitField('Enviar')
 
 class NucleicAcidExtractionDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -411,33 +384,6 @@ class ReverseTranscriptionDataModel(db.Model):
     reverse_transcriptase_catalog_number = db.Column(db.String(50), nullable=False)
     cdna_storage_conditions = db.Column(db.String(50), nullable=False)     
 
-#class ReverseTranscriptionForm(FlaskForm):
- #   reaction_conditions = StringField('Reaction Conditions', validators=[DataRequired()])
- #   rna_quantity_volume = StringField('RNA Quantity and Reaction Volume', validators=[DataRequired()])
- #   oligo_priming_concentration = StringField('Oligo Priming Concentration', validators=[DataRequired()])
- #   reverse_transcription_concentration = StringField('Reverse Transcription Concentration', validators=[DataRequired()])
- #   primer_concentration = StringField('Primer Concentration', validators=[DataRequired()])
- #   temperature_time = StringField('Temperature and Time', validators=[DataRequired()])
- #   reagent_manufacturer_catalog = StringField('Reagent Manufacturer and Catalog Numbers', validators=[DataRequired()])
- #   cqs_with_without_reverse_transcription = StringField('Cqs with and without Reverse Transcription', validators=[DataRequired()])
- #   dna_storage_conditions = StringField('DNA Storage Conditions', validators=[DataRequired()])
- #   commercial_brand = StringField('Commercial Brand', validators=[DataRequired()])
- #   batch = StringField('Batch', validators=[DataRequired()])
- #   submit = SubmitField('Enviar')
-
-#class ReverseTranscriptionDataModel(db.Model):
-#    id = db.Column(db.Integer, primary_key=True)
-#    reaction_conditions = db.Column(db.String(100), nullable=False)
-#    rna_quantity_volume = db.Column(db.String(100), nullable=False)
-#    oligo_priming_concentration = db.Column(db.String(100), nullable=False)
-#    reverse_transcription_concentration = db.Column(db.String(100), nullable=False)
-#    primer_concentration = db.Column(db.String(100), nullable=False)
-#    temperature_time = db.Column(db.String(100), nullable=False)
-#    reagent_manufacturer_catalog = db.Column(db.String(100), nullable=False)
-#    cqs_with_without_reverse_transcription = db.Column(db.String(100), nullable=False)
-#    dna_storage_conditions = db.Column(db.String(100), nullable=False)
-#    commercial_brand = db.Column(db.String(100), nullable=False)
-#    batch = db.Column(db.String(100), nullable=False)
 
 # qPCR Target Information
 class qPCRTargetInfoForm(FlaskForm):
@@ -640,18 +586,27 @@ def index():
     return render_template('index.html')
 
 # LOGIN
+
+# Esta es la ruta de inicio de sesión
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=username).first()
-        if user and bcrypt.check_password_hash(user.contrasena, password): 
-            session['username'] = username
-            return redirect(url_for('index')) 
-        else:
-            return render_template('login.html', message='Usuario o contraseña incorrectos')
+        # Aquí se verifica el inicio de sesión
+        # Si el inicio de sesión es exitoso, establece la sesión del usuario
+        session['username'] = request.form['username']
+        # Redirige al usuario al dashboard después de iniciar sesión
+        return redirect(url_for('dashboard'))
     return render_template('login.html')
+
+# Nueva ruta para el dashboard
+@app.route('/dashboard')
+def dashboard():
+    # Verifica si el usuario ha iniciado sesión
+    if 'username' in session:
+        return render_template('dashboard.html')
+    else:
+        # Si el usuario no ha iniciado sesión, redirige al inicio de sesión
+        return redirect(url_for('login'))
 
 # LOGOUT
 @app.route('/logout')
@@ -874,33 +829,6 @@ def reverse():
     
     return render_template('reverse.html', form=form)
 
-#@app.route('/reverse', methods=['GET', 'POST'])
-#def reverse():
-#   if 'username' in session:
-#    form = ReverseTranscriptionForm()
-#    if form.validate_on_submit():
-#        try:
-#            reverse_transcription_data = ReverseTranscriptionDataModel(
-#                reaction_conditions=form.reaction_conditions.data,
-#                rna_quantity_volume=form.rna_quantity_volume.data,
-#                oligo_priming_concentration=form.oligo_priming_concentration.data,
-#                reverse_transcription_concentration=form.reverse_transcription_concentration.data,
-#                primer_concentration=form.primer_concentration.data,
-#                temperature_time=form.temperature_time.data,
-#                reagent_manufacturer_catalog=form.reagent_manufacturer_catalog.data,
-#                cqs_with_without_reverse_transcription=form.cqs_with_without_reverse_transcription.data,
-#                dna_storage_conditions=form.dna_storage_conditions.data,
-#                commercial_brand=form.commercial_brand.data,
-#                batch=form.batch.data
-#            )
-#            db.session.add(reverse_transcription_data)
-#            db.session.commit()
-#        except Exception as e:
-#            return render_template('error.html', error=str(e))
-#        
-#        return redirect(url_for('index'))
-#    
-#    return render_template('reverse.html', form=form)
 
 # qPCR Target Information
 @app.route('/target', methods=['GET', 'POST'])
@@ -1092,7 +1020,6 @@ def data():
 
     return render_template('data.html', form=form)
 
-
 # Results and Analysis
 @app.route('/results', methods=['GET', 'POST'])
 def results():
@@ -1136,7 +1063,6 @@ def report():
         return redirect(url_for('login'))
 
    
-
 @app.route('/generate_pdf')
 def generate_pdf():
     datos_general = GeneralInfoDataModel.query.first()
