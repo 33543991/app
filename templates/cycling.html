@@ -1,16 +1,21 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Thermal Cycling Conditions
+    Condiciones de termociclado
 {% endblock %}
 
 {% block content %}
-    <h1>Thermal Cycling Conditions</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Condiciones de termociclado</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.equipment_used.label }}
-            {{ form.equipment_used(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.equipment_used.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('equipmentUsedHelp')">?</button>
+            <small id="equipmentUsedHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al equipo utilizado para llevar a cabo la PCR. Por favor, especifique el nombre y modelo del termociclador utilizado.
+                <br>Ejemplo: "Se utilizó el termociclador modelo XYZ de la marca ABC para llevar a cabo las amplificaciones por PCR."
+            </small>
+            {{ form.equipment_used(class="form-control", style="font-size: 23px;") }}
             {% if form.equipment_used.errors %}
                 <ul>
                     {% for error in form.equipment_used.errors %}
@@ -19,9 +24,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.primers_used.label }}
-            {{ form.primers_used(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.primers_used.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('primersUsedHelp')">?</button>
+            <small id="primersUsedHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los cebadores utilizados para iniciar la amplificación de una región específica del ADN. Por favor, especifique los nombres y secuencias de los cebadores utilizados.
+                <br>Ejemplo: "Se emplearon los siguientes cebadores para la amplificación: Forward: 5'-AGCTGATCAGTGCATGAGTGG-3', Reverse: 5'-TCAGAATCCGCGAACATACAG-3'."
+            </small>
+            {{ form.primers_used(class="form-control", style="font-size: 23px;") }}
             {% if form.primers_used.errors %}
                 <ul>
                     {% for error in form.primers_used.errors %}
@@ -30,9 +41,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.pcr_conditions.label }}
-            {{ form.pcr_conditions(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.pcr_conditions.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('pcrConditionsHelp')">?</button>
+            <small id="pcrConditionsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a las condiciones de la PCR utilizadas, incluyendo el número de ciclos de amplificación, así como las temperaturas de desnaturalización, alineamiento y extensión.
+                <br>Ejemplo: "El protocolo de PCR consistió en 35 ciclos de amplificación, con una temperatura de desnaturalización de 95°C durante 30 segundos, temperatura de alineamiento de 60°C durante 30 segundos, y temperatura de extensión de 72°C durante 1 minuto."
+            </small>
+            {{ form.pcr_conditions(class="form-control", style="font-size: 23px;") }}
             {% if form.pcr_conditions.errors %}
                 <ul>
                     {% for error in form.pcr_conditions.errors %}
@@ -41,9 +58,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reaction_volume.label }}
-            {{ form.reaction_volume(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_volume.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionVolumeHelp')">?</button>
+            <small id="reactionVolumeHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al volumen total de la reacción de PCR utilizada en cada muestra.
+                <br>Ejemplo: "Se utilizó un volumen total de reacción de 20 µL por muestra para las amplificaciones por PCR."
+            </small>
+            {{ form.reaction_volume(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_volume.errors %}
                 <ul>
                     {% for error in form.reaction_volume.errors %}
@@ -52,9 +75,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.positive_control.label }}
-            {{ form.positive_control(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.positive_control.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('positiveControlHelp')">?</button>
+            <small id="positiveControlHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al tipo de muestra de control positivo utilizada en las reacciones de PCR para validar la amplificación.
+                <br>Ejemplo: "Se utilizó ADN genómico de referencia como control positivo en las reacciones de PCR."
+            </small>
+            {{ form.positive_control(class="form-control", style="font-size: 23px;") }}
             {% if form.positive_control.errors %}
                 <ul>
                     {% for error in form.positive_control.errors %}
@@ -63,9 +92,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.negative_control.label }}
-            {{ form.negative_control(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.negative_control.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('negativeControlHelp')">?</button>
+            <small id="negativeControlHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al tipo de muestra de control negativo utilizada en las reacciones de PCR para detectar contaminación o reactivos no deseados.
+                <br>Ejemplo: "Se utilizó agua estéril como control negativo en todas las reacciones de PCR para detectar contaminación."
+            </small>
+            {{ form.negative_control(class="form-control", style="font-size: 23px;") }}
             {% if form.negative_control.errors %}
                 <ul>
                     {% for error in form.negative_control.errors %}
@@ -74,8 +109,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

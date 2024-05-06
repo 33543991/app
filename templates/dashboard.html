@@ -1,104 +1,127 @@
 <!DOCTYPE html>
 <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    </head>
-<body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Inicio</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://rdml.org/miqe.html">MIQE/RDML</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/about">Acerca de</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/contact">Contacto</a>
-                    </li>
-                    {% if 'username' in session %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="/profile">Perfil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/info">Información</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/design">Diseño</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sample">Muestra</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/extraction">Extracción</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/reverse">Transcripción inversa</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/target">Target</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/oligo">Primers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/protocol">Protocolo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/validation">Validación de qPCR</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/cycling">Ciclo</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/analyze">Análisis de datos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/data">Datos PCR</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/results">Resultados</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/report">Informe</a>
-                    </li>
-                    {% endif %}
-                </ul>
-                <ul class="navbar-nav">
-                    {% if 'username' in session %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/logout">Cerrar Sesión</a>
-                        </li>
-                    {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="/login">Iniciar Sesión</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/register">Registrarse</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
-    
-    <div class="container">
-        {% block content %}
-        {% endblock %}
-    </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gestión PCR</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .navbar {
+           background: linear-gradient(to right, #0f4da9, #2a5eecd2); /* Define el fondo con gradiente de color azul */
+        }
 
-    <!-- Bootstrap Bundle JS (Popper included) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        .navbar-nav {
+            margin-top: 10px; /* Añade margen superior a las pestañas */
+        }
+
+        .navbar-nav .nav-link {
+            color: white; /* Cambia el color del texto a blanco */
+            font-size: 26px; /* Aumenta el tamaño de letra de las pestañas */
+        }
+
+        .navbar-nav .dropdown-menu .dropdown-item {
+            font-size: 24px; /* Ajusta el tamaño de letra de las subpestañas */
+        }
+
+         /* Estilos para el botón de inicio */
+         .navbar-brand {
+            color: white !important; /* Color del texto en blanco */
+        }
+
+        a.nav-link {
+            font-size: 23px; /* Tamaño de letra en píxeles */
+        }
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    {% if 'username' in session %}
+                    <a class="nav-link" href="/inicio">Inicio</a>
+                    {% endif %}
+                </li>
+                <li class="nav-item">
+                    {% if 'username' in session %}
+                    <a class="nav-link" href="/profile">Perfil</a>
+                    {% endif %}
+                </li>
+                <!-- Agrupar pestañas bajo "Información" -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Información
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="https://rdml.org/miqe.html">MIQE/RDML</a></li>
+                        <li><a class="dropdown-item" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a></li>
+                        <li><a class="dropdown-item" href="/about">Acerca de ...</a></li>
+                        <li><a class="dropdown-item" href="/contact">Contacto</a></li>
+                    </ul>
+                </li>
+                <!-- Fin del grupo -->
+                {% if 'username' in session %}
+                <!-- Agrupar pestañas bajo "Registro Experimental" -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown2" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Registro experimental
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown2">
+                        <li><a class="dropdown-item" href="/info">Información general</a></li>
+                        <li><a class="dropdown-item" href="/design">Diseño experimental</a></li>
+                        <li><a class="dropdown-item" href="/sample">Muestra</a></li>
+                        <li><a class="dropdown-item" href="/extraction">Extracción de ácido nucleico</a></li>
+                        <li><a class="dropdown-item" href="/reverse">Transcripción inversa</a></li>
+                        <li><a class="dropdown-item" href="/target">Objetivo de qPCR</a></li>
+                        <li><a class="dropdown-item" href="/oligo">Primers</a></li>
+                        <li><a class="dropdown-item" href="/protocol">Protocolo</a></li>
+                        <li><a class="dropdown-item" href="/validation">Validación de qPCR</a></li>
+                        <li><a class="dropdown-item" href="/analyze">Análisis de datos</a></li>
+                        <li><a class="dropdown-item" href="/cycling">Condiciones de termociclado</a></li>
+                        <li><a class="dropdown-item" href="/data">Datos de PCR</a></li>
+                        <li><a class="dropdown-item" href="/results">Resultados</a></li>
+                    </ul>
+                </li>
+                <!-- Fin del grupo -->
+                <li class="nav-item">
+                    <a class="nav-link" href="/report">Informe final</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    {% if 'username' in session %}
+                    <a class="nav-link" href="/informes">Informes</a>
+                    {% endif %}
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                {% if 'username' in session %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Cerrar sesión</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Iniciar Sesión</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Registrarse</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+<!-- Bootstrap Bundle JS (Popper included) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

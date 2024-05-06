@@ -1,16 +1,16 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de Extracción de Ácido Nucleico
+    Información sobre extracción de ácido nucleico
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de Extracción de Ácido Nucleico</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información sobre extracción de ácido nucleico</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.extraction_procedure.label }}
-            {{ form.extraction_procedure(class="form-control") }}
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.extraction_procedure.label }}</label>
+            {{ form.extraction_procedure(class="form-control", style="font-size: 23px;") }}
             {% if form.extraction_procedure.errors %}
                 <ul>
                     {% for error in form.extraction_procedure.errors %}
@@ -19,9 +19,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.kit_details.label }}
-            {{ form.kit_details(class="form-control") }}
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.kit_details.label }}</label>
+            {{ form.kit_details(class="form-control", style="font-size: 23px;") }}
             {% if form.kit_details.errors %}
                 <ul>
                     {% for error in form.kit_details.errors %}
@@ -30,9 +30,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.additional_reagents.label }}
-            {{ form.additional_reagents(class="form-control") }}
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.additional_reagents.label }}</label>
+            {{ form.additional_reagents(class="form-control", style="font-size: 23px;") }}
             {% if form.additional_reagents.errors %}
                 <ul>
                     {% for error in form.additional_reagents.errors %}
@@ -41,9 +41,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.dnase_rnase_treatment.label }}
-            {{ form.dnase_rnase_treatment(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.dnase_rnase_treatment.label }}</label>
+            {{ form.dnase_rnase_treatment(class="form-control", style="font-size: 23px;") }}
             {% if form.dnase_rnase_treatment.errors %}
                 <ul>
                     {% for error in form.dnase_rnase_treatment.errors %}
@@ -52,9 +53,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.contamination_evaluation.label }}
-            {{ form.contamination_evaluation(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.contamination_evaluation.label }}</label>
+            {{ form.contamination_evaluation(class="form-control", style="font-size: 23px;") }}
             {% if form.contamination_evaluation.errors %}
                 <ul>
                     {% for error in form.contamination_evaluation.errors %}
@@ -63,9 +65,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.nucleic_acid_quantification_method.label }}
-            {{ form.nucleic_acid_quantification_method(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.nucleic_acid_quantification_method.label }}</label>
+            {{ form.nucleic_acid_quantification_method(class="form-control", style="font-size: 23px;") }}
             {% if form.nucleic_acid_quantification_method.errors %}
                 <ul>
                     {% for error in form.nucleic_acid_quantification_method.errors %}
@@ -74,9 +77,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.nucleic_acid_purity.label }}
-            {{ form.nucleic_acid_purity(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.nucleic_acid_purity.label }}</label>
+            {{ form.nucleic_acid_purity(class="form-control", style="font-size: 23px;") }}
             {% if form.nucleic_acid_purity.errors %}
                 <ul>
                     {% for error in form.nucleic_acid_purity.errors %}
@@ -85,9 +89,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.nucleic_acid_yield.label }}
-            {{ form.nucleic_acid_yield(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.nucleic_acid_yield.label }}</label>
+            {{ form.nucleic_acid_yield(class="form-control", style="font-size: 23px;") }}
             {% if form.nucleic_acid_yield.errors %}
                 <ul>
                     {% for error in form.nucleic_acid_yield.errors %}
@@ -96,9 +101,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.integrity_assessment_method.label }}
-            {{ form.integrity_assessment_method(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.integrity_assessment_method.label }}</label>
+            {{ form.integrity_assessment_method(class="form-control", style="font-size: 23px;") }}
             {% if form.integrity_assessment_method.errors %}
                 <ul>
                     {% for error in form.integrity_assessment_method.errors %}
@@ -107,20 +113,39 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.rin_rqi_cq_details.label }}
-            {{ form.rin_rqi_cq_details(class="form-control") }}
-            {% if form.rin_rqi_cq_details.errors %}
-                <ul>
-                    {% for error in form.rin_rqi_cq_details.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div>
-            {{ form.electrophoresis_traces.label }}
-            {{ form.electrophoresis_traces(class="form-control") }}
+
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+    <label style="font-size: 25px;">{{ form.rin_rqi_cq_details.label }}</label>
+    <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('rinRqiCqHelp')">?</button>
+    <small id="rinRqiCqHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+        Para este campo, proporciona detalles sobre los valores de RIN/RQI o Cq de transcripciones de 3' y 5' obtenidos durante la evaluación de ácidos nucleicos.
+        <br>
+        - **RIN/RQI (Número de Integridad del RNA / Índice de Calidad del RNA):**
+          - Indica la calidad e integridad del RNA extraído.
+          - Valores cercanos a 10 indican alta calidad y baja degradación.
+        <br>
+        - **Cq (Valor de umbral de ciclo):**
+          - Utilizado en qPCR para cuantificar la cantidad de RNA.
+          - Un Cq menor indica mayor cantidad de RNA.
+        <br>
+        Asegúrate de incluir detalles específicos sobre los métodos de medición utilizados y cómo estos valores afectan el análisis posterior.
+    </small>
+    {{ form.rin_rqi_cq_details(class="form-control", style="font-size: 23px;") }}
+    {% if form.rin_rqi_cq_details.errors %}
+        <ul>
+            {% for error in form.rin_rqi_cq_details.errors %}
+                <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.electrophoresis_traces.label }}</label>
+            {{ form.electrophoresis_traces(class="form-control", style="font-size: 23px;") }}
             {% if form.electrophoresis_traces.errors %}
                 <ul>
                     {% for error in form.electrophoresis_traces.errors %}
@@ -129,9 +154,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.inhibition_testing.label }}
-            {{ form.inhibition_testing(class="form-control") }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.inhibition_testing.label }}</label>
+            {{ form.inhibition_testing(class="form-control", style="font-size: 23px;") }}
             {% if form.inhibition_testing.errors %}
                 <ul>
                     {% for error in form.inhibition_testing.errors %}
@@ -140,8 +166,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        <!-- Se agregan más campos con el mismo formato -->
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
+        <script>
+            function toggleHelp(helpId) {
+                const helpText = document.getElementById(helpId);
+                if (helpText) {
+                    helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+                }
+            }
+        </script>
     </form>
 {% endblock %}

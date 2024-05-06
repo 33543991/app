@@ -1,17 +1,21 @@
-<!-- oligo.html (primers) -->
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de qPCR Primers
+    Información sobre primers
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de qPCR Primers</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información sobre primers</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.forward_sequence.label }}
-            {{ form.forward_sequence(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.forward_sequence.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('forwardSequenceHelp')">?</button>
+            <small id="forwardSequenceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La secuencia forward es la secuencia de nucleótidos del cebador utilizado en la reacción de PCR que se une al ADN complementario en la hebra molde.
+                <br>Ejemplo: "5'-AGCTGATCGATCGATCGA-3'."
+            </small>
+            {{ form.forward_sequence(class="form-control", style="font-size: 23px;") }}
             {% if form.forward_sequence.errors %}
                 <ul>
                     {% for error in form.forward_sequence.errors %}
@@ -20,9 +24,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reverse_sequence.label }}
-            {{ form.reverse_sequence(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_sequence.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reverseSequenceHelp')">?</button>
+            <small id="reverseSequenceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La secuencia reverse es la secuencia de nucleótidos del cebador complementario al ADN molde durante la reacción de PCR.
+                <br>Ejemplo: "5'-TCGATCGATCAGCT-3'."
+            </small>
+            {{ form.reverse_sequence(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_sequence.errors %}
                 <ul>
                     {% for error in form.reverse_sequence.errors %}
@@ -31,9 +41,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.rtprimerdb_id.label }}
-            {{ form.rtprimerdb_id(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.rtprimerdb_id.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('rtprimerdbIdHelp')">?</button>
+            <small id="rtprimerdbIdHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El número de identificación en RTPrimerDB es un identificador único asignado a un cebador en la base de datos RTPrimerDB.
+                <br>Ejemplo: "El cebador utilizado está registrado en RTPrimerDB con el ID: RT123456."
+            </small>
+            {{ form.rtprimerdb_id(class="form-control", style="font-size: 23px;") }}
             {% if form.rtprimerdb_id.errors %}
                 <ul>
                     {% for error in form.rtprimerdb_id.errors %}
@@ -42,9 +58,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.probe_sequences.label }}
-            {{ form.probe_sequences(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.probe_sequences.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('probeSequencesHelp')">?</button>
+            <small id="probeSequencesHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Las secuencias de la sonda se refieren a las secuencias específicas utilizadas como sondas en el ensayo qPCR.
+                <br>Ejemplo: "Se utilizó la sonda con la siguiente secuencia: 5'-TGGATCGACTAGCTGATCG-3'."
+            </small>
+            {{ form.probe_sequences(class="form-control", style="font-size: 23px;") }}
             {% if form.probe_sequences.errors %}
                 <ul>
                     {% for error in form.probe_sequences.errors %}
@@ -53,9 +75,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.modification_location_identity.label }}
-            {{ form.modification_location_identity(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.modification_location_identity.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('modificationLocationIdentityHelp')">?</button>
+            <small id="modificationLocationIdentityHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La ubicación e identidad de la modificación se refieren al sitio específico y el tipo de modificación (si la hay) presente en las secuencias de los cebadores o sondas.
+                <br>Ejemplo: "La modificación se encuentra en la posición 5 de la secuencia y es una modificación de metilación."
+            </small>
+            {{ form.modification_location_identity(class="form-control", style="font-size: 23px;") }}
             {% if form.modification_location_identity.errors %}
                 <ul>
                     {% for error in form.modification_location_identity.errors %}
@@ -64,9 +92,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.oligo_manufacturer.label }}
-            {{ form.oligo_manufacturer(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.oligo_manufacturer.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('oligoManufacturerHelp')">?</button>
+            <small id="oligoManufacturerHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El fabricante del oligo se refiere a la empresa o proveedor que suministró los oligonucleótidos utilizados en las reacciones de qPCR.
+                <br>Ejemplo: "Los oligonucleótidos fueron suministrados por Thermo Fisher Scientific."
+            </small>
+            {{ form.oligo_manufacturer(class="form-control", style="font-size: 23px;") }}
             {% if form.oligo_manufacturer.errors %}
                 <ul>
                     {% for error in form.oligo_manufacturer.errors %}
@@ -75,9 +109,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.purification_method.label }}
-            {{ form.purification_method(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.purification_method.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('purificationMethodHelp')">?</button>
+            <small id="purificationMethodHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El método de purificación se refiere al procedimiento utilizado para purificar los oligonucleótidos después de la síntesis.
+                <br>Ejemplo: "Los oligonucleótidos fueron desalinizados mediante columnas de purificación."
+            </small>
+            {{ form.purification_method(class="form-control", style="font-size: 23px;") }}
             {% if form.purification_method.errors %}
                 <ul>
                     {% for error in form.purification_method.errors %}
@@ -86,8 +126,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

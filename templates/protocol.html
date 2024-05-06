@@ -1,16 +1,22 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de Protocolo qPCR
+    Información sobre el protocolo qPCR
 {% endblock %}
 
+
 {% block content %}
-    <h1>Formulario de Protocolo qPCR</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información sobre el protocolo qPCR</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.reaction_conditions.label }}
-            {{ form.reaction_conditions(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_conditions.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionConditionsHelp')">?</button>
+            <small id="reactionConditionsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Las condiciones de reacción describen los parámetros utilizados en la PCR, incluyendo temperatura, tiempo y ciclos de amplificación.
+                <br>Ejemplo: "La reacción de PCR se llevó a cabo a 95°C durante 3 minutos de desnaturalización inicial, seguido de 40 ciclos de amplificación (95°C durante 15 segundos, 60°C durante 1 minuto)."
+            </small>
+            {{ form.reaction_conditions(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_conditions.errors %}
                 <ul>
                     {% for error in form.reaction_conditions.errors %}
@@ -19,9 +25,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reaction_volume_dna_quantity.label }}
-            {{ form.reaction_volume_dna_quantity(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_volume_dna_quantity.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionVolumeDNAHelp')">?</button>
+            <small id="reactionVolumeDNAHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al volumen total de la reacción de PCR y la cantidad de ADN utilizado como plantilla en cada reacción.
+                <br>Ejemplo: "Se utilizó un volumen de reacción total de 20 µL, incluyendo 1 µL de ADN genómico a una concentración de 50 ng/µL."
+            </small>
+            {{ form.reaction_volume_dna_quantity(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_volume_dna_quantity.errors %}
                 <ul>
                     {% for error in form.reaction_volume_dna_quantity.errors %}
@@ -30,9 +42,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.primer_probe_concentrations.label }}
-            {{ form.primer_probe_concentrations(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.primer_probe_concentrations.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('primerProbeConcentrationsHelp')">?</button>
+            <small id="primerProbeConcentrationsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a las concentraciones utilizadas para los cebadores (primers), sondas, Mg++ y dNTPs en la reacción de PCR.
+                <br>Ejemplo: "Se utilizó una concentración final de 200 nM para cada cebador (primer) y 100 nM para la sonda TaqMan."
+            </small>
+            {{ form.primer_probe_concentrations(class="form-control", style="font-size: 23px;") }}
             {% if form.primer_probe_concentrations.errors %}
                 <ul>
                     {% for error in form.primer_probe_concentrations.errors %}
@@ -41,9 +59,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.polymerase_identity_concentration.label }}
-            {{ form.polymerase_identity_concentration(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.polymerase_identity_concentration.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('polymeraseIdentityConcentrationHelp')">?</button>
+            <small id="polymeraseIdentityConcentrationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la identidad y concentración de la polimerasa utilizada en la reacción de qPCR.
+                <br>Ejemplo: "Se utilizó la polimerasa Taq DNA a una concentración final de 0.5 unidades/µl."
+            </small>
+            {{ form.polymerase_identity_concentration(class="form-control", style="font-size: 23px;") }}
             {% if form.polymerase_identity_concentration.errors %}
                 <ul>
                     {% for error in form.polymerase_identity_concentration.errors %}
@@ -52,9 +76,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.buffer_kit_identity_manufacturer.label }}
-            {{ form.buffer_kit_identity_manufacturer(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.buffer_kit_identity_manufacturer.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('bufferKitManufacturerHelp')">?</button>
+            <small id="bufferKitManufacturerHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la identidad del buffer o kit utilizado en la reacción de qPCR, incluyendo el fabricante.
+                <br>Ejemplo: "Se utilizó el kit de buffer QIAGEN QuantiTect SYBR Green PCR con identificación de lote 123456."
+            </small>
+            {{ form.buffer_kit_identity_manufacturer(class="form-control", style="font-size: 23px;") }}
             {% if form.buffer_kit_identity_manufacturer.errors %}
                 <ul>
                     {% for error in form.buffer_kit_identity_manufacturer.errors %}
@@ -63,9 +93,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.buffer_exact_chemical_constitution.label }}
-            {{ form.buffer_exact_chemical_constitution(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.buffer_exact_chemical_constitution.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('bufferChemicalConstitutionHelp')">?</button>
+            <small id="bufferChemicalConstitutionHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la constitución química exacta del buffer utilizado en la reacción de qPCR.
+                <br>Ejemplo: "El buffer utilizado contiene Tris-HCl, KCl, MgCl2, Tween 20 y otros componentes en concentraciones específicas."
+            </small>
+            {{ form.buffer_exact_chemical_constitution(class="form-control", style="font-size: 23px;") }}
             {% if form.buffer_exact_chemical_constitution.errors %}
                 <ul>
                     {% for error in form.buffer_exact_chemical_constitution.errors %}
@@ -74,9 +110,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.additives.label }}
-            {{ form.additives(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.additives.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('additivesHelp')">?</button>
+            <small id="additivesHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los aditivos utilizados en la reacción de qPCR, como SYBR Green I, DMSO u otros componentes que se agregan al mix para mejorar la eficiencia de la reacción.
+                <br>Ejemplo: "En la reacción de qPCR se añadió SYBR Green I como aditivo para la detección de la amplificación."
+            </small>
+            {{ form.additives(class="form-control", style="font-size: 23px;") }}
             {% if form.additives.errors %}
                 <ul>
                     {% for error in form.additives.errors %}
@@ -85,9 +127,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.plates_tubes_manufacturer_catalog.label }}
-            {{ form.plates_tubes_manufacturer_catalog(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.plates_tubes_manufacturer_catalog.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('platesTubesHelp')">?</button>
+            <small id="platesTubesHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al fabricante y número de catálogo de las placas o tubos utilizados en la qPCR.
+                <br>Ejemplo: "Se utilizó una placa de 96 pocillos de la marca Thermo Fisher Scientific (número de catálogo: AB-1234)."
+            </small>
+            {{ form.plates_tubes_manufacturer_catalog(class="form-control", style="font-size: 23px;") }}
             {% if form.plates_tubes_manufacturer_catalog.errors %}
                 <ul>
                     {% for error in form.plates_tubes_manufacturer_catalog.errors %}
@@ -96,9 +144,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.thermocycling_parameters.label }}
-            {{ form.thermocycling_parameters(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.thermocycling_parameters.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('thermocyclingParametersHelp')">?</button>
+            <small id="thermocyclingParametersHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los parámetros de termociclado utilizados en la reacción de qPCR, como la temperatura de desnaturalización, la temperatura de alineamiento y la temperatura de extensión, así como el número de ciclos.
+                <br>Ejemplo: "El termociclado consistió en una etapa de desnaturalización a 95°C durante 30 segundos, seguida de 40 ciclos de 95°C durante 15 segundos, 60°C durante 30 segundos y 72°C durante 30 segundos."
+            </small>
+            {{ form.thermocycling_parameters(class="form-control", style="font-size: 23px;") }}
             {% if form.thermocycling_parameters.errors %}
                 <ul>
                     {% for error in form.thermocycling_parameters.errors %}
@@ -107,9 +161,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reaction_configuration.label }}
-            {{ form.reaction_configuration(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_configuration.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionConfigurationHelp')">?</button>
+            <small id="reactionConfigurationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo describe la configuración de la reacción de qPCR, indicando si la ejecución fue manual o automática.
+                <br>Ejemplo: "La reacción de qPCR se llevó a cabo de manera automática utilizando un instrumento de PCR en tiempo real."
+            </small>
+            {{ form.reaction_configuration(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_configuration.errors %}
                 <ul>
                     {% for error in form.reaction_configuration.errors %}
@@ -118,9 +178,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.qpcr_instrument_manufacturer.label }}
-            {{ form.qpcr_instrument_manufacturer(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.qpcr_instrument_manufacturer.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('qPCRInstrumentManufacturerHelp')">?</button>
+            <small id="qPCRInstrumentManufacturerHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo indica el fabricante del instrumento de qPCR utilizado para el análisis.
+                <br>Ejemplo: "El instrumento de qPCR utilizado fue de la marca Applied Biosystems (modelo: QuantStudio 5)."
+            </small>
+            {{ form.qpcr_instrument_manufacturer(class="form-control", style="font-size: 23px;") }}
             {% if form.qpcr_instrument_manufacturer.errors %}
                 <ul>
                     {% for error in form.qpcr_instrument_manufacturer.errors %}
@@ -129,9 +195,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reaction_quality_control.label }}
-            {{ form.reaction_quality_control(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_quality_control.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionQualityControlHelp')">?</button>
+            <small id="reactionQualityControlHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo describe el control de calidad aplicado a la reacción de qPCR para asegurar la fiabilidad de los resultados.
+                <br>Ejemplo: "Se utilizó un control positivo y negativo en cada corrida de qPCR para garantizar la precisión de los resultados."
+            </small>
+            {{ form.reaction_quality_control(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_quality_control.errors %}
                 <ul>
                     {% for error in form.reaction_quality_control.errors %}
@@ -140,8 +212,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

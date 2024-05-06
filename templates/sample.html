@@ -1,16 +1,16 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de Muestra
+    Información de la muestra
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de Muestra</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información de la muestra</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.sample_type.label }}
-            {{ form.sample_type(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sample_type.label }}</label>
+            {{ form.sample_type(class="form-control", style="font-size: 23px;") }}
             {% if form.sample_type.errors %}
                 <ul>
                     {% for error in form.sample_type.errors %}
@@ -19,9 +19,16 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.sample_description.label }}
-            {{ form.sample_description(class="form-control") }}
+        
+        <!-- Descripción de la muestra -->
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sample_description.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('descriptionHelp')">?</button>
+            <small id="descriptionHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Proporciona una descripción detallada de la muestra utilizada en tu experimento. Incluye información relevante como origen, tipo de muestra (p. ej., biológica, química), estado físico, características importantes, etc.
+            <br>Ejemplo: Muestra de tejido renal humano obtenida de pacientes con diagnóstico de enfermedad renal crónica, almacenada a -80°C hasta su análisis.
+            </small>
+            {{ form.sample_description(class="form-control", style="font-size: 23px;") }}
             {% if form.sample_description.errors %}
                 <ul>
                     {% for error in form.sample_description.errors %}
@@ -30,9 +37,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.sample_volume_mass.label }}
-            {{ form.sample_volume_mass(class="form-control") }}
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sample_volume_mass.label }}</label>
+            {{ form.sample_volume_mass(class="form-control", style="font-size: 23px;") }}
             {% if form.sample_volume_mass.errors %}
                 <ul>
                     {% for error in form.sample_volume_mass.errors %}
@@ -41,9 +49,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.sampling_procedure.label }}
-            {{ form.sampling_procedure(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sampling_procedure.label }}</label>
+            {{ form.sampling_procedure(class="form-control", style="font-size: 23px;") }}
             {% if form.sampling_procedure.errors %}
                 <ul>
                     {% for error in form.sampling_procedure.errors %}
@@ -52,9 +60,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.freezing_method.label }}
-            {{ form.freezing_method(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.freezing_method.label }}</label>
+            {{ form.freezing_method(class="form-control", style="font-size: 23px;") }}
             {% if form.freezing_method.errors %}
                 <ul>
                     {% for error in form.freezing_method.errors %}
@@ -63,9 +71,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.fixation_method.label }}
-            {{ form.fixation_method(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.fixation_method.label }}</label>
+            {{ form.fixation_method(class="form-control", style="font-size: 23px;") }}
             {% if form.fixation_method.errors %}
                 <ul>
                     {% for error in form.fixation_method.errors %}
@@ -74,9 +82,9 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.storage_conditions.label }}
-            {{ form.storage_conditions(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.storage_conditions.label }}</label>
+            {{ form.storage_conditions(class="form-control", style="font-size: 23px;") }}
             {% if form.storage_conditions.errors %}
                 <ul>
                     {% for error in form.storage_conditions.errors %}
@@ -85,8 +93,18 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;">
         </div>
+    </form>
+
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
     </form>
 {% endblock %}

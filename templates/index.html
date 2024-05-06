@@ -4,16 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestión PCR</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
         /* Estilos adicionales */
-        .hero-content {
-            text-align: center;
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #0f4da9, #2a5eecd2); /* Aplica el degradado de color */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column; /* Cambia el flujo a vertical */
         }
 
-        .hero-content h2,
-        .hero-content p,
-        .hero-content img {
+        .hero-content {
+            text-align: center;
+            color: white; /* Cambia el color del texto a blanco */
+            margin-top: 150px; /* Mueve el contenido al fondo de la página */
+            margin-bottom: 1px; /* Agrega un espacio entre el contenido y el botón */
+        }
+
+        .hero-content h1,
+        .hero-content p {
             opacity: 0; /* Inicialmente, establece la opacidad en 0 para ocultar los elementos */
             animation: fadeIn 1s ease forwards; /* Aplica la animación de desvanecimiento */
         }
@@ -29,57 +43,91 @@
         }
 
         /* Aplica un retraso diferente para cada elemento */
-        .hero-content h2 {
+        .hero-content h1 {
             animation-delay: 0.5s;
+            font-size: 90px; /* Aumenta el tamaño del título */
+            font-family: 'Arial', Times, serif; /* Aplica la fuente Times New Roman */
+            margin-bottom: 25px; /* Ajusta el margen inferior */
+            margin-top: 10px; /* Ajusta el margen superior */
         }
 
         .hero-content p {
-            animation-delay: 1s;
-            max-width: 600px; /* Ajusta el ancho máximo del párrafo */
-            margin: 0 auto; /* Centra el párrafo horizontalmente */
-            text-align: justify; /* Justifica el texto */
-        }
-
-        .hero-content img {
-            animation-delay: 1.5s;
+           animation-delay: 1s;
+           padding: 0 4cm; /* Añade un margen de 2 cm a cada lado */
+           margin: 0 auto; /* Centra el párrafo horizontalmente */
+           text-align: justify; /* Justifica el texto */
+           font-size: 30px; /* Aumenta el tamaño de la descripción */
+           line-height: 1.7; /* Establece el interlineado */
+           color: rgb(219, 217, 217); /* Cambia el color del texto a rojo */
+           margin-top: 20px; /* Ajusta el margen superior */
         }
 
         /* Estilos para el encabezado y la navegación */
         header {
             display: flex;
             align-items: center;
+            justify-content: space-between; /* Alinea los elementos al inicio y al final */
+            padding: 10px; /* Añade un poco de espacio alrededor del encabezado */
+            margin-top: 30px; /* Añade un margen superior al menú de navegación */
         }
 
         nav {
-            margin-left: auto;
+            margin-top: 20px; /* Añade un margen superior al menú de navegación */
+            display: flex;
+            justify-content: center; /* Centra los elementos horizontalmente */
+            margin: 0 auto; /* Centra el contenedor horizontalmente */
+            background-color: white; /* Color de fondo del rectángulo */
+            padding: 10px 0; /* Añade relleno al rectángulo */
+            width: 100%; /* Extiende el rectángulo horizontalmente */
         }
 
         .nav {
             display: flex;
             list-style-type: none;
             padding: 0;
+            margin: 0; /* Elimina el margen predeterminado de la lista */
         }
 
         .nav-item {
-            margin-right: 20px;
+            margin-right: 180px;
+            margin-top:8px; /* Agrega espacio en la parte superior */
         }
 
         .nav-link {
             text-decoration: none;
-            color: black;
+            color: black; /* Cambia el color del texto a blanco */
+            font-size: 28px; /* Aumenta el tamaño de los enlaces de navegación */
+            white-space: nowrap; /* Evita saltos de línea en el texto */
         }
 
         .login {
-            margin-left: 10px; /* Ajusta el margen entre las pestañas de navegación y el botón de inicio de sesión */
+           font-size: 35px; /* Aumenta el tamaño del botón de acceder */
+           color: white; /* Cambia el color del texto a blanco */
+           align-self: center; /* Centra el botón horizontalmente */
+           padding: 15px 150px; /* Aumenta el relleno del botón */
+           background-color: black; /* Cambia el color de fondo del botón */
+           border: none; /* Elimina el borde del botón */
+           border-radius: 5px; /* Añade bordes redondeados al botón */
+           cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+           transition: background-color 0.3s ease; /* Añade una transición suave */
+           text-decoration: none; /* Quita el subrayado del botón */
+           margin-top: 80px; /* Ajusta el margen superior del botón */
+        }
+
+        .login:hover {
+            background-color: #555; /* Cambia el color de fondo del botón al pasar el mouse */
+        }
+
+        .logo {
+            font-size: 40px; /* Aumenta el tamaño del título */
+            display: none; /* Oculta el título del encabezado superior izquierdo */
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="logo">Sistema de gestión de pruebas PCR</h1>
+        <!-- Elimina el título del encabezado superior izquierdo -->
         <nav>
-            <!-- Coloca el botón de inicio de sesión antes de las pestañas de navegación -->
-            <a href="{{ url_for('login') }}" class="button login">Iniciar sesión</a>
             <!-- Agrega las pestañas de navegación aquí -->
             <ul class="nav">
                 <li class="nav-item">
@@ -89,7 +137,7 @@
                     <a class="nav-link" href="https://en.wikipedia.org/wiki/MIQE">Wiki</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about">Acerca de</a>
+                    <a class="nav-link" href="/about">Acerca de ...</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/contact">Contacto</a>
@@ -101,12 +149,14 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h2>BIENVENIDO</h2>
-                    <p>Esta página web se plantea que la adopción de las guías MIQE, el estándar RDML para la generación de informes de experimentos de NAATs, con el fin de aumentar la calidad, transparencia y reproducibilidad de los resultados entre laboratorios, mejorando así la estandarización y la fiabilidad de esta técnica diagnóstica.</p>
-                    <img src="{{ url_for('static', filename='uaemex.webp') }}" alt="Universidad" class="centered-image">
+                    <!-- Cambia el título y el texto -->
+                    <h1>Sistema de Gestión de Pruebas de PCR</h1>
+                    <p>Adoptamos las guías MIQE y el estándar RDML para asegurar la calidad, transparencia y reproducibilidad de los resultados en los experimentos de NAATs. Nuestro objetivo es elevar los estándares de los laboratorios, promover la estandarización y aumentar la confiabilidad de esta importante técnica diagnóstica. Explora nuestras funciones diseñadas para simplificar tu trabajo en el laboratorio y mejorar la precisión de tus informes. Únete a nosotros y optimiza tu experiencia en la gestión de pruebas de PCR hoy mismo.</p>
                 </div>
             </div>
         </section>
     </main>
+    <!-- Mueve el botón de inicio de sesión a la parte inferior central -->
+    <a href="{{ url_for('login') }}" class="login">Acceder</a>
 </body>
 </html>

@@ -1,16 +1,24 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
     Diseño experimental
 {% endblock %}
 
 {% block content %}
-    <h1>Diseño experimental</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Diseño experimental</h1>
+
     <form action="/design" method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.group_control_definition.label }}
-            {{ form.group_control_definition(class="form-control") }}
+
+        <!-- Definición del grupo control -->
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 25px;">{{ form.group_control_definition.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('controlHelp')">?</button>
+            <small id="controlHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                En este campo, describe brevemente las muestras que se utilizarán como controles en tu experimento. Pueden ser muestras no tratadas, tratadas con un vehículo inerte o con una condición conocida que se utilizará como referencia para comparar con las muestras experimentales.<br>
+                Ejemplo: Muestras no tratadas con ningún agente experimental, utilizadas como referencia para comparar con las muestras experimentales.
+            </small>
+            {{ form.group_control_definition(class="form-control", style="font-size: 23px;") }}
             {% if form.group_control_definition.errors %}
                 <ul>
                     {% for error in form.group_control_definition.errors %}
@@ -19,9 +27,16 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.group_experimental_definition.label }}
-            {{ form.group_experimental_definition(class="form-control") }}
+
+        <!-- Definición del grupo experimental -->
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 25px;">{{ form.group_experimental_definition.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('experimentalHelp')">?</button>
+            <small id="experimentalHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Aquí, proporciona una breve descripción de las muestras que se someterán a la manipulación o tratamiento en tu estudio. Detalla cómo se manipularán o tratarán estas muestras y cuál es el propósito de estas intervenciones en tu experimento.<br>
+                Ejemplo: Muestras tratadas con una sustancia específica para evaluar su efecto sobre ciertas variables biológicas.
+            </small>
+            {{ form.group_experimental_definition(class="form-control", style="font-size: 23px;") }}
             {% if form.group_experimental_definition.errors %}
                 <ul>
                     {% for error in form.group_experimental_definition.errors %}
@@ -30,9 +45,16 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.group_control_number.label }}
-            {{ form.group_control_number(class="form-control") }}
+
+        <!-- Número de grupo de control -->
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 25px;">{{ form.group_control_number.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('controlNumberHelp')">?</button>
+            <small id="controlNumberHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Indica cuántos grupos de control se utilizarán en tu estudio. Esto incluye todas las muestras que representan las condiciones de control o de referencia en tu experimento.<br>
+                Ejemplo: Dos grupos de control serán utilizados para comparar diferentes dosis del fármaco placebo.
+            </small>
+            {{ form.group_control_number(class="form-control", style="font-size: 23px;") }}
             {% if form.group_control_number.errors %}
                 <ul>
                     {% for error in form.group_control_number.errors %}
@@ -41,9 +63,16 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.group_experimental_number.label }}
-            {{ form.group_experimental_number(class="form-control") }}
+
+        <!-- Número de grupo experimental -->
+        <div style="margin-bottom: 20px;">
+            <label style="font-size: 25px;">{{ form.group_experimental_number.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('experimentalNumberHelp')">?</button>
+            <small id="experimentalNumberHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Especifica el número de grupos experimentales que se incluirán en tu estudio. Estos grupos representan las muestras que serán sometidas a diferentes condiciones de tratamiento o manipulación en comparación con los grupos de control.<br>
+                Ejemplo: Tres grupos experimentales recibirán diferentes dosis del compuesto activo para evaluar su eficacia.
+            </small>
+            {{ form.group_experimental_number(class="form-control", style="font-size: 23px;") }}
             {% if form.group_experimental_number.errors %}
                 <ul>
                     {% for error in form.group_experimental_number.errors %}
@@ -52,8 +81,18 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;">
         </div>
     </form>
+    
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

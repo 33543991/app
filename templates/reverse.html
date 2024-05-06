@@ -1,17 +1,17 @@
 <!--reverse.html -->
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de Transcripción Inversa
+    Información sobre transcripción inversa
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de Transcripción Inversa</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información sobre transcripción inversa</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.reaction_conditions.label }}
-            {{ form.reaction_conditions(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_conditions.label }}</label>
+            {{ form.reaction_conditions(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_conditions.errors %}
                 <ul class="errors">
                     {% for error in form.reaction_conditions.errors %}
@@ -21,9 +21,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.rna_quantity.label }}
-            {{ form.rna_quantity(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.rna_quantity.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('rnaQuantityHelp')">?</button>
+            <small id="rnaQuantityHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La cantidad de ARN se refiere a la cantidad de ARN que se utilizará en la reacción de transcripción inversa. Puedes especificar la cantidad en términos de masa o volumen, dependiendo de tu protocolo experimental.
+        
+                Ejemplo: "Utilicé 1 μg de ARN total extraído como entrada para la reacción de transcripción inversa."
+            </small>
+            {{ form.rna_quantity(class="form-control", style="font-size: 23px;") }}
             {% if form.rna_quantity.errors %}
                 <ul class="errors">
                     {% for error in form.rna_quantity.errors %}
@@ -33,9 +39,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reaction_volumes.label }}
-            {{ form.reaction_volumes(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reaction_volumes.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('reactionVolumesHelp')">?</button>
+            <small id="reactionVolumesHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Los volúmenes de reacción se refieren a las cantidades de los diferentes componentes utilizados en la reacción de transcripción inversa. Esto incluye la cantidad de ARN, primers, transcriptasa inversa, y otros reactivos necesarios para la síntesis de ADNc.
+        
+                Ejemplo: "Utilicé 1 μg de ARN total en una reacción de transcripción inversa de 20 μL que contenía 10 μL de mezcla de transcriptasa y 2 μL de primer."
+            </small>
+            {{ form.reaction_volumes(class="form-control", style="font-size: 23px;") }}
             {% if form.reaction_volumes.errors %}
                 <ul class="errors">
                     {% for error in form.reaction_volumes.errors %}
@@ -45,9 +57,9 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_oligo_priming.label }}
-            {{ form.reverse_transcriptase_oligo_priming(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_oligo_priming.label }}</label>
+            {{ form.reverse_transcriptase_oligo_priming(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_oligo_priming.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_oligo_priming.errors %}
@@ -57,9 +69,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_oligo_concentration.label }}
-            {{ form.reverse_transcriptase_oligo_concentration(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_oligo_concentration.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('oligoConcentrationHelp')">?</button>
+            <small id="oligoConcentrationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La concentración de oligonucleótidos de cebado inverso se refiere a la cantidad de cebadores de transcriptasa inversa (oligonucleótidos) utilizados en la reacción de transcripción inversa. Estos cebadores son esenciales para iniciar la síntesis del ADN complementario (ADNc) a partir del ARN.
+        
+                Ejemplo: "Utilicé una concentración final de 0.5 μM de cebadores de transcriptasa inversa en la reacción de transcripción inversa."
+            </small>
+            {{ form.reverse_transcriptase_oligo_concentration(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_oligo_concentration.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_oligo_concentration.errors %}
@@ -69,9 +87,9 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_type.label }}
-            {{ form.reverse_transcriptase_type(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_type.label }}</label>
+            {{ form.reverse_transcriptase_type(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_type.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_type.errors %}
@@ -81,9 +99,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_concentration.label }}
-            {{ form.reverse_transcriptase_concentration(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_concentration.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('transcriptaseConcentrationHelp')">?</button>
+            <small id="transcriptaseConcentrationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La concentración de transcriptasa inversa se refiere a la cantidad de enzima de transcriptasa inversa utilizada en la reacción de transcripción inversa. Esta enzima es esencial para la síntesis del ADN complementario (ADNc) a partir del ARN.
+        
+                Ejemplo: "Utilicé una concentración final de 200 U/μL de transcriptasa inversa en la reacción de transcripción inversa."
+            </small>
+            {{ form.reverse_transcriptase_concentration(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_concentration.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_concentration.errors %}
@@ -92,10 +116,17 @@
                 </ul>
             {% endif %}
         </div>
+        
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_temperature.label }}
-            {{ form.reverse_transcriptase_temperature(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_temperature.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('transcriptaseTemperatureHelp')">?</button>
+            <small id="transcriptaseTemperatureHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La temperatura de la transcriptasa inversa es la temperatura a la cual se lleva a cabo la reacción de transcripción inversa. Esta temperatura es crítica para la actividad óptima de la enzima y la estabilidad de la reacción.
+        
+                Ejemplo: "La reacción de transcripción inversa se realizó a una temperatura de 42°C durante 60 minutos."
+            </small>
+            {{ form.reverse_transcriptase_temperature(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_temperature.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_temperature.errors %}
@@ -105,9 +136,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_reaction_time.label }}
-            {{ form.reverse_transcriptase_reaction_time(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_reaction_time.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('transcriptaseReactionTimeHelp')">?</button>
+            <small id="transcriptaseReactionTimeHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El tiempo de reacción de la transcriptasa inversa se refiere al período de tiempo durante el cual la enzima de transcriptasa inversa está activa y cataliza la síntesis de ADN complementario (cADN) a partir del ARN molde.
+        
+                Ejemplo: "La reacción de transcriptasa inversa se llevó a cabo durante 60 minutos a 42°C para la síntesis de cADN."
+            </small>
+            {{ form.reverse_transcriptase_reaction_time(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_reaction_time.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_reaction_time.errors %}
@@ -117,9 +154,15 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_manufacturer.label }}
-            {{ form.reverse_transcriptase_manufacturer(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_manufacturer.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('transcriptaseManufacturerHelp')">?</button>
+            <small id="transcriptaseManufacturerHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El fabricante de la transcriptasa inversa se refiere a la compañía o proveedor que suministró la enzima de transcriptasa inversa utilizada en el proceso de transcripción inversa.
+        
+                Ejemplo: "La transcriptasa inversa utilizada fue de la marca Thermo Fisher Scientific (número de catálogo: RT256)."
+            </small>
+            {{ form.reverse_transcriptase_manufacturer(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_manufacturer.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_manufacturer.errors %}
@@ -129,9 +172,9 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.reverse_transcriptase_catalog_number.label }}
-            {{ form.reverse_transcriptase_catalog_number(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reverse_transcriptase_catalog_number.label }}</label>
+            {{ form.reverse_transcriptase_catalog_number(class="form-control", style="font-size: 23px;") }}
             {% if form.reverse_transcriptase_catalog_number.errors %}
                 <ul class="errors">
                     {% for error in form.reverse_transcriptase_catalog_number.errors %}
@@ -141,9 +184,9 @@
             {% endif %}
         </div>
 
-        <div class="form-group">
-            {{ form.cdna_storage_conditions.label }}
-            {{ form.cdna_storage_conditions(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.cdna_storage_conditions.label }}</label>
+            {{ form.cdna_storage_conditions(class="form-control", style="font-size: 23px;") }}
             {% if form.cdna_storage_conditions.errors %}
                 <ul class="errors">
                     {% for error in form.cdna_storage_conditions.errors %}
@@ -154,7 +197,15 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

@@ -1,17 +1,17 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, DateField, SelectField
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo
 from flask_bcrypt import Bcrypt
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from datetime import datetime
 from uuid import uuid4 
-from Bio import Entrez
 from io import BytesIO
-
-
+from datetime import datetime
+#from werkzeug.utils import secure_filename
+#import os
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key'
@@ -33,22 +33,22 @@ class User(db.Model):
 
 class RegistroForm(FlaskForm):
     username = StringField('Usuario', validators=[DataRequired()])
-    nombre = StringField('Nombre', validators=[DataRequired()])
-    apellido_paterno = StringField('Apellido Paterno', validators=[DataRequired()])
-    apellido_materno = StringField('Apellido Materno', validators=[DataRequired()])
+    nombre = StringField('Nombre(s)', validators=[DataRequired()])
+    apellido_paterno = StringField('Apellido paterno', validators=[DataRequired()])
+    apellido_materno = StringField('Apellido materno', validators=[DataRequired()])
     telefono = StringField('Teléfono', validators=[DataRequired()])
     correo = StringField('Correo', validators=[DataRequired(), Email()])
     laboratorio = StringField('Laboratorio', validators=[DataRequired()])
     institucion = StringField('Institución', validators=[DataRequired()])
     contrasena = PasswordField('Contraseña', validators=[DataRequired()])
-    verificacion_contrasena = PasswordField('Verificación de Contraseña', validators=[DataRequired(), EqualTo('contrasena')])
-    submit = SubmitField('Agregar Registro')
+    verificacion_contrasena = PasswordField('Verificación de contraseña', validators=[DataRequired(), EqualTo('contrasena')])
+    submit = SubmitField('Agregar registro')
 
 # General Information
 class GeneralInfoForm(FlaskForm):
     experiment_date = StringField('Fecha del experimento', validators=[DataRequired()])
     experiment_number = StringField('Número de experimento', validators=[DataRequired()])
-    principal_investigator = StringField('Principal Investigator', validators=[DataRequired()])
+    principal_investigator = StringField('Investigador principal', validators=[DataRequired()])
     institution_lab = StringField('Institución (y Laboratorio)', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
@@ -76,22 +76,23 @@ class DesignDataModel(db.Model):
     
 # Sample
 class SampleForm(FlaskForm):
-    sample_type_choices = [('DNA', 'ADN Genómico'), ('RNA', 'ARN Total'), ('Plasmids', 'Plasmidos'), ('Culture', 'Cultivos celulares'), ('Tissue', 'Tejidos'), ('Blood', 'Sangre'), ('Fluids', 'Fuidos biologicos'), ('Vegetal', 'Tejidos vegetales'), ('Environment', 'Muestras ambientales'), ('FTA', 'Tarjetas FTA')]
-    sampling_procedure_choices = [('Micro', 'Microdisección'), ('Hisope', 'Hisopado'), ('Micropunction', 'Micropunción'), ('Dilute', 'Dilución seriada')]
-    freezing_method_choices = [('Cooler4','Refrigeración 4°C'), ('Cooler8','Refrigeración 8°C'), ('Freezing','Congelación -20°C'), ('UltraFreezing','Ultracongelacion -70°C'), ('CarbonDioxide','Hielo Seco -78.5°C'), ('LiquidNitrogen','Nitrogeno Líquido -196°C')]
-    sample_volume_mass_choices = [('MicroVolume','<200 uL'),('MacroVolume','>200 uL'),('Microsample','<200 ug'), ('MacroSample','>200 ug')]
-    fixation_method_sample_choices = [('None','Ninguna'),('Formol','Formol'),('FFPE','Tejido Embebido en Parafina'), ('CytoSpray','Cytospray')]
-    storage_conditions_choices = [('Cooler4','Refrigeración 4°C'), ('Cooler8','Refrigeración 8°C'), ('Freezing','Congelación -20°C'), ('UltraFreezing','Ultracongelacion -70°C'), ('CarbonDioxide','Hielo Seco -78.5°C'), ('LiquidNitrogen','Nitrogeno Líquido -196°C')]
+    sample_type_choices = [('ADN genómico', 'ADN genómico'), ('ARN total', 'ARN total'), ('Plasmidos', 'Plasmidos'), ('Cultivos celulares', 'Cultivos celulares'), ('Tejidos', 'Tejidos'), ('Sangre', 'Sangre'), ('Fuidos biologicos', 'Fuidos biologicos'), ('Tejidos vegetales', 'Tejidos vegetales'), ('Muestras ambientales', 'Muestras ambientales'), ('Tarjetas FTA', 'Tarjetas FTA')]
+    sampling_procedure_choices = [('Microdisección', 'Microdisección'), ('Hisopado', 'Hisopado'), ('Micropunción', 'Micropunción'), ('Dilución seriada', 'Dilución seriada')]
+    freezing_method_choices = [('Refrigeración 4°C','Refrigeración 4°C'), ('Refrigeración 8°C','Refrigeración 8°C'), ('Congelación -20°C','Congelación -20°C'), ('Ultracongelacion -70°C','Ultracongelacion -70°C'), ('Hielo seco -78.5°C','Hielo seco -78.5°C'), ('LiquidNitrogen','Nitrogeno Líquido -196°C')]
+    sample_volume_mass_choices = [('<200 uL Microvolumen','<200 uL'),('>200 uL Macrovolumen','>200 uL'),('<200 ug Micromuestra','<200 ug'), (' >200 ug Macromuestra','>200 ug')]
+    fixation_method_sample_choices = [('Ninguna','Ninguna'),('Formol','Formol'),('Tejido Embebido en Parafina','Tejido Embebido en Parafina (FFPE)'), ('Aerosol citológico (Cytospray)','Aerosol citológico')]
+    storage_conditions_choices = [('Refrigeración 4°C','Refrigeración 4°C'), ('Refrigeración 8°C','Refrigeración 8°C'), ('Congelación -20°C','Congelación -20°C'), ('Ultracongelacion -70°C','Ultracongelacion -70°C'), ('Hielo Seco -78.5°C','Hielo Seco -78.5°C'), ('Nitrogeno líquido -196°C','Nitrogeno líquido -196°C')]
 
 
-    sample_type = SelectField('Sample Type', choices=sample_type_choices, validators=[DataRequired()], default='DNA')
-    sample_description = TextAreaField('Description', validators=[DataRequired()])
-    sample_volume_mass = SelectField('Volume/Mass of Processed Sample', choices=sample_volume_mass_choices, validators=[DataRequired()], default="MicroVolumen")
-    sampling_procedure = SelectField('Sampling Procedure', choices=sampling_procedure_choices, validators=[DataRequired()], default='Micro')
-    freezing_method = SelectField('Freezing Method', choices=freezing_method_choices, validators=[DataRequired()], default = "Cooler4")
-    fixation_method = SelectField('Fixation Method', choices=fixation_method_sample_choices, validators=[DataRequired()], default='None')
-    storage_conditions = SelectField('Storage Conditions and Duration', choices=storage_conditions_choices, validators=[DataRequired()], default='Cooler4')
+    sample_type = SelectField('Tipo de muestra', choices=sample_type_choices, validators=[DataRequired()], default='ADN')
+    sample_description = TextAreaField('Descripción', validators=[DataRequired()])
+    sample_volume_mass = SelectField('Volumen/Masa de la muestra procesada', choices=sample_volume_mass_choices, validators=[DataRequired()], default="Microvolumen")
+    sampling_procedure = SelectField('Procedimiento de muestreo', choices=sampling_procedure_choices, validators=[DataRequired()], default='Micro')
+    freezing_method = SelectField('Método de congelación', choices=freezing_method_choices, validators=[DataRequired()], default = "Enfriador4")
+    fixation_method = SelectField('Método de fijación', choices=fixation_method_sample_choices, validators=[DataRequired()], default='Ninguno')
+    storage_conditions = SelectField('Condiciones y duración de almacenamiento', choices=storage_conditions_choices, validators=[DataRequired()], default='Enfriador4')
     submit = SubmitField('Enviar')
+
 
 class SampleDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -105,151 +106,146 @@ class SampleDataModel(db.Model):
 
 # NucleicAcidExtraction
 class NucleicAcidExtractionForm(FlaskForm):
-    # Procedimiento de extracción
     extraction_procedure_choices = [
-        ('organic', 'Fenol/cloroformo/alcohol isoamílico (25:24:1)'),
-        ('trizol', 'Trizol'),
-        ('resin', 'Resina'),
-        ('column', 'Columnas'),
-        ('robot', 'Automática/Robóticas'),
-        ('magnetic', 'Magnética')
+        ('Fenol/cloroformo/alcohol isoamílico (25:24:1)', 'Fenol/cloroformo/alcohol isoamílico (25:24:1)'),
+        ('Trizol', 'Trizol'),
+        ('Resina', 'Resina'),
+        ('Columnas', 'Columnas'),
+        ('Automática/Robóticas', 'Automática/Robóticas'),
+        ('Magnética', 'Magnética')
     ]
 
-    # Detalles del kit
     kit_details_choices = [
-        ('DNA', 'ADN'),
-        ('RNA', 'ARN'),
-        ('DNA/RNA', 'ADN/ARN'),
-        ('plasmid', 'Plásmido'),
-        ('agarose', 'Remoción de agarosa'),
-        ('paraffin', 'Remoción de parafina')
+        ('ADN', 'ADN'),
+        ('ARN', 'ARN'),
+        ('ADN/ARN', 'ADN/ARN'),
+        ('Plásmido', 'Plásmido'),
+        ('Remoción de agarosa', 'Remoción de agarosa'),
+        ('Remoción de parafina', 'Remoción de parafina')
     ]
 
-    # Reactivos adicionales
     additional_reagents_choices = [
-        ('None', 'Ninguno'),
-        ('custom', 'Optimizado en laboratorio')
+        ('Ninguno', 'Ninguno'),
+        ('Optimizado en laboratorio', 'Optimizado en laboratorio')
     ]
 
-    # Tratamiento con DNAsa o RNAsa
     dnase_rnase_treatment_choices = [
-        ('None', 'Ninguno'),
-        ('dnase', 'Tratamiento con DNAsa'),
-        ('rnase', 'Tratamiento con RNAsa')
+        ('Ninguno', 'Ninguno'),
+        ('Tratamiento con DNAsa', 'Tratamiento con DNAsa'),
+        ('Tratamiento con RNAsa', 'Tratamiento con RNAsa')
     ]
 
-    # Evaluación de contaminación
     contamination_evaluation_choices = [
-        ('complete', 'C+, C-, NTC'),
-        ('partial', 'C+, C-'),
-        ('None', 'Ninguno')
+        ('C+, C-, NTC', 'C+, C-, NTC'),
+        ('C+, C-', 'C+, C-'),
+        ('Ninguno', 'Ninguno')
     ]
 
-    # Métodos de cuantificación de ácidos nucleicos
     nucleic_acid_quantification_method_choices = [
-        ('uv', 'Espectroscopía Ultravioleta UV'),
-        ('fluorescent', 'Espectroscopía de Fluorescencia'),
-        ('nanodrop', 'Cuantificación en Nanodrop'),
-        ('gel', 'Cuantificación mediante gel de referencia'),
-        ('plasmid', 'Plásmido de referencia'),
-        ('qpcr', 'PCR cuantitativo'),
-        ('digitalpcr', 'PCR digital')
+        ('Espectroscopía Ultravioleta UV', 'Espectroscopía Ultravioleta UV'),
+        ('Espectroscopía de Fluorescencia', 'Espectroscopía de Fluorescencia'),
+        ('Cuantificación en Nanodrop', 'Cuantificación en Nanodrop'),
+        ('Cuantificación mediante gel de referencia', 'Cuantificación mediante gel de referencia'),
+        ('Plásmido de referencia', 'Plásmido de referencia'),
+        ('PCR cuantitativo', 'PCR cuantitativo'),
+        ('PCR digital', 'PCR digital')
     ]
 
     nucleic_acid_purity_choices = [
-        ('good','1.7-2.0'),
-        ('low','<1.7'),
-        ('high','>2.0'),
-        ('None','Dato no disponible'),
+        ('1.7-2.0','1.7-2.0'),
+        ('<1.7','<1.7'),
+        ('>2.0','>2.0'),
+        ('Dato no disponible','Dato no disponible'),
     ]
 
     nucleic_acid_yield_choices = [
-        ('None','Sin Datos'),
-        ('data','Inserte dato'),
+        ('Sin datos','Sin datos'),
+        ('Inserte dato','Inserte dato'),
     ]
 
     integrity_assessment_method_choices = [
-        ('spectrometric', 'Medidas espectrométricas'),
-        ('electrophoresis', 'Electroforesis en gel'),
-        ('capillary', 'Electroforesis capilar'),
-        ('microfluids', 'Microfluidos')
+        ('Medidas espectrométricas', 'Medidas espectrométricas'),
+        ('Electroforesis en gel', 'Electroforesis en gel'),
+        ('Electroforesis capilar', 'Electroforesis capilar'),
+        ('microfluidos', 'Microfluidos')
     ]
 
     electrophoresis_traces_choices = [
-        ('zero','No se observa degradación'),
-        ('low','Baja degradación'),
-        ('high','Alta degradación'),
-        ('None','Degradación no comprobada'),
+        ('No se observa degradación','No se observa degradación'),
+        ('Baja degradación','Baja degradación'),
+        ('Alta degradación','Alta degradación'),
+        ('Degradación no comprobada','Degradación no comprobada'),
     ]
 
     inhibition_testing_choices = [
-        ('None', 'Ninguno'),
-        ('SPUD', 'Prueba SPUD'),
-        ('endogenous', 'Control Endógeno')
+        ('Ninguno', 'Ninguno'),
+        ('Prueba SPUD', 'Prueba SPUD'),
+        ('Control endógeno', 'Control endógeno')
     ]
 
-    extraction_procedure = SelectField('Extraction Procedure and/or Instrumentation', 
+    extraction_procedure = SelectField('Procedimiento de extracción y/o instrumentación', 
                                        choices=extraction_procedure_choices,
                                        validators=[DataRequired()],
-                                       default='organic')
+                                       default='organico')
 
-    kit_details = SelectField('Kit Details and Any Modifications', 
+    kit_details = SelectField('Detalles del kit y cualquier modificación', 
                               choices=kit_details_choices,
                               validators=[DataRequired()],
-                              default='DNA')
+                              default='ADN')
 
-    additional_reagents = SelectField('Source of Additional Reagents Used', 
+    additional_reagents = SelectField('Fuente de reactivos adicionales utilizados', 
                                       choices=additional_reagents_choices,
                                       validators=[DataRequired()],
-                                      default='None')
+                                      default='Ninguno')
 
-    dnase_rnase_treatment = SelectField('Details of DNase or RNase Treatment', 
+    dnase_rnase_treatment = SelectField('Detalles del tratamiento con DNAsa o RNAsa', 
                                          choices=dnase_rnase_treatment_choices,
                                          validators=[DataRequired()], 
-                                         default='None')
+                                         default='Ninguno')
 
-    contamination_evaluation = SelectField('Contamination Evaluation (DNA or RNA)', 
+    contamination_evaluation = SelectField('Evaluación de contaminación (DNA o RNA)', 
                                            choices=contamination_evaluation_choices,
                                            validators=[DataRequired()],
-                                           default='complete')
+                                           default='Completo')
 
-    nucleic_acid_quantification_method = SelectField('Nucleic Acid Quantification Method (Instrument and Method)', 
+    nucleic_acid_quantification_method = SelectField('Método de cuantificación de ácidos nucleicos (Instrumento y método)', 
                                                      choices=nucleic_acid_quantification_method_choices,
                                                      validators=[DataRequired()],
-                                                     default='uv')
+                                                     default='UV')
 
     
-    nucleic_acid_purity = SelectField('Nucleic Acid Purity (A260/A280)', 
+    nucleic_acid_purity = SelectField('Pureza de ácido nucleico (A260/A280)', 
                                       choices=nucleic_acid_purity_choices,
                                       validators=[DataRequired()],
-                                      default='None')
+                                      default='Ninguno')
 
 
-    nucleic_acid_yield = SelectField('Nucleic Acid Yield', 
+    nucleic_acid_yield = SelectField('Rendimiento de ácido nucleico', 
                                      choices=nucleic_acid_yield_choices,
                                      validators=[DataRequired()],
-                                     default='None')
+                                     default='Ninguno')
 
-    rin_rqi_cq_details = StringField("RIN/RQI or Cq of 3' and 5' Transcriptions", validators=[DataRequired()])
+    rin_rqi_cq_details = StringField("RIN/RQI o Cq de transcripciones de 3' y 5'", validators=[DataRequired()])
     
     
-    integrity_assessment_method = SelectField('Integrity Assessment Method (RNA)', 
+    integrity_assessment_method = SelectField('Método de evaluación de integridad (RNA)', 
                                               choices=integrity_assessment_method_choices,
                                               validators=[DataRequired()],
-                                              default='spectrometric')
+                                              default='Espectrometrico')
 
 
-    electrophoresis_traces = SelectField('Electrophoresis Traces', 
+    electrophoresis_traces = SelectField('Rastros de electroforesis', 
                                          choices=electrophoresis_traces_choices,
                                          validators=[DataRequired()],
-                                         default='zero')
+                                         default='Ninguno')
 
-    inhibition_testing = SelectField('Inhibition Testing (Cq dilutions, peaks, or others)', 
+    inhibition_testing = SelectField('Prueba de inhibición (Diluciones de Cq, picos u otros)', 
                                      choices=inhibition_testing_choices,
                                      validators=[DataRequired()],
-                                     default='endogenous')
+                                     default='Endogeno')
     
     submit = SubmitField('Enviar')
+
 
 
 class NucleicAcidExtractionDataModel(db.Model):
@@ -270,102 +266,103 @@ class NucleicAcidExtractionDataModel(db.Model):
 #Reverse Transcription
 class ReverseTranscriptionForm(FlaskForm):
 
-    # E - Complete reaction conditions
+    # E - Condiciones completas de la reacción
     reaction_conditions = SelectField(
-        label='Reaction Conditions',
+        label='Condiciones de Reacción',
         choices=[
-            ('one', 'One Step protocol'),
-            ('two', 'Two Step protocol')
+            ('Protocolo de una etapa', 'Protocolo de una etapa'),
+            ('Protocolo de dos etapas', 'Protocolo de dos etapas')
         ],
         validators=[DataRequired()],
-        default='one'
+        default='Protocolo de una etapa'
     )
 
-    # E - Amount of RNA and reaction volumes
+    # E - Cantidad de ARN y volúmenes de reacción
     rna_quantity = StringField(
-        label='RNA Quantity',
+        label='Cantidad de ARN',
         validators=[DataRequired()]
     )
 
     reaction_volumes = StringField(
-        label='Reaction Volumes',
+        label='Volúmenes de reacción',
         validators=[DataRequired()]
     )
 
-    # E - Priming oligonucleotides (if using GSP) and concentration
+    # E - Oligonucleótidos de cebado inverso (si se usa GSP) y concentración
     reverse_transcriptase_oligo_priming = SelectField(
-        label='Priming Oligonucleotides',
+        label='Oligonucleótidos de cebado inverso',
         choices=[
-            ('dT18', 'Oligo dT18'),
-            ('RHP', 'Random Hexamer Primers (RHP)'),
-            ('GSP', 'Gen Specific Priming (GSP)'),
-            ('Mix', 'Mix Oligo dT18 and Random Hexamer Primers (dT18/RHP)')
+            ('Oligo dT18', 'Oligo dT18'),
+            ('Primer hexamérico aleatorio (RHP)', 'Primer hexamérico aleatorio (RHP)'),
+            ('Cebado específico del gen (GSP)', 'Cebado específico del gen (GSP)'),
+            ('Mezcla de oligo dT18 y primer hexamérico aleatorio (dT18/RHP)', 'Mezcla de oligo dT18 y primer hexamérico aleatorio (dT18/RHP)')
         ],
         validators=[DataRequired()],
-        default='Mix'
+        default='Mezcla de oligo dT18 y primer hexamérico aleatorio (dT18/RHP)'
     )
 
     reverse_transcriptase_oligo_concentration = StringField(
-        label='Reverse Transcriptase Oligo Concentration',
+        label='Concentración de oligonucleótidos de cebado inverso',
         validators=[DataRequired()]
     )
 
-    # E - Reverse transcriptase and concentration
+    # E - Transcriptasa inversa y concentración
     reverse_transcriptase_type = SelectField(
-        label='Reverse Transcriptase Type',
+        label='Tipo de transcriptasa inversa',
         choices=[
-            ('AMV', 'Avian Myoblastosis Virus (AMV)'),
-            ('M-MLV', 'Maloney Murine Leukemia Virus (M-MLV)')
+            ('Virus de la Mieloblastosis Aviaria (AMV)', 'Virus de la Mieloblastosis Aviaria (AMV)'),
+            ('Virus de la Leucemia Murina de Maloney (M-MLV)', 'Virus de la Leucemia Murina de Maloney (M-MLV)')
         ],
         validators=[DataRequired()],
-        default='AMV'
+        default='Virus de la Mieloblastosis Aviaria'
     )
 
     reverse_transcriptase_concentration = StringField(
-        label='Reverse Transcriptase Concentration',
+        label='Concentración de transcriptasa inversa',
         validators=[DataRequired()]
     )
 
-    # E - Temperature and time
+    # E - Temperatura y tiempo
     reverse_transcriptase_temperature = StringField(
-        label='Reverse Transcriptase Temperature',
+        label='Temperatura de la transcriptasa inversa',
         validators=[DataRequired()]
     )
 
     reverse_transcriptase_reaction_time = StringField(
-        label='Reverse Transcriptase Reaction Time',
+        label='Tiempo de reacción de la transcriptasa inversa',
         validators=[DataRequired()]
     )
 
-    # D - Manufacturer of reagents and catalog numbers
+    # D - Fabricante de reactivos y números de catálogo
     reverse_transcriptase_manufacturer = StringField(
-        label='Reverse Transcriptase Manufacturer',
+        label='Fabricante de la transcriptasa inversa',
         validators=[DataRequired()]
     )
 
     reverse_transcriptase_catalog_number = StringField(
-        label='Reverse Transcriptase Catalog Number',
+        label='Número de catálogo de la transcriptasa inversa',
         validators=[DataRequired()]
     )
 
-    # D - Cqs with and without reverse transcription
-    # This parameter was omitted
+    # D - Cqs con y sin transcripción inversa
+    # Este parámetro se omitió
 
-    # D - Storage conditions of cDNA
+    # D - Condiciones de almacenamiento del cDNA
     cdna_storage_conditions = SelectField(
-        label='cDNA Storage Conditions',
+        label='Condiciones de almacenamiento del cDNA',
         choices=[
-            ('none', 'Fresh cDNA Sample'),
-            ('overnight', 'Overnight 4°C'),
-            ('freezer', 'Freezer -20°C'),
-            ('ultrafreezer', 'Ultrafreezer -80°C')
+            ('Muestra de cDNA fresca', 'Muestra de cDNA fresca'),
+            ('Noche a 4°C', 'Noche a 4°C'),
+            ('Congelador a -20°C', 'Congelador a -20°C'),
+            ('Ultracongelador a -80°C', 'Ultracongelador a -80°C')
         ],
         validators=[DataRequired()],
-        default='none'
+        default='Ninguno'
     )
 
-    # Submit
-    Submit = SubmitField('Submit')
+    # Enviar
+    Submit = SubmitField('Enviar')
+
 
 class ReverseTranscriptionDataModel(db.Model):
     __tablename__ = 'reverse_transcription_data'  # Name of the table in the database
@@ -385,19 +382,19 @@ class ReverseTranscriptionDataModel(db.Model):
     cdna_storage_conditions = db.Column(db.String(50), nullable=False)     
 
 
-# qPCR Target Information
+# Información del blanco de qPCR
 class qPCRTargetInfoForm(FlaskForm):
-    gene_symbol = StringField('Gene Symbol', validators=[DataRequired()])
-    multiplex_efficiency_lod = StringField('Multiplex Efficiency and LOD for Each Assay', validators=[DataRequired()])
-    sequence_accession_number = StringField('Sequence Accession Number', validators=[DataRequired()])
-    amplicon_location = StringField('Amplicon Location', validators=[DataRequired()])
-    amplicon_length = StringField('Amplicon Length', validators=[DataRequired()])
-    in_silico_specificity_screening = StringField('In Silico Specificity Screening (BLAST, etc.)', validators=[DataRequired()])
-    pseudogenes_homologs = StringField('Pseudogenes, Retropseudogenes, or Other Homologs', validators=[DataRequired()])
-    sequence_alignment = StringField('Sequence Alignment', validators=[DataRequired()])
-    amplicon_secondary_structure_analysis = StringField('Amplicon Secondary Structure Analysis', validators=[DataRequired()])
-    primer_location_exon_intron = StringField('Primer Location by Exon or Intron (if applicable)', validators=[DataRequired()])
-    splicing_variants_targeted = StringField('Splicing Variants Targeted', validators=[DataRequired()])
+    gene_symbol = StringField('Símbolo del gen', validators=[DataRequired()])
+    multiplex_efficiency_lod = StringField('Eficiencia multiplex y LOD para cada ensayo', validators=[DataRequired()])
+    sequence_accession_number = StringField('Número de acceso de la secuencia', validators=[DataRequired()])
+    amplicon_location = StringField('Ubicación del amplicón', validators=[DataRequired()])
+    amplicon_length = StringField('Longitud del amplicón', validators=[DataRequired()])
+    in_silico_specificity_screening = StringField('Especificidad In Silico (BLAST, etc.)', validators=[DataRequired()])
+    pseudogenes_homologs = StringField('Pseudogenes, Retropseudogenes u otros homólogos', validators=[DataRequired()])
+    sequence_alignment = StringField('Alineamiento de secuencias', validators=[DataRequired()])
+    amplicon_secondary_structure_analysis = StringField('Análisis de estructura secundaria del amplicón', validators=[DataRequired()])
+    primer_location_exon_intron = StringField('Ubicación del cebador por exón o intron (si corresponde)', validators=[DataRequired()])
+    splicing_variants_targeted = StringField('Variantes de empalme dirigidas', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 class qPCRTargetInfoDataModel(db.Model):
@@ -414,16 +411,17 @@ class qPCRTargetInfoDataModel(db.Model):
     primer_location_exon_intron = db.Column(db.String(100), nullable=False)
     splicing_variants_targeted = db.Column(db.String(100), nullable=False)
 
-# qPCR Primers
+# Primers de qPCR
 class qPCRPrimersForm(FlaskForm):
-    forward_sequence = StringField('Forward sequence', validators=[DataRequired()])
-    reverse_sequence = StringField('Reverse sequence', validators=[DataRequired()])
-    rtprimerdb_id = StringField('RTPrimerDB Identification Number', validators=[DataRequired()])
-    probe_sequences = StringField('Probe Sequences (if applicable)')
-    modification_location_identity = StringField('Modification Location and Identity', validators=[DataRequired()])
-    oligo_manufacturer = StringField('Oligo Manufacturer', validators=[DataRequired()])
-    purification_method = StringField('Purification Method', validators=[DataRequired()])
+    forward_sequence = StringField('Secuencia forward', validators=[DataRequired()])
+    reverse_sequence = StringField('Secuencia reverse', validators=[DataRequired()])
+    rtprimerdb_id = StringField('Número de identificación en RTPrimerDB', validators=[DataRequired()])
+    probe_sequences = StringField('Secuencias de la sonda (si corresponde)')
+    modification_location_identity = StringField('Ubicación e identidad de la modificación', validators=[DataRequired()])
+    oligo_manufacturer = StringField('Fabricante del oligo', validators=[DataRequired()])
+    purification_method = StringField('Método de purificación', validators=[DataRequired()])
     submit = SubmitField('Enviar')
+
 
 class qPCRPrimersDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -436,19 +434,20 @@ class qPCRPrimersDataModel(db.Model):
     purification_method = db.Column(db.String(100), nullable=False)
 
 # qPCR Protocol
+# Formulario de Protocolo de qPCR
 class qPCRProtocolForm(FlaskForm):
-    reaction_conditions = StringField('Reaction Conditions', validators=[DataRequired()])
-    reaction_volume_dna_quantity = StringField('Reaction Volume and DNA Quantity', validators=[DataRequired()])
-    primer_probe_concentrations = StringField('Primer, Probe, Mg++, and Dntp Concentrations', validators=[DataRequired()])
-    polymerase_identity_concentration = StringField('Polymerase Identity and Concentration', validators=[DataRequired()])
-    buffer_kit_identity_manufacturer = StringField('Buffer/Kit Identity and Manufacturer', validators=[DataRequired()])
-    buffer_exact_chemical_constitution = StringField('Exact Chemical Constitution of the Buffer', validators=[DataRequired()])
-    additives = StringField('Additives (SYBR Green I, DMSO, etc.)', validators=[DataRequired()])
-    plates_tubes_manufacturer_catalog = StringField('Plates/Tubes Manufacturer and Catalog Number', validators=[DataRequired()])
-    thermocycling_parameters = StringField('Thermocycling Parameters', validators=[DataRequired()])
-    reaction_configuration = StringField('Reaction Configuration (manual/automatic)', validators=[DataRequired()])
-    qpcr_instrument_manufacturer = StringField('qPCR Instrument Manufacturer', validators=[DataRequired()])
-    reaction_quality_control = StringField('Reaction Quality Control', validators=[DataRequired()])
+    reaction_conditions = StringField('Condiciones de reacción', validators=[DataRequired()])
+    reaction_volume_dna_quantity = StringField('Volumen de reacción y cantidad de ADN', validators=[DataRequired()])
+    primer_probe_concentrations = StringField('Concentraciones de cebadores, sondas, Mg++ y dNTP', validators=[DataRequired()])
+    polymerase_identity_concentration = StringField('Identidad y concentración de la polimerasa', validators=[DataRequired()])
+    buffer_kit_identity_manufacturer = StringField('Identidad del buffer/kit y fabricante', validators=[DataRequired()])
+    buffer_exact_chemical_constitution = StringField('Constitución química exacta del buffer', validators=[DataRequired()])
+    additives = StringField('Aditivos (SYBR Green I, DMSO, etc.)', validators=[DataRequired()])
+    plates_tubes_manufacturer_catalog = StringField('Fabricante y número de catálogo de placas/tubos', validators=[DataRequired()])
+    thermocycling_parameters = StringField('Parámetros de termociclado', validators=[DataRequired()])
+    reaction_configuration = StringField('Configuración de la reacción (manual/automática)', validators=[DataRequired()])
+    qpcr_instrument_manufacturer = StringField('Fabricante del instrumento de qPCR', validators=[DataRequired()])
+    reaction_quality_control = StringField('Control de calidad de la reacción', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 class qPCRProtocolDataModel(db.Model):
@@ -468,20 +467,20 @@ class qPCRProtocolDataModel(db.Model):
 
 # Data Analysis
 class DataAnalysisForm(FlaskForm):
-    qpcr_analysis_program = StringField('qPCR Analysis Program (source, version)', validators=[DataRequired()])
-    cq_method_determination = StringField('Cq Method Determination', validators=[DataRequired()])
-    identification_handling_outliers = StringField('Identification and Handling of Outliers', validators=[DataRequired()])
-    ntc_results = StringField('NTC Results', validators=[DataRequired()])
-    reference_genes_justification = StringField('Justification of Number and Choice of Reference Genes', validators=[DataRequired()])
-    normalization_method_description = StringField('Normalization Method Description', validators=[DataRequired()])
-    biological_replicates_number_concordance = StringField('Number and Concordance of Biological Replicates', validators=[DataRequired()])
-    technical_replicates_number_stage = StringField('Number and Stage (RT or qPCR) of Technical Replicates', validators=[DataRequired()])
-    intra_assay_variation_repeatability = StringField('Repeatability (Intra-Assay Variation)', validators=[DataRequired()])
-    inter_assay_variation_reproducibility = StringField('Reproducibility (Inter-Assay Variation, %CV)', validators=[DataRequired()])
-    power_analysis = StringField('Power Analysis', validators=[DataRequired()])
-    statistical_methods_significance = StringField('Statistical Methods for Significance of Results', validators=[DataRequired()])
-    software_source_version = StringField('Software (source, version)', validators=[DataRequired()])
-    cq_or_raw_data_rdml_submission = StringField('Cq or Submission of Raw Data using RDML', validators=[DataRequired()])
+    qpcr_analysis_program = StringField('Programa de análisis de qPCR (fuente, versión)', validators=[DataRequired()])
+    cq_method_determination = StringField('Determinación del método Cq', validators=[DataRequired()])
+    identification_handling_outliers = StringField('Identificación y manejo de valores atípicos', validators=[DataRequired()])
+    ntc_results = StringField('Resultados NTC', validators=[DataRequired()])
+    reference_genes_justification = StringField('Justificación del número y elección de genes de referencia', validators=[DataRequired()])
+    normalization_method_description = StringField('Descripción del método de normalización', validators=[DataRequired()])
+    biological_replicates_number_concordance = StringField('Número y concordancia de repeticiones biológicas', validators=[DataRequired()])
+    technical_replicates_number_stage = StringField('Número y etapa (RT o qPCR) de repeticiones técnicas', validators=[DataRequired()])
+    intra_assay_variation_repeatability = StringField('Repetibilidad (Variación Intra-Ensayo)', validators=[DataRequired()])
+    inter_assay_variation_reproducibility = StringField('Reproducibilidad (Variación Inter-Ensayo, %CV)', validators=[DataRequired()])
+    power_analysis = StringField('Análisis de potencia', validators=[DataRequired()])
+    statistical_methods_significance = StringField('Métodos estadísticos para la significancia de los resultados', validators=[DataRequired()])
+    software_source_version = StringField('Software (fuente, versión)', validators=[DataRequired()])
+    cq_or_raw_data_rdml_submission = StringField('Envío de datos Cq o datos crudos usando RDML', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 class DataAnalysisModel(db.Model):
@@ -503,12 +502,12 @@ class DataAnalysisModel(db.Model):
 
 # Thermal Cycling Conditions
 class ThermalCyclingConditionsForm(FlaskForm):
-    equipment_used = StringField('Equipment Used', validators=[DataRequired()])
-    primers_used = StringField('Primers Used', validators=[DataRequired()])
-    pcr_conditions = StringField('PCR Conditions: Number of Cycles/Denaturation Temperature/Annealing Temperature/Extension Temperature', validators=[DataRequired()])
-    reaction_volume = StringField('Reaction Volume', validators=[DataRequired()])
-    positive_control = StringField('Positive Control', validators=[DataRequired()])
-    negative_control = StringField('Negative Control', validators=[DataRequired()])
+    equipment_used = StringField('Equipo utilizado', validators=[DataRequired()])
+    primers_used = StringField('Cebadores utilizados', validators=[DataRequired()])
+    pcr_conditions = StringField('Condiciones de PCR: Número de ciclos/Temperatura de desnaturalización/Temperatura de alineamiento/Temperatura de extensión', validators=[DataRequired()])
+    reaction_volume = StringField('Volumen de reacción', validators=[DataRequired()])
+    positive_control = StringField('Control positivo', validators=[DataRequired()])
+    negative_control = StringField('Control negativo', validators=[DataRequired()])
     submit = SubmitField('Enviar')
 
 class ThermalCyclingConditionsDataModel(db.Model):
@@ -522,19 +521,20 @@ class ThermalCyclingConditionsDataModel(db.Model):
 
 # qPCR Validation
 class qPCRValidationForm(FlaskForm):
-    optimization_evidence = StringField('Optimization Evidence (from gradients)', validators=[DataRequired()])
-    specificity_evidence = StringField('Specificity Evidence (gel, sequence, melt, or digest)', validators=[DataRequired()])
-    cq_nct_for_sybr_green = StringField('For SYBR Green I, Cq of NCT', validators=[DataRequired()])
-    standard_curves_slope_intercept = StringField('Standard Curves with Slope and Intercept', validators=[DataRequired()])
-    pcr_efficiency_slope_calculation = StringField('PCR Efficiency Calculated from Slope', validators=[DataRequired()])
-    pcr_efficiency_confidence_interval = StringField('Confidence Interval for PCR Efficiency', validators=[DataRequired()])
-    r2_standard_curve = StringField('R^2 of the Standard Curve', validators=[DataRequired()])
-    linear_dynamic_range = StringField('Linear Dynamic Range', validators=[DataRequired()])
-    cq_variation_lower_limit = StringField('Cq Variation at the Lower Limit', validators=[DataRequired()])
-    confidence_intervals_full_range = StringField('Confidence Intervals across the Full Range', validators=[DataRequired()])
-    lod_evidence = StringField('LOD Evidence', validators=[DataRequired()])
-    multiplex_efficiency_lod = StringField('If Multiplex, Efficiency and LOD for Each Assay', validators=[DataRequired()])
+    optimization_evidence = StringField('Evidencia de optimización (a partir de gradientes)', validators=[DataRequired()])
+    specificity_evidence = StringField('Evidencia de especificidad (gel, secuencia, fusión o digestión)', validators=[DataRequired()])
+    cq_nct_for_sybr_green = StringField('Para SYBR Green I, Cq de NCT', validators=[DataRequired()])
+    standard_curves_slope_intercept = StringField('Curvas estándar con pendiente e intercepto', validators=[DataRequired()])
+    pcr_efficiency_slope_calculation = StringField('Eficiencia de PCR calculada a partir de la pendiente', validators=[DataRequired()])
+    pcr_efficiency_confidence_interval = StringField('Intervalo de confianza para la eficiencia de PCR', validators=[DataRequired()])
+    r2_standard_curve = StringField('R^2 de la curva estándar', validators=[DataRequired()])
+    linear_dynamic_range = StringField('Rango dinámico lineal', validators=[DataRequired()])
+    cq_variation_lower_limit = StringField('Variación de Cq en el límite inferior', validators=[DataRequired()])
+    confidence_intervals_full_range = StringField('Intervalos de confianza en todo el rango', validators=[DataRequired()])
+    lod_evidence = StringField('Evidencia de LOD', validators=[DataRequired()])
+    multiplex_efficiency_lod = StringField('Si es multiplex, eficiencia y LOD para cada ensayo', validators=[DataRequired()])
     submit = SubmitField('Enviar')
+
 
 class qPCRValidationDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -553,10 +553,11 @@ class qPCRValidationDataModel(db.Model):
 
 # Real-Time PCR Data
 class RealTimePCRDataForm(FlaskForm):
-    data_analysis_software = StringField('Data Analysis Software', validators=[DataRequired()])
-    quantification_method = StringField('Quantification Method', validators=[DataRequired()])
-    raw_data = StringField('Raw Data: Threshold Cycle (Ct): Target Gene (name and Ct value) /Reference Gene (name and Ct value); Amplification Efficiency', validators=[DataRequired()])
+    data_analysis_software = StringField('Software de análisis de datos', validators=[DataRequired()])
+    quantification_method = StringField('Método de cuantificación', validators=[DataRequired()])
+    raw_data = StringField('Datos Crudos: Ciclo de umbral (Ct): Gen deseado (nombre y valor de Ct) / Gen de referencia (nombre y valor de Ct); Eficiencia de amplificación', validators=[DataRequired()])
     submit = SubmitField('Enviar')
+
 
 class RealTimePCRDataModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -567,9 +568,10 @@ class RealTimePCRDataModel(db.Model):
 
 # Results and Analysis
 class ResultsAnalysisForm(FlaskForm):
-    results_interpretation = StringField('Results Interpretation', validators=[DataRequired()])
-    charts_figures = StringField('Charts and Figures (include amplification plots and other relevant data)', validators=[DataRequired()])
+    results_interpretation = StringField('Interpretación de resultados', validators=[DataRequired()])
+    charts_figures = StringField('Gráficos y figuras (incluye gráficos de amplificación y otros datos relevantes)', validators=[DataRequired()])
     submit = SubmitField('Enviar')
+
 
 class ResultsAnalysisModel(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -577,26 +579,51 @@ class ResultsAnalysisModel(db.Model):
     charts_figures = db.Column(db.String(255), nullable=False)
 
 
+class Informe(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    experiment_date = db.Column(db.DateTime, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)  # Nombre correcto de la columna
+    principal_investigator = db.Column(db.String(100), nullable=False)
+
+    def __repr__(self):
+        return f'Informe {self.id} - {self.experiment_date}'
+
+
+
+
 # Crear las tablas dentro del contexto de la aplicación
 with app.app_context():
     db.create_all()
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-# LOGIN
 
-# Esta es la ruta de inicio de sesión
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Aquí se verifica el inicio de sesión
-        # Si el inicio de sesión es exitoso, establece la sesión del usuario
-        session['username'] = request.form['username']
-        # Redirige al usuario al dashboard después de iniciar sesión
-        return redirect(url_for('dashboard'))
+        username = request.form['username']
+        password = request.form['password']
+        
+        # Busca el usuario en la base de datos por nombre de usuario
+        user = User.query.filter_by(username=username).first()
+
+        if user and bcrypt.check_password_hash(user.contrasena, password):
+            # Si las credenciales son válidas, establece la sesión del usuario
+            session['username'] = user.username
+            # Redirige al usuario al dashboard después de iniciar sesión
+            return redirect(url_for('inicio'))
+        else:
+            # Si las credenciales no son válidas, muestra un mensaje de error
+            error_msg = "Nombre de usuario o contraseña incorrectos. Intenta de nuevo."
+            return render_template('login.html', error=error_msg)
+
+    # Renderiza el formulario de inicio de sesión
     return render_template('login.html')
+
 
 # Nueva ruta para el dashboard
 @app.route('/dashboard')
@@ -614,6 +641,11 @@ def logout():
     session.pop('username', None)
     return redirect(url_for('index'))
 
+# INICIO
+@app.route('/inicio')
+def inicio():
+    return render_template('inicio.html')
+
 # ABOUT
 @app.route('/about')
 def about():
@@ -623,6 +655,15 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template('contact.html')
+
+# Directorio donde se guardarán las imágenes de perfil
+UPLOAD_FOLDER = 'path/to/upload/folder'  # Cambia esto por la ruta donde desees guardar las imágenes
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    """ Verifica si la extensión del archivo es válida """
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 # Register
 @app.route('/register', methods=['GET', 'POST']) 
@@ -654,20 +695,24 @@ def profile():
         if 'username' in session:
             username = session['username']
             user = User.query.filter_by(username=username).first()
-            nombre = user.nombre
-            apellido_paterno = user.apellido_paterno
-            apellido_materno = user.apellido_materno
-            telefono = user.telefono
-            correo = user.correo
-            laboratorio = user.laboratorio
-            institucion = user.institucion
+            if user:
+                nombre = user.nombre
+                apellido_paterno = user.apellido_paterno
+                apellido_materno = user.apellido_materno
+                telefono = user.telefono
+                correo = user.correo
+                laboratorio = user.laboratorio
+                institucion = user.institucion
 
-            return render_template('profile.html', username=username, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, telefono=telefono, correo=correo, laboratorio=laboratorio, institucion=institucion)
+                return render_template('profile.html', username=username, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, telefono=telefono, correo=correo, laboratorio=laboratorio, institucion=institucion)
+            else:
+                flash('No se encontró información del usuario', 'warning')
+                return redirect(url_for('index'))
         else:
             return redirect(url_for('index'))
     except Exception as e:
         return render_template('error.html', error=str(e))
-    
+
 # General Information
 def get_auto_general_info_data():
     experiment_date = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -680,7 +725,7 @@ def get_auto_general_info_data():
         user = User.query.filter_by(username=username).first()
         if user:
             principal_investigator = f"{user.nombre} {user.apellido_paterno} {user.apellido_materno}"
-            institution_lab = f"{user.laboratorio} {user.institucion}"
+            institution_lab = f"{user.laboratorio}, {user.institucion}"
 
     return experiment_date, experiment_number, principal_investigator, institution_lab
 
@@ -708,7 +753,7 @@ def info():
             db.session.commit()
 
             flash('General information successfully recorded!', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('design'))
         except Exception as e:
             flash(f'An error occurred while recording general information: {str(e)}', 'danger')
 
@@ -743,7 +788,7 @@ def design():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('sample'))
     return render_template('design.html', form=form)
 
 # Sample
@@ -768,12 +813,12 @@ def sample():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('extraction'))
     return render_template('sample.html', form=form)
 
 # Extracción de Ácido Nucleico
 @app.route('/extraction', methods=['GET', 'POST'])
-def nucleic_acid_extraction():
+def extraction():
  if 'username' in session:
     form = NucleicAcidExtractionForm()
     if form.validate_on_submit():
@@ -797,7 +842,7 @@ def nucleic_acid_extraction():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('reverse'))
     return render_template('extraction.html', form=form)
 
 #Reverse Transcription
@@ -825,7 +870,7 @@ def reverse():
         except Exception as e:
             return render_template('error.html', error=str(e))
         
-        return redirect(url_for('index')) 
+        return redirect(url_for('target')) 
     
     return render_template('reverse.html', form=form)
 
@@ -855,7 +900,7 @@ def target():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('oligo'))
     return render_template('target.html', form=form)
 
 
@@ -880,7 +925,7 @@ def oligo():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('protocol'))
     return render_template('oligo.html', form=form)
 
 # qPCR Protocol
@@ -909,12 +954,12 @@ def protocol():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('validation'))
     return render_template('protocol.html', form=form)
 
 # Data Analysis
 @app.route('/analyze', methods=['GET', 'POST'])
-def data_analysis():
+def analyze():
    if 'username' in session:
     form = DataAnalysisForm()
     if form.validate_on_submit():
@@ -938,7 +983,7 @@ def data_analysis():
             db.session.add(data_analysis)
             db.session.commit()
             flash('Data analysis information has been successfully submitted.', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('cycling'))
         except Exception as e:
             flash('An error occurred while processing your request. Please try again.', 'error')
             print(str(e))
@@ -965,7 +1010,7 @@ def cycling():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('data'))
     return render_template('cycling.html', form=form)
 
 # qPCR Validation
@@ -992,7 +1037,7 @@ def validation():
             db.session.add(validation_data)
             db.session.commit()
             flash('Datos de validación de qPCR agregados exitosamente', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('analyze'))
         except Exception as e:
             flash('Error al agregar los datos de validación de qPCR: ' + str(e), 'danger')
 
@@ -1013,7 +1058,7 @@ def data():
             db.session.add(realtime_pcr_data)
             db.session.commit()
             flash('Real-Time PCR data submitted successfully', 'success')
-            return redirect(url_for('index'))
+            return redirect(url_for('results'))
         except Exception as e:
             flash(f'An error occurred while submitting Real-Time PCR data: {str(e)}', 'danger')
             return render_template('error.html', error=str(e))
@@ -1036,7 +1081,7 @@ def results():
         except Exception as e:
             return render_template('error.html', error=str(e))
 
-        return redirect(url_for('index'))
+        return redirect(url_for('report'))
     return render_template('results.html', form=form)
 
 # Report
@@ -1062,7 +1107,50 @@ def report():
         # Manejo si el usuario no ha iniciado sesión
         return redirect(url_for('login'))
 
-   
+
+@app.route('/guardar_informe', methods=['POST'])
+def guardar_informe():
+    if request.method == 'POST':
+        contenido = request.form['contenido']
+        autor = request.form['autor']
+
+        nuevo_informe = Informe(contenido=contenido, autor=autor)
+
+        try:
+            db.session.add(nuevo_informe)
+            db.session.commit()
+            return redirect(url_for('mostrar_informes'))  # Redirige a la lista de informes
+        except Exception as e:
+            return f'Error al guardar el informe: {str(e)}', 500
+
+    return 'Método no permitido', 405
+
+
+
+@app.route('/informes')
+def informes():
+    # Obtener todos los informes de la base de datos
+    informes = Informe.query.all()
+    return render_template('informes.html', informes=informes)
+
+
+@app.route('/ver_informe/<int:informe_id>')
+def ver_informe(informe_id):
+    # Obtener el informe de la base de datos por su ID
+    informe = Informe.query.get_or_404(informe_id)
+    return render_template('ver_informe.html', informe=informe)
+
+
+
+
+
+
+
+
+
+
+
+#  Generar PDF
 @app.route('/generate_pdf')
 def generate_pdf():
     datos_general = GeneralInfoDataModel.query.first()
@@ -1087,8 +1175,20 @@ def generate_pdf():
     # Crear un lienzo PDF
     c = canvas.Canvas(buffer, pagesize=letter)
 
+    
+    title = "INFORME DEL EXPERIMENTO"
+    c.setFont("Helvetica-Bold", 20)
+    title_width = c.stringWidth(title)
+    title_x = (c._pagesize[0] - title_width) / 2
+    title_y = c._pagesize[1] - 100  # Altura desde la parte superior de la página
+    title_y += 50  # Añadir espacio adicional entre el título y el primer módulo
+
+    # Dibujar el título centrado
+    c.drawString(title_x, title_y, title)
+    
+
     # Establecer posición inicial para los datos
-    y_position = 750
+    y_position = 700
 
     # Función para agregar una nueva página
     def add_new_page():
@@ -1098,18 +1198,23 @@ def generate_pdf():
 
     # Agregar módulo de información general
     general_module_title = "Información General"
-    c.setFont("Helvetica-Bold", 16)
+    c.setFont("Helvetica-Bold", 16)  # Configurar fuente en negrita
     c.drawString(100, y_position, general_module_title)
+
+    c.setFont("Helvetica", 12)
     c.drawString(100, y_position - 20, f"Fecha del Experimento: {datos_general.experiment_date}")
     c.drawString(100, y_position - 40, f"Número del Experimento: {datos_general.experiment_number}")
     c.drawString(100, y_position - 60, f"Investigador Principal: {datos_general.principal_investigator}")
     c.drawString(100, y_position - 80, f"Institución (y Laboratorio): {datos_general.institution_lab}")
+    y_position -= 80  # Bajar la posición después de cada conjunto de datos del experimento
+    y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos del experimento
+
 
     # Espacio vertical adicional antes de la sección de Datos del Experimento
-    if y_position < 200:
+    if y_position < 100:
         y_position = add_new_page()
     else:
-        y_position -= 100  # Ajuste para agregar espacio entre secciones
+        y_position -= 25  # Ajuste para agregar espacio entre secciones
 
     # Agregar título del módulo "Datos del Experimento"
     module_title = "Datos del Experimento"
@@ -1120,203 +1225,232 @@ def generate_pdf():
     # Agregar datos de cada experimento
     for dato in datos_experimento:
         if y_position < 200:
-            y_position = add_new_page()
+         y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
         c.drawString(100, y_position, f"Definición del Grupo Control: {dato.group_control_definition}")
-        c.drawString(100, y_position - 20, f"Definición del Grupo Experimental: {dato.group_experimental_definition}")
-        c.drawString(100, y_position - 40, f"Número de Grupo Control: {dato.group_control_number}")
-        c.drawString(100, y_position - 60, f"Número de Grupo Experimental: {dato.group_experimental_number}")
-        y_position -= 80  # Bajar la posición después de cada conjunto de datos del experimento
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos del experimento
+        y_position -= 20  # Bajar la posición después de cada conjunto de datos del experimento
+        c.drawString(100, y_position, f"Definición del Grupo Experimental: {dato.group_experimental_definition}")
+        y_position -= 20  # Bajar la posición después de cada conjunto de datos del experimento
+        c.drawString(100, y_position, f"Número de Grupo Control: {dato.group_control_number}")
+        y_position -= 20  # Bajar la posición después de cada conjunto de datos del experimento
+        c.drawString(100, y_position, f"Número de Grupo Experimental: {dato.group_experimental_number}")
+        y_position -= 40  # Bajar la posición después de cada conjunto de datos del experimento y agregar espacio adicional
+
+
 
     # Espacio vertical adicional antes de la sección de Muestra
     if y_position < 200:
         y_position = add_new_page()
     else:
-        y_position -= 100  # Ajuste para agregar espacio entre secciones
+        y_position -= 25  # Ajuste para agregar espacio entre secciones
     
     # Agregar módulo de muestra
     sample_module_title = "Muestra"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, sample_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for muestra in datos_muestra:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Tipo de Muestra: {muestra.sample_type}")
-        c.drawString(100, y_position - 40, f"Descripción: {muestra.sample_description}")
-        c.drawString(100, y_position - 60, f"Volumen/Masa de Muestra Procesada: {muestra.sample_volume_mass}")
-        c.drawString(100, y_position - 80, f"Procedimiento de Muestreo: {muestra.sampling_procedure}")
-        c.drawString(100, y_position - 100, f"Método de Congelación: {muestra.freezing_method}")
-        c.drawString(100, y_position - 120, f"Método de Fijación: {muestra.fixation_method}")
-        c.drawString(100, y_position - 140, f"Condiciones de Almacenamiento: {muestra.storage_conditions}")
-        y_position -= 160  # Bajar la posición después de cada conjunto de datos de muestra
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de muestra
+     if y_position < 200:
+        y_position = add_new_page()
+    c.setFont("Helvetica", 12)  # Configurar fuente normal
+    c.drawString(100, y_position, f"Tipo de Muestra: {muestra.sample_type}")
+    c.drawString(100, y_position - 20, f"Descripción: {muestra.sample_description}")
+    c.drawString(100, y_position - 40, f"Volumen/Masa de Muestra Procesada: {muestra.sample_volume_mass}")
+    c.drawString(100, y_position - 60, f"Procedimiento de Muestreo: {muestra.sampling_procedure}")
+    c.drawString(100, y_position - 80, f"Método de Congelación: {muestra.freezing_method}")
+    c.drawString(100, y_position - 100, f"Método de Fijación: {muestra.fixation_method}")
+    c.drawString(100, y_position - 120, f"Condiciones de Almacenamiento: {muestra.storage_conditions}")
+    y_position -= 140  # Bajar la posición después de cada conjunto de datos de muestra
+    y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de muestra
+
 
     # Espacio vertical adicional antes de la sección de Extracción de Ácidos Nucleicos
     if y_position < 200:
         y_position = add_new_page()
     else:
-        y_position -= 100  # Ajuste para agregar espacio entre secciones
+        y_position -= 25  # Ajuste para agregar espacio entre secciones
 
     # Agregar módulo de extracción de ácidos nucleicos
     extraction_module_title = "Extracción de Ácidos Nucleicos"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, extraction_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for extraction_data in datos_extraction:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Procedimiento de Extracción: {extraction_data.extraction_procedure}")
-        c.drawString(100, y_position - 40, f"Detalles del Kit: {extraction_data.kit_details}")
-        c.drawString(100, y_position - 60, f"Reactivos Adicionales: {extraction_data.additional_reagents}")
-        c.drawString(100, y_position - 80, f"Tratamiento con DNAsa o RNAsa: {extraction_data.dnase_rnase_treatment}")
-        c.drawString(100, y_position - 100, f"Evaluación de Contaminación: {extraction_data.contamination_evaluation}")
-        c.drawString(100, y_position - 120, f"Método de Cuantificación de Ácidos Nucleicos: {extraction_data.nucleic_acid_quantification_method}")
-        c.drawString(100, y_position - 140, f"Pureza de Ácidos Nucleicos (A260/A280): {extraction_data.nucleic_acid_purity}")
-        c.drawString(100, y_position - 160, f"RIN/RQI or Cq of 3' and 5' Transcriptions: {extraction_data.rin_rqi_cq_details}")
-        c.drawString(100, y_position - 180, f"Método de Evaluación de la Integridad (RNA): {extraction_data.integrity_assessment_method}")
-        c.drawString(100, y_position - 200, f"Rastros de Electroforesis: {extraction_data.electrophoresis_traces}")
-        c.drawString(100, y_position - 220, f"Prueba de Inhibición: {extraction_data.inhibition_testing}")
-        y_position -= 240  # Bajar la posición después de cada conjunto de datos de extracción
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de extracción
+     if y_position < 200:
+        y_position = add_new_page()
+    c.setFont("Helvetica", 12)  # Configurar fuente normal
+    c.drawString(100, y_position - 20, f"Procedimiento de Extracción: {extraction_data.extraction_procedure}")
+    c.drawString(100, y_position - 40, f"Detalles del Kit: {extraction_data.kit_details}")
+    c.drawString(100, y_position - 60, f"Reactivos Adicionales: {extraction_data.additional_reagents}")
+    c.drawString(100, y_position - 80, f"Tratamiento con DNAsa o RNAsa: {extraction_data.dnase_rnase_treatment}")
+    c.drawString(100, y_position - 100, f"Evaluación de Contaminación: {extraction_data.contamination_evaluation}")
+    c.drawString(100, y_position - 120, f"Método de Cuantificación de Ácidos Nucleicos: {extraction_data.nucleic_acid_quantification_method}")
+    c.drawString(100, y_position - 140, f"Pureza de Ácidos Nucleicos (A260/A280): {extraction_data.nucleic_acid_purity}")
+    c.drawString(100, y_position - 160, f"RIN/RQI o Cq de Transcripciones 3' y 5': {extraction_data.rin_rqi_cq_details}")
+    c.drawString(100, y_position - 180, f"Método de Evaluación de la Integridad (ARN): {extraction_data.integrity_assessment_method}")
+    c.drawString(100, y_position - 200, f"Rastros de Electroforesis: {extraction_data.electrophoresis_traces}")
+    c.drawString(100, y_position - 220, f"Prueba de Inhibición: {extraction_data.inhibition_testing}")
+    y_position -= 240  # Bajar la posición después de cada conjunto de datos de extracción
+    y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de extracción
+
 
     # Espacio vertical adicional antes de la sección de Reverse Transcription
     if y_position < 200:
         y_position = add_new_page()
     else:
-        y_position -= 100  # Ajuste para agregar espacio entre secciones
+        y_position -= 25  # Ajuste para agregar espacio entre secciones
 
-    # Agregar módulo de Reverse Transcription
-    reverse_transcription_module_title = "Reverse Transcription"
+   # Agregar módulo de Transcripción Inversa
+    reverse_transcription_module_title = "Transcripción Inversa"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, reverse_transcription_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for rt_data in datos_reverse_transcription:
         if y_position < 200:
             y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Reaction Conditions: {rt_data.reaction_conditions}")
-        c.drawString(100, y_position - 40, f"RNA Quantity: {rt_data.rna_quantity}")
-        c.drawString(100, y_position - 60, f"Reaction Volumes: {rt_data.reaction_volumes}")
-        c.drawString(100, y_position - 80, f"Priming Oligonucleotides: {rt_data.reverse_transcriptase_oligo_priming}")
-        c.drawString(100, y_position - 100, f"Reverse Transcriptase Oligo Concentration: {rt_data.reverse_transcriptase_oligo_concentration}")
-        c.drawString(100, y_position - 120, f"Reverse Transcriptase Type: {rt_data.reverse_transcriptase_type}")
-        c.drawString(100, y_position - 140, f"Reverse Transcriptase Concentration: {rt_data.reverse_transcriptase_concentration}")
-        c.drawString(100, y_position - 160, f"Reverse Transcriptase Temperature: {rt_data.reverse_transcriptase_temperature}")
-        c.drawString(100, y_position - 180, f"Reverse Transcriptase Reaction Time: {rt_data.reverse_transcriptase_reaction_time}")
-        c.drawString(100, y_position - 200, f"Reverse Transcriptase Manufacturer: {rt_data.reverse_transcriptase_manufacturer}")
-        c.drawString(100, y_position - 220, f"Reverse Transcriptase Catalog Number: {rt_data.reverse_transcriptase_catalog_number}")
-        c.drawString(100, y_position - 240, f"cDNA Storage Conditions: {rt_data.cdna_storage_conditions}")
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Condiciones de Reacción: {rt_data.reaction_conditions}")
+        c.drawString(100, y_position - 40, f"Cantidad de ARN: {rt_data.rna_quantity}")
+        c.drawString(100, y_position - 60, f"Volúmenes de Reacción: {rt_data.reaction_volumes}")
+        c.drawString(100, y_position - 80, f"Oligonucleótidos de Iniciación: {rt_data.reverse_transcriptase_oligo_priming}")
+        c.drawString(100, y_position - 100, f"Concentración de Oligo de Transcripción Inversa: {rt_data.reverse_transcriptase_oligo_concentration}")
+        c.drawString(100, y_position - 120, f"Tipo de Transcripción Inversa: {rt_data.reverse_transcriptase_type}")
+        c.drawString(100, y_position - 140, f"Concentración de la Transcripción Inversa: {rt_data.reverse_transcriptase_concentration}")
+        c.drawString(100, y_position - 160, f"Temperatura de Transcripción Inversa: {rt_data.reverse_transcriptase_temperature}")
+        c.drawString(100, y_position - 180, f"Tiempo de Reacción de Transcripción Inversa: {rt_data.reverse_transcriptase_reaction_time}")
+        c.drawString(100, y_position - 200, f"Fabricante de la Transcripción Inversa: {rt_data.reverse_transcriptase_manufacturer}")
+        c.drawString(100, y_position - 220, f"Número de Catálogo de la Transcripción Inversa: {rt_data.reverse_transcriptase_catalog_number}")
+        c.drawString(100, y_position - 240, f"Condiciones de Almacenamiento del cDNA: {rt_data.cdna_storage_conditions}")
         y_position -= 260  # Bajar la posición después de cada conjunto de datos de Reverse Transcription
         y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Reverse Transcription
 
-        # Espacio vertical adicional antes de la sección 
+    # Espacio vertical adicional antes de la sección de Información del Blanco de qPCR
     if y_position < 200:
-     y_position = add_new_page()
+        y_position = add_new_page()
     else:
-     y_position -= 100  # Ajuste para agregar espacio entre secciones
+        y_position -= 25  # Ajuste para agregar espacio entre secciones
 
-     # Agregar módulo de qPCR Target Information
-    qpcr_target_module_title = "qPCR Target Information"
+    # Agregar módulo de Información del Blanco de qPCR
+    qpcr_target_module_title = "Información del Blanco de qPCR"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, qpcr_target_module_title)
-    for qpcr_data in datos_qpcr_target:
-     if y_position < 200:
-        y_position = add_new_page()
-    c.drawString(100, y_position - 20, f"Gene Symbol: {qpcr_data.gene_symbol}")
-    c.drawString(100, y_position - 40, f"Multiplex Efficiency and LOD for Each Assay: {qpcr_data.multiplex_efficiency_lod}")
-    c.drawString(100, y_position - 60, f"Sequence Accession Number: {qpcr_data.sequence_accession_number}")
-    c.drawString(100, y_position - 80, f"Amplicon Location: {qpcr_data.amplicon_location}")
-    c.drawString(100, y_position - 100, f"Amplicon Length: {qpcr_data.amplicon_length}")
-    c.drawString(100, y_position - 120, f"In Silico Specificity Screening: {qpcr_data.in_silico_specificity_screening}")
-    c.drawString(100, y_position - 140, f"Pseudogenes, Retropseudogenes, or Other Homologs: {qpcr_data.pseudogenes_homologs}")
-    c.drawString(100, y_position - 160, f"Sequence Alignment: {qpcr_data.sequence_alignment}")
-    c.drawString(100, y_position - 180, f"Amplicon Secondary Structure Analysis: {qpcr_data.amplicon_secondary_structure_analysis}")
-    c.drawString(100, y_position - 200, f"Primer Location by Exon or Intron: {qpcr_data.primer_location_exon_intron}")
-    c.drawString(100, y_position - 220, f"Splicing Variants Targeted: {qpcr_data.splicing_variants_targeted}")
-    y_position -= 240  # Bajar la posición después de cada conjunto de datos de qPCR Target Information
-    y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de qPCR Target Information
+    y_position -= 20  # Bajar la posición después del título
 
-    
+    for qpcr_data in datos_qpcr_target:
+        if y_position < 200:
+         y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Símbolo del Gen: {qpcr_data.gene_symbol}")
+        c.drawString(100, y_position - 40, f"Efficiencia Multiplex y LOD para cada Ensayo: {qpcr_data.multiplex_efficiency_lod}")
+        c.drawString(100, y_position - 60, f"Número de Acceso a la Secuencia: {qpcr_data.sequence_accession_number}")
+        c.drawString(100, y_position - 80, f"Localización del Amplicón: {qpcr_data.amplicon_location}")
+        c.drawString(100, y_position - 100, f"Longitud del Amplicón: {qpcr_data.amplicon_length}")
+        c.drawString(100, y_position - 120, f"Cribado de Especificidad In Silico: {qpcr_data.in_silico_specificity_screening}")
+        c.drawString(100, y_position - 140, f"Pseudogenes, Retrogenes u Otros Homólogos: {qpcr_data.pseudogenes_homologs}")
+        c.drawString(100, y_position - 160, f"Alineamiento de Secuencia: {qpcr_data.sequence_alignment}")
+        c.drawString(100, y_position - 180, f"Análisis de Estructura Secundaria del Amplicón: {qpcr_data.amplicon_secondary_structure_analysis}")
+        c.drawString(100, y_position - 200, f"Localización del Oligonucleótido por Exón o Intrón: {qpcr_data.primer_location_exon_intron}")
+        c.drawString(100, y_position - 220, f"Variantes de Empalme Dirigidas: {qpcr_data.splicing_variants_targeted}")
+        y_position -= 240  # Bajar la posición después de cada conjunto de datos de Información del Blanco de qPCR
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Información del Blanco de qPCR
+
+
      # Espacio vertical adicional antes de la sección 
     if y_position < 200:
      y_position = add_new_page()
     else:
-     y_position -= 100  # Ajuste para agregar espacio entre secciones
+     y_position -= 25  # Ajuste para agregar espacio entre secciones
 
      # Agregar módulo de qPCR Primers
     qpcr_primers_module_title = "qPCR Primers"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, qpcr_primers_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for primer_data in datos_qpcr_primers:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Forward sequence: {primer_data.forward_sequence}")
-        c.drawString(100, y_position - 40, f"Reverse sequence: {primer_data.reverse_sequence}")
-        c.drawString(100, y_position - 60, f"RTPrimerDB Identification Number: {primer_data.rtprimerdb_id}")
-        c.drawString(100, y_position - 80, f"Probe Sequences: {primer_data.probe_sequences}")
-        c.drawString(100, y_position - 100, f"Modification Location and Identity: {primer_data.modification_location_identity}")
-        c.drawString(100, y_position - 120, f"Oligo Manufacturer: {primer_data.oligo_manufacturer}")
-        c.drawString(100, y_position - 140, f"Purification Method: {primer_data.purification_method}")
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Secuencia forward: {primer_data.forward_sequence}")
+        c.drawString(100, y_position - 40, f"Secuencia Reverse: {primer_data.reverse_sequence}")
+        c.drawString(100, y_position - 60, f"Número de Identificación de RTPrimerDB: {primer_data.rtprimerdb_id}")
+        c.drawString(100, y_position - 80, f"Secuencias de la Sonda: {primer_data.probe_sequences}")
+        c.drawString(100, y_position - 100, f"Ubicación e Identidad de la Modificación: {primer_data.modification_location_identity}")
+        c.drawString(100, y_position - 120, f"Fabricante del Oligo: {primer_data.oligo_manufacturer}")
+        c.drawString(100, y_position - 140, f"Método de Purificación: {primer_data.purification_method}")
         y_position -= 160  # Bajar la posición después de cada conjunto de datos de qPCR Primers
         y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de qPCR Primers
 
 
-    # Espacio vertical adicional antes de la sección 
+    # Espacio vertical adicional antes de la sección de qPCR Protocol
     if y_position < 200:
      y_position = add_new_page()
     else:
-     y_position -= 100  # Ajuste para agregar espacio entre secciones
+     y_position -= 25  # Ajuste para agregar espacio entre secciones
 
     # Agregar módulo de qPCR Protocol
-    qpcr_protocol_module_title = "qPCR Protocol"
+    qpcr_protocol_module_title = "Protocolo de qPCR"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, qpcr_protocol_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for protocol_data in datos_qpcr_protocol:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Reaction Conditions: {protocol_data.reaction_conditions}")
-        c.drawString(100, y_position - 40, f"Reaction Volume and DNA Quantity: {protocol_data.reaction_volume_dna_quantity}")
-        c.drawString(100, y_position - 60, f"Primer, Probe, Mg++, and Dntp Concentrations: {protocol_data.primer_probe_concentrations}")
-        c.drawString(100, y_position - 80, f"Polymerase Identity and Concentration: {protocol_data.polymerase_identity_concentration}")
-        c.drawString(100, y_position - 100, f"Buffer/Kit Identity and Manufacturer: {protocol_data.buffer_kit_identity_manufacturer}")
-        c.drawString(100, y_position - 120, f"Exact Chemical Constitution of the Buffer: {protocol_data.buffer_exact_chemical_constitution}")
-        c.drawString(100, y_position - 140, f"Additives: {protocol_data.additives}")
-        c.drawString(100, y_position - 160, f"Plates/Tubes Manufacturer and Catalog Number: {protocol_data.plates_tubes_manufacturer_catalog}")
-        c.drawString(100, y_position - 180, f"Thermocycling Parameters: {protocol_data.thermocycling_parameters}")
-        c.drawString(100, y_position - 200, f"Reaction Configuration: {protocol_data.reaction_configuration}")
-        c.drawString(100, y_position - 220, f"qPCR Instrument Manufacturer: {protocol_data.qpcr_instrument_manufacturer}")
-        c.drawString(100, y_position - 240, f"Reaction Quality Control: {protocol_data.reaction_quality_control}")
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Condiciones de Reacción: {protocol_data.reaction_conditions}")
+        c.drawString(100, y_position - 40, f"Volumen de Reacción y Cantidad de ADN: {protocol_data.reaction_volume_dna_quantity}")
+        c.drawString(100, y_position - 60, f"Concentraciones de Primer, Sonda, Mg++ y Dntp: {protocol_data.primer_probe_concentrations}")
+        c.drawString(100, y_position - 80, f"Identidad y Concentración de la Polimerasa: {protocol_data.polymerase_identity_concentration}")
+        c.drawString(100, y_position - 100, f"Identidad y Fabricante del Buffer/Kit: {protocol_data.buffer_kit_identity_manufacturer}")
+        c.drawString(100, y_position - 120, f"Constitución Química Exacta del Buffer: {protocol_data.buffer_exact_chemical_constitution}")
+        c.drawString(100, y_position - 140, f"Aditivos: {protocol_data.additives}")
+        c.drawString(100, y_position - 160, f"Fabricante y Número de Catálogo de Placas/Tubos: {protocol_data.plates_tubes_manufacturer_catalog}")
+        c.drawString(100, y_position - 180, f"Parámetros de Termociclado: {protocol_data.thermocycling_parameters}")
+        c.drawString(100, y_position - 200, f"Configuración de la Reacción: {protocol_data.reaction_configuration}")
+        c.drawString(100, y_position - 220, f"Fabricante del Instrumento de qPCR: {protocol_data.qpcr_instrument_manufacturer}")
+        c.drawString(100, y_position - 240, f"Control de Calidad de la Reacción: {protocol_data.reaction_quality_control}")
         y_position -= 260  # Bajar la posición después de cada conjunto de datos de qPCR Protocol
         y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de qPCR Protocol
 
-    # Espacio vertical adicional antes de la sección
-    if y_position < 200:
-     y_position = add_new_page()
-    else:
-     y_position -= 100  # Ajuste para agregar espacio entre secciones
 
-    # Agregar módulo de Data Analysis
-    data_analysis_module_title = "Data Analysis"
+    # Espacio vertical adicional antes de la sección de Análisis de Datos
+    if y_position < 200:
+      y_position = add_new_page()
+    else:
+     y_position -= 25  # Ajuste para agregar espacio entre secciones
+
+    # Agregar módulo de Análisis de Datos
+    data_analysis_module_title = "Análisis de Datos"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, data_analysis_module_title)
-    for analysis_data in datos_data_analysis:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"qPCR Analysis Program: {analysis_data.qpcr_analysis_program}")
-        c.drawString(100, y_position - 40, f"Cq Method Determination: {analysis_data.cq_method_determination}")
-        c.drawString(100, y_position - 60, f"Identification and Handling of Outliers: {analysis_data.identification_handling_outliers}")
-        c.drawString(100, y_position - 80, f"NTC Results: {analysis_data.ntc_results}")
-        c.drawString(100, y_position - 100, f"Justification of Number and Choice of Reference Genes: {analysis_data.reference_genes_justification}")
-        c.drawString(100, y_position - 120, f"Normalization Method Description: {analysis_data.normalization_method_description}")
-        c.drawString(100, y_position - 140, f"Number and Concordance of Biological Replicates: {analysis_data.biological_replicates_number_concordance}")
-        c.drawString(100, y_position - 160, f"Number and Stage of Technical Replicates: {analysis_data.technical_replicates_number_stage}")
-        c.drawString(100, y_position - 180, f"Repeatability (Intra-Assay Variation): {analysis_data.intra_assay_variation_repeatability}")
-        c.drawString(100, y_position - 200, f"Reproducibility (Inter-Assay Variation, %CV): {analysis_data.inter_assay_variation_reproducibility}")
-        c.drawString(100, y_position - 220, f"Power Analysis: {analysis_data.power_analysis}")
-        c.drawString(100, y_position - 240, f"Statistical Methods for Significance of Results: {analysis_data.statistical_methods_significance}")
-        c.drawString(100, y_position - 260, f"Software (source, version): {analysis_data.software_source_version}")
-        c.drawString(100, y_position - 280, f"Cq or Submission of Raw Data using RDML: {analysis_data.cq_or_raw_data_rdml_submission}")
-        y_position -= 300  # Bajar la posición después de cada conjunto de datos de Data Analysis
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Data Analysis
+    y_position -= 20  # Bajar la posición después del título
 
-    
+    for analysis_data in datos_data_analysis:
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Programa de Análisis de qPCR: {analysis_data.qpcr_analysis_program}")
+        c.drawString(100, y_position - 40, f"Método de Determinación de Cq: {analysis_data.cq_method_determination}")
+        c.drawString(100, y_position - 60, f"Identificación y Manejo de Valores Atípicos: {analysis_data.identification_handling_outliers}")
+        c.drawString(100, y_position - 80, f"Resultados de NTC: {analysis_data.ntc_results}")
+        c.drawString(100, y_position - 100, f"Justificación del Número y Elección de Genes de Referencia: {analysis_data.reference_genes_justification}")
+        c.drawString(100, y_position - 120, f"Descripción del Método de Normalización: {analysis_data.normalization_method_description}")
+        c.drawString(100, y_position - 140, f"Número y Concordancia de Réplicas Biológicas: {analysis_data.biological_replicates_number_concordance}")
+        c.drawString(100, y_position - 160, f"Número y Etapa de Réplicas Técnicas: {analysis_data.technical_replicates_number_stage}")
+        c.drawString(100, y_position - 180, f"Repetibilidad (Variación Intra-Ensayo): {analysis_data.intra_assay_variation_repeatability}")
+        c.drawString(100, y_position - 200, f"Reproducibilidad (Variación Inter-Ensayo, %CV): {analysis_data.inter_assay_variation_reproducibility}")
+        c.drawString(100, y_position - 220, f"Análisis de Potencia: {analysis_data.power_analysis}")
+        c.drawString(100, y_position - 240, f"Métodos Estadísticos para Significancia de Resultados: {analysis_data.statistical_methods_significance}")
+        c.drawString(100, y_position - 260, f"Software (fuente, versión): {analysis_data.software_source_version}")
+        c.drawString(100, y_position - 280, f"Cq o Envío de Datos Crudos utilizando RDML: {analysis_data.cq_or_raw_data_rdml_submission}")
+        y_position -= 300  # Bajar la posición después de cada conjunto de datos de Análisis de Datos
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Análisis de Datos
+
+
     # Espacio vertical adicional antes de la sección 
     if y_position < 200:
      y_position = add_new_page()
@@ -1325,91 +1459,100 @@ def generate_pdf():
 
 
     # Agregar módulo de Thermal Cycling Conditions
-    thermal_cycling_module_title = "Thermal Cycling Conditions"
+    thermal_cycling_module_title = "Condiciones de Ciclado Térmico"
     c.setFont("Helvetica-Bold", 16)
     c.drawString(100, y_position, thermal_cycling_module_title)
+    y_position -= 20  # Bajar la posición después del título
+
     for tc_data in datos_thermal_cycling_conditions:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Equipment Used: {tc_data.equipment_used}")
-        c.drawString(100, y_position - 40, f"Primers Used: {tc_data.primers_used}")
-        c.drawString(100, y_position - 60, f"PCR Conditions: {tc_data.pcr_conditions}")
-        c.drawString(100, y_position - 80, f"Reaction Volume: {tc_data.reaction_volume}")
-        c.drawString(100, y_position - 100, f"Positive Control: {tc_data.positive_control}")
-        c.drawString(100, y_position - 120, f"Negative Control: {tc_data.negative_control}")
-        y_position -= 140  # Bajar la posición después de cada conjunto de datos de Thermal Cycling Conditions
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Thermal Cycling Conditions
-
-
-     # Espacio vertical adicional antes de la sección 
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Equipo Utilizado: {tc_data.equipment_used}")
+        c.drawString(100, y_position - 40, f"Pruebas Utilizadas: {tc_data.primers_used}")
+        c.drawString(100, y_position - 60, f"Condiciones de PCR: {tc_data.pcr_conditions}")
+        c.drawString(100, y_position - 80, f"Volumen de Reacción: {tc_data.reaction_volume}")
+        c.drawString(100, y_position - 100, f"Control Positivo: {tc_data.positive_control}")
+        c.drawString(100, y_position - 120, f"Control Negativo: {tc_data.negative_control}")
+        y_position -= 140  # Descender la posición después de cada conjunto de datos de Condiciones de Ciclado Térmico
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Condiciones de Ciclado Térmico
+ 
+    # Espacio vertical adicional antes de la sección
     if y_position < 200:
      y_position = add_new_page()
     else:
      y_position -= 100  # Ajuste para agregar espacio entre secciones
 
-
-    # Agregar módulo de qPCR Validation
-    qpcr_validation_module_title = "qPCR Validation"
+    # Agregar módulo de Validación de qPCR
+    titulo_modulo_validacion_qpcr = "Validación de qPCR"
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(100, y_position, qpcr_validation_module_title)
-    for qpcr_validation_data in datos_qpcr_validation:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Optimization Evidence: {qpcr_validation_data.optimization_evidence}")
-        c.drawString(100, y_position - 40, f"Specificity Evidence: {qpcr_validation_data.specificity_evidence}")
-        c.drawString(100, y_position - 60, f"Cq of NCT for SYBR Green I: {qpcr_validation_data.cq_nct_for_sybr_green}")
-        c.drawString(100, y_position - 80, f"Standard Curves with Slope and Intercept: {qpcr_validation_data.standard_curves_slope_intercept}")
-        c.drawString(100, y_position - 100, f"PCR Efficiency Calculated from Slope: {qpcr_validation_data.pcr_efficiency_slope_calculation}")
-        c.drawString(100, y_position - 120, f"Confidence Interval for PCR Efficiency: {qpcr_validation_data.pcr_efficiency_confidence_interval}")
-        c.drawString(100, y_position - 140, f"R^2 of the Standard Curve: {qpcr_validation_data.r2_standard_curve}")
-        c.drawString(100, y_position - 160, f"Linear Dynamic Range: {qpcr_validation_data.linear_dynamic_range}")
-        c.drawString(100, y_position - 180, f"Cq Variation at the Lower Limit: {qpcr_validation_data.cq_variation_lower_limit}")
-        c.drawString(100, y_position - 200, f"Confidence Intervals across the Full Range: {qpcr_validation_data.confidence_intervals_full_range}")
-        c.drawString(100, y_position - 220, f"LOD Evidence: {qpcr_validation_data.lod_evidence}")
-        c.drawString(100, y_position - 240, f"If Multiplex, Efficiency and LOD for Each Assay: {qpcr_validation_data.multiplex_efficiency_lod}")
-        y_position -= 260  # Bajar la posición después de cada conjunto de datos de qPCR Validation
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de qPCR Validation
+    c.drawString(100, y_position, titulo_modulo_validacion_qpcr)
+    y_position -= 20  # Bajar la posición después del título
+
+    for datos_validacion_qpcr in datos_qpcr_validation:
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Evidencia de Optimización: {datos_validacion_qpcr.optimization_evidence}")
+        c.drawString(100, y_position - 40, f"Evidencia de Especificidad: {datos_validacion_qpcr.specificity_evidence}")
+        c.drawString(100, y_position - 60, f"Cq del NTC para SYBR Green I: {datos_validacion_qpcr.cq_nct_for_sybr_green}")
+        c.drawString(100, y_position - 80, f"Curvas Estándar con Pendiente e Intercepto: {datos_validacion_qpcr.standard_curves_slope_intercept}")
+        c.drawString(100, y_position - 100, f"Eficiencia de PCR Calculada a partir de la Pendiente: {datos_validacion_qpcr.pcr_efficiency_slope_calculation}")
+        c.drawString(100, y_position - 120, f"Intervalo de Confianza para la Eficiencia de PCR: {datos_validacion_qpcr.pcr_efficiency_confidence_interval}")
+        c.drawString(100, y_position - 140, f"R^2 de la Curva Estándar: {datos_validacion_qpcr.r2_standard_curve}")
+        c.drawString(100, y_position - 160, f"Rango Dinámico Lineal: {datos_validacion_qpcr.linear_dynamic_range}")
+        c.drawString(100, y_position - 180, f"Variación de Cq en el Límite Inferior: {datos_validacion_qpcr.cq_variation_lower_limit}")
+        c.drawString(100, y_position - 200, f"Intervalos de Confianza a lo largo de Todo el Rango: {datos_validacion_qpcr.confidence_intervals_full_range}")
+        c.drawString(100, y_position - 220, f"Evidencia de Límite de Detección: {datos_validacion_qpcr.lod_evidence}")
+        c.drawString(100, y_position - 240, f"Si es Multiplex, Eficiencia y LOD para Cada Ensayo: {datos_validacion_qpcr.multiplex_efficiency_lod}")
+        y_position -= 260  # Descender la posición después de cada conjunto de datos de Validación de qPCR
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Validación de qPCR
 
 
-     # Espacio vertical adicional antes de la sección 
+    # Espacio vertical adicional antes de la sección
     if y_position < 200:
      y_position = add_new_page()
     else:
      y_position -= 100  # Ajuste para agregar espacio entre secciones
 
-
-    # Agregar módulo de Real-Time PCR Data
-    realtime_pcr_module_title = "Real-Time PCR Data"
+    # Agregar módulo de Datos de PCR en Tiempo Real
+    titulo_modulo_pcr_tiempo_real = "Datos de PCR en Tiempo Real"
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(100, y_position, realtime_pcr_module_title)
-    for realtime_pcr_data in datos_realtime_pcr_data:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Data Analysis Software: {realtime_pcr_data.data_analysis_software}")
-        c.drawString(100, y_position - 40, f"Quantification Method: {realtime_pcr_data.quantification_method}")
-        c.drawString(100, y_position - 60, f"Raw Data: {realtime_pcr_data.raw_data}")
-        y_position -= 80  # Bajar la posición después de cada conjunto de datos de Real-Time PCR Data
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Real-Time PCR Data
+    c.drawString(100, y_position, titulo_modulo_pcr_tiempo_real)
+    y_position -= 20  # Bajar la posición después del título
+
+    for datos_pcr_tiempo_real in datos_realtime_pcr_data:
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Software de Análisis de Datos: {datos_pcr_tiempo_real.data_analysis_software}")
+        c.drawString(100, y_position - 40, f"Método de Cuantificación: {datos_pcr_tiempo_real.quantification_method}")
+        c.drawString(100, y_position - 60, f"Datos Crudos: {datos_pcr_tiempo_real.raw_data}")
+        y_position -= 80  # Descender la posición después de cada conjunto de datos de PCR en Tiempo Real
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de PCR en Tiempo Real
 
 
-    # Espacio vertical adicional antes de la sección 
+    # Espacio vertical adicional antes de la sección
     if y_position < 200:
      y_position = add_new_page()
     else:
      y_position -= 100  # Ajuste para agregar espacio entre secciones
 
-
-    # Agregar módulo de Results and Analysis
-    results_analysis_module_title = "Results and Analysis"
+    # Agregar módulo de Resultados y Análisis
+    titulo_modulo_resultados_analisis = "Resultados y Análisis"
     c.setFont("Helvetica-Bold", 16)
-    c.drawString(100, y_position, results_analysis_module_title)
-    for results_analysis_data in datos_results_analysis:
-        if y_position < 200:
-            y_position = add_new_page()
-        c.drawString(100, y_position - 20, f"Results Interpretation: {results_analysis_data.results_interpretation}")
-        c.drawString(100, y_position - 40, f"Charts and Figures: {results_analysis_data.charts_figures}")
-        y_position -= 60  # Bajar la posición después de cada conjunto de datos de Results and Analysis
-        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Results and Analysis
+    c.drawString(100, y_position, titulo_modulo_resultados_analisis)
+    y_position -= 20  # Bajar la posición después del título
+
+    for datos_resultados_analisis in datos_results_analysis:
+     if y_position < 200:
+        y_position = add_new_page()
+        c.setFont("Helvetica", 12)  # Configurar fuente normal
+        c.drawString(100, y_position - 20, f"Interpretación de Resultados: {datos_resultados_analisis.results_interpretation}")
+        c.drawString(100, y_position - 40, f"Gráficos y Figuras: {datos_resultados_analisis.charts_figures}")
+        y_position -= 60  # Descender la posición después de cada conjunto de datos de Resultados y Análisis
+        y_position -= 20  # Espacio vertical adicional entre cada conjunto de datos de Resultados y Análisis
+
 
     c.save()
 
@@ -1419,6 +1562,7 @@ def generate_pdf():
     response.headers['Content-Type'] = 'application/pdf'
     response.headers['Content-Disposition'] = 'attachment; filename=informe_experimento.pdf'
     return response
+
 
 if __name__ == '__main__':
     app.run(debug=True)

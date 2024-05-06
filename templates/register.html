@@ -1,94 +1,186 @@
-<!-- register.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Registro</title>
+    <style>
+        /* Estilos CSS adicionales */
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #ffffff; /* Fondo blanco */
+        }
+        .form-container {
+            width: 90%; /* Reducimos el ancho del formulario al 90% del ancho de la pantalla */
+            max-width: 1210px; /* Establecemos un ancho máximo para el formulario */
+            padding: 40px; /* Aumenta el espacio alrededor del formulario */
+            margin: 0 auto; /* Centramos horizontalmente */
+            border: 2px solid #ccc;
+            border-radius: 30px; /* Aumenta el radio de borde */
+            box-shadow: 0 4px 10px rgba(23, 43, 7, 0.418);
+            background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-group {
+            margin-bottom: 15px; /* Reducimos el espacio entre grupos de elementos */
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 600px; /* Establecemos un ancho máximo para los campos */
+        }
+        .form-group label {
+            margin-bottom: 5px; /* Reducimos el espacio entre etiquetas y elementos de entrada */
+            font-size: 24px; /* Tamaño de letra aumentado */
+        }
+        .form-group input {
+            width: 80%; /* Ajustamos el ancho de los input al 100% */
+            padding: 18px; /* Ajusta el espacio interno del input */
+            margin-bottom: 3px; /* Aumenta el espacio entre inputs */
+            border: 2px solid #ccc;
+            border-radius: 10px; /* Ajusta el radio de borde */
+            font-size: 24px; /* Reducimos el tamaño de letra */
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff; /* Cambiamos el color de fondo del botón */
+            color: #fff;
+            border: none;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 24px; /* Tamaño de letra aumentado */
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .register-link {
+            text-align: center;
+            margin-top: 20px; /* Ajustamos el espacio entre el formulario y el enlace de registro */
+            font-size: 24px; /* Tamaño de letra aumentado */
+            margin-bottom: 20px; /* Reducimos el espacio en la parte inferior del enlace */
+        }
+        .register-link a {
+            color: #00a2b7; /* Cambia el color del enlace si es necesario */
+            text-decoration: underline;
+        }
 
-{% extends "layout.html" %}
+        /* Estilos para la disposición en dos columnas */
+        .form-content {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="form-container">
+            <h1 style="text-align: center; font-size: 48px; margin-top: 5px; font-weight: bold;">Agregar Registro</h1>
+            <form method="post" action="" class="form">
+                {{ form.hidden_tag() }}
 
-{% block title %}Agregar Registro - My App{% endblock %}
+                <div class="form-content">
+                    <div class="form-group">
+                        {{ form.username.label }}<br>
+                        {{ form.username(size=32) }}<br>
+                        {% for error in form.username.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="form-group">
+                        {{ form.nombre.label }}<br>
+                        {{ form.nombre(size=32) }}<br>
+                        {% for error in form.nombre.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
 
-{% block content %}
-    <h2>Agregar Registro</h2>
-    <form method="post" action="">
-        {{ form.hidden_tag() }}
+                <div class="form-content">
+                    <div class="form-group">
+                        {{ form.apellido_paterno.label }}<br>
+                        {{ form.apellido_paterno(size=32) }}<br>
+                        {% for error in form.apellido_paterno.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
 
-        <div>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}<br>
-            {% for error in form.username.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
+                    <div class="form-group">
+                        {{ form.apellido_materno.label }}<br>
+                        {{ form.apellido_materno(size=32) }}<br>
+                        {% for error in form.apellido_materno.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="form-group">
+                        {{ form.laboratorio.label }}<br>
+                        {{ form.laboratorio(size=100) }}<br>
+                        {% for error in form.laboratorio.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.institucion.label }}<br>
+                        {{ form.institucion(size=100) }}<br>
+                        {% for error in form.institucion.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="form-group">
+                        {{ form.telefono.label }}<br>
+                        {{ form.telefono(size=15) }}<br>
+                        {% for error in form.telefono.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.correo.label }}<br>
+                        {{ form.correo(size=32) }}<br>
+                        {% for error in form.correo.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="form-content">
+                    <div class="form-group">
+                        {{ form.contrasena.label }}<br>
+                        {{ form.contrasena(size=32) }}<br>
+                        {% for error in form.contrasena.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.verificacion_contrasena.label }}<br>
+                        {{ form.verificacion_contrasena(size=32) }}<br>
+                        {% for error in form.verificacion_contrasena.errors %}
+                            <span style="color: red;">{{ error }}</span><br>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">Agregar Registro</button>
+            </form>
+            <div class="register-link">
+                ¿Ya tienes cuenta? <a href="{{ url_for('login') }}">Inicia sesión</a>
+            </div>
         </div>
+    </main>
+</body>
+</html>
 
-        <div>
-            {{ form.nombre.label }}<br>
-            {{ form.nombre(size=32) }}<br>
-            {% for error in form.nombre.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.apellido_paterno.label }}<br>
-            {{ form.apellido_paterno(size=32) }}<br>
-            {% for error in form.apellido_paterno.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.apellido_materno.label }}<br>
-            {{ form.apellido_materno(size=32) }}<br>
-            {% for error in form.apellido_materno.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.telefono.label }}<br>
-            {{ form.telefono(size=15) }}<br>
-            {% for error in form.telefono.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.correo.label }}<br>
-            {{ form.correo(size=32) }}<br>
-            {% for error in form.correo.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.laboratorio.label }}<br>
-            {{ form.laboratorio(size=100) }}<br>
-            {% for error in form.laboratorio.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.institucion.label }}<br>
-            {{ form.institucion(size=100) }}<br>
-            {% for error in form.institucion.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.contrasena.label }}<br>
-            {{ form.contrasena(size=32) }}<br>
-            {% for error in form.contrasena.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <div>
-            {{ form.verificacion_contrasena.label }}<br>
-            {{ form.verificacion_contrasena(size=32) }}<br>
-            {% for error in form.verificacion_contrasena.errors %}
-                <span style="color: red;">{{ error }}</span><br>
-            {% endfor %}
-        </div>
-
-        <input type="submit" value="Agregar Registro">
-    </form>
-{% endblock %}

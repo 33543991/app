@@ -1,16 +1,21 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Results and Analysis Form
+    Análisis y resultados
 {% endblock %}
 
 {% block content %}
-    <h1>Results and Analysis Form</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Análisis y resultados</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.results_interpretation.label }}
-            {{ form.results_interpretation(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">Interpretación de Resultados</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('interpretationHelp')">?</button>
+            <small id="interpretationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Esta sección se refiere al análisis e interpretación de los resultados obtenidos del experimento de PCR en tiempo real.
+                <br>Ejemplo: "Los valores de Ct más bajos indican mayor abundancia del gen diana en las muestras. Se aplicaron métodos de normalización para comparar los resultados entre diferentes muestras."
+            </small>
+            {{ form.results_interpretation(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.results_interpretation.errors %}
                 <ul>
                     {% for error in form.results_interpretation.errors %}
@@ -19,9 +24,10 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.charts_figures.label }}
-            {{ form.charts_figures(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;"> <!-- Espacio entre elementos -->
+            <label style="font-size: 25px;">{{ form.charts_figures.label }}</label>
+            {{ form.charts_figures(class="form-control", style="font-size: 23px; line-height: 2.0;") }} <!-- Ajuste de tamaño de letra y espaciado de línea -->
             {% if form.charts_figures.errors %}
                 <ul>
                     {% for error in form.charts_figures.errors %}
@@ -30,8 +36,16 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

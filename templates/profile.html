@@ -1,24 +1,38 @@
-<!-- profile.html -->
+{% extends 'dashboard.html' %}
 
-{% extends 'layout.html' %}
-
-{% block title %}Profile{% endblock %}
+{% block title %}Perfil{% endblock %}
 
 {% block content %}
-<h2>Welcome, {{ username }}!</h2>
+<div style="text-align: center; margin-top: 80px;"> <!-- Ajustamos el margen superior del contenedor -->
+    <!-- Contenedor principal -->
+    <div style="display: flex; align-items: center; justify-content: center;"> <!-- Utilizamos flexbox para centrar vertical y horizontalmente -->
 
-<p>Tu registro ha sido exitoso. Aquí están los datos que proporcionaste:</p>
-<ul>
-    <li><strong>Nombre de usuario:</strong> {{ username }}</li>
-    <li><strong>Nombre:</strong> {{ nombre }}</li>
-    <li><strong>Apellido Paterno:</strong> {{ apellido_paterno }}</li>
-    <li><strong>Apellido Materno:</strong> {{ apellido_materno }}</li>
-    <li><strong>Teléfono:</strong> {{ telefono }}</li>
-    <li><strong>Correo:</strong> {{ correo }}</li>
-    <li><strong>Laboratorio:</strong> {{ laboratorio }}</li>
-    <li><strong>Institución:</strong> {{ institucion }}</li>
-</ul>
-<a href="{{ url_for('index') }}">Volver a la página de inicio</a>
-<p><a href="{{ url_for('logout') }}">Logout</a></p>
+        <!-- Contenedor del texto -->
+        <div style="text-align: left; margin-right: 150px;"> <!-- Ajustamos el margen derecho para recorrer el texto hacia la izquierda -->
+            <!-- Titulo -->
+            <h2 style="margin-top: 10px; margin-bottom: 20px; font-size: 45px; margin-left:-70px;"> {{ nombre }} {{ apellido_paterno }} {{ apellido_materno }}</h2>
+            <p style="line-height: 2.0; font-size: 27px; margin-left: -70px;"> <!-- Ajustamos el tamaño del texto a 27px -->
+                Tu registro ha sido exitoso, aquí están los datos que proporcionaste:
+            </p>
+
+           <!-- Información del usuario -->
+            <div style="margin-left: 30px; width: 400px; margin-bottom: 30px;"> <!-- Ajustamos el margen izquierdo, el ancho del contenedor y el margen inferior -->
+                <ul style="list-style-type: none; padding: 0;">
+                    <li style="font-size: 30px; line-height: 1.5; margin-top: 30px; margin-left: -100px;"><strong>Usuario:</strong> {{ username }}</li>
+                    <li style="font-size: 30px; line-height: 1.5; margin-top: 20px; margin-left: -100px;"><strong>Laboratorio:</strong> {{ laboratorio }}</li>
+                    <li style="font-size: 30px; line-height: 1.5; margin-top: 20px; margin-left: -100px;"><strong>Institución:</strong> {{ institucion }}</li>
+                    <li style="font-size: 30px; line-height: 1.5; margin-top: 20px; margin-left: -100px;"><strong>Correo:</strong> {{ correo }}</li>
+                    <li style="font-size: 30px; line-height: 1.5; margin-top: 20px; margin-left: -100px;"><strong>Teléfono:</strong> {{ telefono }}</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contenedor de la imagen con borde circular azul -->
+        <div style="margin-top: 10px; position: relative; width: 300px; height: 300px;"> <!-- Ajustamos el tamaño del contenedor y el margen superior de la imagen -->
+            <!-- Imagen de perfil -->
+            <img src="{{ url_for('static', filename='star.jpeg') }}" alt="Foto de perfil" style="width: 350px; height: 350px; border-radius: 50%;">
+        </div>
+
+    </div>
+</div>
 {% endblock %}
-

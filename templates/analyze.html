@@ -1,16 +1,21 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Data Analysis Form
+   Análisis de datos
 {% endblock %}
 
 {% block content %}
-    <h1>Data Analysis Form</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Análisis de datos</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.qpcr_analysis_program.label }}
-            {{ form.qpcr_analysis_program(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.qpcr_analysis_program.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('qpcrAnalysisProgramHelp')">?</button>
+            <small id="qpcrAnalysisProgramHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al programa utilizado para el análisis de datos de qPCR, incluyendo la fuente y la versión.
+                <br>Ejemplo: "Utilizamos el software XYZ v2.0 para el análisis de datos de qPCR."
+            </small>
+            {{ form.qpcr_analysis_program(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.qpcr_analysis_program.errors %}
                 <ul>
                     {% for error in form.qpcr_analysis_program.errors %}
@@ -19,9 +24,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.cq_method_determination.label }}
-            {{ form.cq_method_determination(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.cq_method_determination.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('cqMethodDeterminationHelp')">?</button>
+            <small id="cqMethodDeterminationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al método utilizado para determinar el valor de Cq (Cycle quantification) en el análisis de qPCR.
+                <br>Ejemplo: "El valor de Cq se determina como el ciclo en el cual la señal de fluorescencia supera un umbral definido."
+            </small>
+            {{ form.cq_method_determination(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.cq_method_determination.errors %}
                 <ul>
                     {% for error in form.cq_method_determination.errors %}
@@ -31,9 +42,14 @@
             {% endif %}
         </div>
         
-        <div>
-            {{ form.identification_handling_outliers.label }}
-            {{ form.identification_handling_outliers(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.identification_handling_outliers.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('identificationOutliersHelp')">?</button>
+            <small id="identificationOutliersHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a cómo identificar y manejar valores atípicos en el análisis de datos de qPCR.
+                <br>Ejemplo: "Los valores atípicos son identificados utilizando métodos estadísticos como desviación estándar o análisis de boxplot y son manejados según las normas MIQE/RDML."
+            </small>
+            {{ form.identification_handling_outliers(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.identification_handling_outliers.errors %}
                 <ul>
                     {% for error in form.identification_handling_outliers.errors %}
@@ -42,9 +58,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.ntc_results.label }}
-            {{ form.ntc_results(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.ntc_results.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('ntcResultsHelp')">?</button>
+            <small id="ntcResultsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la interpretación de los resultados del control sin plantilla (NTC) en el análisis de qPCR.
+                <br>Ejemplo: "Los resultados NTC se utilizan para evaluar la presencia de contaminación o artefactos en las muestras."
+            </small>
+            {{ form.ntc_results(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.ntc_results.errors %}
                 <ul>
                     {% for error in form.ntc_results.errors %}
@@ -53,9 +75,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.reference_genes_justification.label }}
-            {{ form.reference_genes_justification(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.reference_genes_justification.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('referenceGenesJustificationHelp')">?</button>
+            <small id="referenceGenesJustificationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la justificación del número y la selección de genes de referencia utilizados en el análisis de qPCR.
+                <br>Ejemplo: "Se seleccionaron tres genes de referencia basados en su estabilidad de expresión demostrada en estudios previos."
+            </small>
+            {{ form.reference_genes_justification(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.reference_genes_justification.errors %}
                 <ul>
                     {% for error in form.reference_genes_justification.errors %}
@@ -64,9 +92,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.normalization_method_description.label }}
-            {{ form.normalization_method_description(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.normalization_method_description.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('normalizationMethodDescriptionHelp')">?</button>
+            <small id="normalizationMethodDescriptionHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la descripción del método utilizado para la normalización de datos en el análisis de qPCR.
+                <br>Ejemplo: "Se utilizó el método delta Ct para normalizar los datos de expresión génica, utilizando un gen de referencia estable."
+            </small>
+            {{ form.normalization_method_description(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.normalization_method_description.errors %}
                 <ul>
                     {% for error in form.normalization_method_description.errors %}
@@ -75,9 +109,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.biological_replicates_number_concordance.label }}
-            {{ form.biological_replicates_number_concordance(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.biological_replicates_number_concordance.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('biologicalReplicatesConcordanceHelp')">?</button>
+            <small id="biologicalReplicatesConcordanceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al número de repeticiones biológicas realizadas y la concordancia entre ellas en el análisis de qPCR.
+                <br>Ejemplo: "Realizamos tres repeticiones biológicas y observamos una alta concordancia entre los resultados."
+            </small>
+            {{ form.biological_replicates_number_concordance(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.biological_replicates_number_concordance.errors %}
                 <ul>
                     {% for error in form.biological_replicates_number_concordance.errors %}
@@ -86,9 +126,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.technical_replicates_number_stage.label }}
-            {{ form.technical_replicates_number_stage(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.technical_replicates_number_stage.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('technicalReplicatesNumberStageHelp')">?</button>
+            <small id="technicalReplicatesNumberStageHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al número de repeticiones técnicas realizadas en cada etapa (RT o qPCR) del análisis.
+                <br>Ejemplo: "Realizamos triplicados técnicos en la etapa de qPCR para cada muestra analizada."
+            </small>
+            {{ form.technical_replicates_number_stage(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.technical_replicates_number_stage.errors %}
                 <ul>
                     {% for error in form.technical_replicates_number_stage.errors %}
@@ -97,9 +143,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.intra_assay_variation_repeatability.label }}
-            {{ form.intra_assay_variation_repeatability(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.intra_assay_variation_repeatability.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('intraAssayVariationRepeatabilityHelp')">?</button>
+            <small id="intraAssayVariationRepeatabilityHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la repetibilidad o variación intra-ensayo en el análisis de qPCR.
+                <br>Ejemplo: "La variación intra-ensayo fue evaluada mediante repeticiones técnicas de la misma muestra."
+            </small>
+            {{ form.intra_assay_variation_repeatability(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.intra_assay_variation_repeatability.errors %}
                 <ul>
                     {% for error in form.intra_assay_variation_repeatability.errors %}
@@ -108,9 +160,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.inter_assay_variation_reproducibility.label }}
-            {{ form.inter_assay_variation_reproducibility(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.inter_assay_variation_reproducibility.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('interAssayVariationReproducibilityHelp')">?</button>
+            <small id="interAssayVariationReproducibilityHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la reproducibilidad o variación inter-ensayo en el análisis de qPCR, expresada como el coeficiente de variación (%CV).
+                <br>Ejemplo: "Se evaluó la variación inter-ensayo para determinar la reproducibilidad del método, obteniendo un %CV del 5%."
+            </small>
+            {{ form.inter_assay_variation_reproducibility(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.inter_assay_variation_reproducibility.errors %}
                 <ul>
                     {% for error in form.inter_assay_variation_reproducibility.errors %}
@@ -119,9 +177,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.power_analysis.label }}
-            {{ form.power_analysis(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.power_analysis.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('powerAnalysisHelp')">?</button>
+            <small id="powerAnalysisHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al análisis de potencia estadística realizado en el diseño y análisis de los experimentos de qPCR.
+                <br>Ejemplo: "Se realizó un análisis de potencia para determinar el tamaño de muestra adecuado que asegure la detección de diferencias significativas."
+            </small>
+            {{ form.power_analysis(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.power_analysis.errors %}
                 <ul>
                     {% for error in form.power_analysis.errors %}
@@ -130,9 +194,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.statistical_methods_significance.label }}
-            {{ form.statistical_methods_significance(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.statistical_methods_significance.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('statisticalMethodsSignificanceHelp')">?</button>
+            <small id="statisticalMethodsSignificanceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los métodos estadísticos utilizados para evaluar la significancia de los resultados obtenidos en el análisis de qPCR.
+                <br>Ejemplo: "Se aplicaron pruebas t de Student para determinar la significancia estadística de las diferencias observadas entre grupos."
+            </small>
+            {{ form.statistical_methods_significance(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.statistical_methods_significance.errors %}
                 <ul>
                     {% for error in form.statistical_methods_significance.errors %}
@@ -141,9 +211,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.software_source_version.label }}
-            {{ form.software_source_version(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.software_source_version.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('softwareSourceVersionHelp')">?</button>
+            <small id="softwareSourceVersionHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al software utilizado para el análisis de datos de qPCR, incluyendo la fuente (origen) y la versión.
+                <br>Ejemplo: "Los datos fueron analizados utilizando el software Geneious Prime (versión 2021.2)."
+            </small>
+            {{ form.software_source_version(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.software_source_version.errors %}
                 <ul>
                     {% for error in form.software_source_version.errors %}
@@ -152,9 +228,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.cq_or_raw_data_rdml_submission.label }}
-            {{ form.cq_or_raw_data_rdml_submission(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.cq_or_raw_data_rdml_submission.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('cqOrRawDataRDMLSubmissionHelp')">?</button>
+            <small id="cqOrRawDataRDMLSubmissionHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al método de envío de los datos de Cq (Cycle Quantification) o datos crudos utilizando el formato RDML (Real-Time PCR Data Markup Language).
+                <br>Ejemplo: "Los datos de Cq fueron enviados utilizando el formato RDML para asegurar la estandarización y reproducibilidad de los resultados."
+            </small>
+            {{ form.cq_or_raw_data_rdml_submission(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.cq_or_raw_data_rdml_submission.errors %}
                 <ul>
                     {% for error in form.cq_or_raw_data_rdml_submission.errors %}
@@ -163,9 +245,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}
-        

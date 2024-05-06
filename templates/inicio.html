@@ -1,0 +1,42 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}Bienvenido{% endblock %}
+
+{% block content %}
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: hidden; /* Evita la barra de desplazamiento horizontal */
+    }
+
+    .fade-in {
+        opacity: 0; /* Configura la opacidad inicial en 0 para ocultar los elementos */
+        animation: fadeInAnimation 1s ease-in forwards; /* Aplica la animación de desvanecimiento */
+    }
+
+    @keyframes fadeInAnimation {
+        from {
+            opacity: 0; /* Inicio de la animación: opacidad 0 */
+        }
+        to {
+            opacity: 1; /* Fin de la animación: opacidad 1 */
+        }
+    }
+</style>
+
+<div class="text-center fade-in" style="margin-top: 80px;"> <!-- Agrega una clase para la animación de desvanecimiento -->
+    <h2 style="margin-bottom: 50px; font-size: 50px;">¡Bienvenido al Sistema de Gestión de Pruebas de PCR!</h2> <!-- Aumenta el tamaño de fuente aquí -->
+</div>
+<p class="fade-in" style="text-align: justify; line-height: 2.0; font-size: 28px;"> <!-- Agrega la clase de animación a este párrafo también -->
+    Nuestro sistema está diseñado para simplificar el proceso de registro y generación de informes de pruebas de PCR. En la pestaña de "Información", tendrás acceso a una variedad de recursos útiles, incluyendo información detallada sobre las guías MIQE y RDML, así como datos de contacto importantes.
+</p>
+<p class="fade-in" style="text-align: justify; line-height: 2.0; font-size: 28px;"> <!-- Agrega la clase de animación a este párrafo también -->
+
+    Explora nuestros formularios diseñados para seguir el estándar MIQE/RDML y proporcionar una experiencia de llenado intuitiva y precisa en la pestaña de "Registro experimental". En la pestaña de "Informe final", tendrás acceso a toda la información registrada, con la opción de generar un informe en formato PDF.
+</p>
+<p class="fade-in" style="text-align: justify; line-height: 2.0; font-size: 28px;"> <!-- Agrega la clase de animación a este párrafo también -->
+Simplifica tu proceso de gestión de pruebas de PCR con nuestro sistema intuitivo y confiable.
+</p>
+{% endblock %}

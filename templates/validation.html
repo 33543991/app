@@ -1,16 +1,23 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de Validación de qPCR
+    Validación de qPCR
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de Validación de qPCR</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Validación de qPCR</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.optimization_evidence.label }}
-            {{ form.optimization_evidence(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.optimization_evidence.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('optimizationEvidenceHelp')">?</button>
+            <small id="optimizationEvidenceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la evidencia de optimización obtenida a través de gradientes de temperatura.
+                <br>Ejemplo: "Se realizó una optimización de temperatura mediante gradientes para determinar la temperatura de anillamiento óptima para cada par de cebadores."
+            </small>
+            {{ form.optimization_evidence(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.optimization_evidence.errors %}
                 <ul>
                     {% for error in form.optimization_evidence.errors %}
@@ -19,20 +26,36 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.specificity_evidence.label }}
-            {{ form.specificity_evidence(class="form-control") }}
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.specificity_evidence.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('specificityEvidenceHelp')">?</button>
+            <small id="specificityEvidenceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                 Este campo se refiere a la evidencia de especificidad obtenida mediante métodos como gel de agarosa, secuenciación, fusión o digestión.
+                 <br>Ejemplo: "Se confirmó la especificidad de los cebadores mediante secuenciación de los productos de PCR y análisis de la fusión."
+            </small>
+            {{ form.specificity_evidence(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+
+            <!-- Manejo de Errores -->
             {% if form.specificity_evidence.errors %}
-                <ul>
-                    {% for error in form.specificity_evidence.errors %}
-                        <li>{{ error }}</li>
-                    {% endfor %}
+                 <ul>
+                     {% for error in form.specificity_evidence.errors %}
+                         <li>{{ error }}</li>
+                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.cq_nct_for_sybr_green.label }}
-            {{ form.cq_nct_for_sybr_green(class="form-control") }}
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.cq_nct_for_sybr_green.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('cqNctSybrGreenHelp')">?</button>
+            <small id="cqNctSybrGreenHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al ciclo umbral (Cq) de un no objetivo (NCT) específico utilizado como control en reacciones SYBR Green.
+                <br>Ejemplo: "Se utilizó el Cq de un gen no objetivo como control interno en las reacciones SYBR Green para normalizar los datos de expresión."
+            </small>
+            {{ form.cq_nct_for_sybr_green(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.cq_nct_for_sybr_green.errors %}
                 <ul>
                     {% for error in form.cq_nct_for_sybr_green.errors %}
@@ -41,9 +64,18 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.standard_curves_slope_intercept.label }}
-            {{ form.standard_curves_slope_intercept(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.standard_curves_slope_intercept.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('standardCurvesHelp')">?</button>
+            <small id="standardCurvesHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a las pendientes e interceptos obtenidos de las curvas estándar generadas durante la qPCR.
+                <br>Ejemplo: "Las curvas estándar fueron generadas utilizando diluciones seriadas de ADN estándar. La pendiente y el intercepto se calcularon para cada curva."
+            </small>
+            {{ form.standard_curves_slope_intercept(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.standard_curves_slope_intercept.errors %}
                 <ul>
                     {% for error in form.standard_curves_slope_intercept.errors %}
@@ -52,20 +84,36 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-           {{ form.pcr_efficiency_slope_calculation.label }}
-           {{ form.pcr_efficiency_slope_calculation(class="form-control") }}
-           {% if form.pcr_efficiency_slope_calculation.errors %}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.pcr_efficiency_slope_calculation.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('pcrEfficiencyHelp')">?</button>
+            <small id="pcrEfficiencyHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo representa la eficiencia de la PCR calculada a partir de la pendiente de las curvas estándar generadas durante la qPCR.
+                <br>Ejemplo: "La eficiencia de PCR se calculó utilizando la fórmula: E = (10^(−1/slope) - 1) × 100%, donde 'slope' es la pendiente de la curva estándar."
+            </small>
+            {{ form.pcr_efficiency_slope_calculation(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
+            {% if form.pcr_efficiency_slope_calculation.errors %}
                 <ul>
-                   {% for error in form.pcr_efficiency_slope_calculation.errors %}
-                       <li>{{ error }}</li>
-                   {% endfor %}
+                    {% for error in form.pcr_efficiency_slope_calculation.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
                 </ul>
-           {% endif %}
+            {% endif %}
         </div>
-        <div>
-            {{ form.pcr_efficiency_confidence_interval.label }}
-            {{ form.pcr_efficiency_confidence_interval(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.pcr_efficiency_confidence_interval.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('pcrEfficiencyCIHelp')">?</button>
+            <small id="pcrEfficiencyCIHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al intervalo de confianza para la eficiencia de PCR calculada a partir de la pendiente de las curvas estándar.
+                <br>Ejemplo: "El intervalo de confianza para la eficiencia de PCR fue calculado utilizando métodos estadísticos estándar con un nivel de confianza del 95%."
+            </small>
+            {{ form.pcr_efficiency_confidence_interval(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.pcr_efficiency_confidence_interval.errors %}
                 <ul>
                     {% for error in form.pcr_efficiency_confidence_interval.errors %}
@@ -74,9 +122,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.r2_standard_curve.label }}
-            {{ form.r2_standard_curve(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.r2_standard_curve.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('r2StandardCurveHelp')">?</button>
+            <small id="r2StandardCurveHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al coeficiente de determinación (R^2) de la curva estándar utilizada en la qPCR.
+                <br>Ejemplo: "El valor de R^2 de la curva estándar fue de 0.99, indicando una alta linealidad de la respuesta."
+            </small>
+            {{ form.r2_standard_curve(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.r2_standard_curve.errors %}
                 <ul>
                     {% for error in form.r2_standard_curve.errors %}
@@ -85,9 +141,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.linear_dynamic_range.label }}
-            {{ form.linear_dynamic_range(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.linear_dynamic_range.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('linearDynamicRangeHelp')">?</button>
+            <small id="linearDynamicRangeHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al rango dinámico lineal de la qPCR, que es el intervalo de concentraciones de muestra donde la respuesta de PCR es lineal y proporciona resultados cuantitativos precisos.
+                <br>Ejemplo: "El rango dinámico lineal de nuestra qPCR abarcó desde 10 a 10,000 copias de ADN, con una respuesta lineal y precisa."
+            </small>
+            {{ form.linear_dynamic_range(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.linear_dynamic_range.errors %}
                 <ul>
                     {% for error in form.linear_dynamic_range.errors %}
@@ -96,9 +160,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.cq_variation_lower_limit.label }}
-            {{ form.cq_variation_lower_limit(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.cq_variation_lower_limit.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('cqVariationLowerLimitHelp')">?</button>
+            <small id="cqVariationLowerLimitHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la variación del Cq en el límite inferior, que indica la precisión de la detección de señal en muestras con concentraciones bajas.
+                <br>Ejemplo: "La variación del Cq en el límite inferior fue de ±0.5 ciclos entre réplicas, demostrando una buena reproducibilidad en muestras de baja concentración."
+            </small>
+            {{ form.cq_variation_lower_limit(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.cq_variation_lower_limit.errors %}
                 <ul>
                     {% for error in form.cq_variation_lower_limit.errors %}
@@ -107,9 +179,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.confidence_intervals_full_range.label }}
-            {{ form.confidence_intervals_full_range(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.confidence_intervals_full_range.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('confidenceIntervalsHelp')">?</button>
+            <small id="confidenceIntervalsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los intervalos de confianza aplicados a lo largo de todo el rango de la qPCR, proporcionando información sobre la precisión y la fiabilidad de los resultados.
+                <br>Ejemplo: "Se calcularon intervalos de confianza del 95% para todos los puntos del estándar de curva, asegurando la precisión de las mediciones."
+            </small>
+            {{ form.confidence_intervals_full_range(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
+        
+            <!-- Manejo de Errores -->
             {% if form.confidence_intervals_full_range.errors %}
                 <ul>
                     {% for error in form.confidence_intervals_full_range.errors %}
@@ -118,9 +198,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.lod_evidence.label }}
-            {{ form.lod_evidence(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.lod_evidence.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('lodEvidenceHelp')">?</button>
+            <small id="lodEvidenceHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Esta información se refiere a la evidencia de límite de detección (LOD) obtenida según las guías MIQE/RDML.
+                <br>Ejemplo: "Se determinó el LOD utilizando una dilución conocida del objetivo de interés siguiendo las directrices MIQE/RDML."
+            </small>
+            {{ form.lod_evidence(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.lod_evidence.errors %}
                 <ul>
                     {% for error in form.lod_evidence.errors %}
@@ -129,9 +215,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.multiplex_efficiency_lod.label }}
-            {{ form.multiplex_efficiency_lod(class="form-control") }}
+        
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.multiplex_efficiency_lod.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('multiplexEfficiencyLODHelp')">?</button>
+            <small id="multiplexEfficiencyLODHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la eficiencia multiplex y al límite de detección (LOD) para cada ensayo de qPCR multiplex.
+                <br>Ejemplo: "Se determinó la eficiencia multiplex y el LOD para cada par de cebadores en el ensayo de qPCR multiplex."
+            </small>
+            {{ form.multiplex_efficiency_lod(class="form-control", style="font-size: 23px; line-height: 2.0;") }}
             {% if form.multiplex_efficiency_lod.errors %}
                 <ul>
                     {% for error in form.multiplex_efficiency_lod.errors %}
@@ -140,8 +234,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
-           </div>
-     </form>
+
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
+        </div>
+    </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

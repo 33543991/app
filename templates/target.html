@@ -1,136 +1,232 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Formulario de qPCR Target Information
+     Información del objetivo de qPCR
 {% endblock %}
 
 {% block content %}
-    <h1>Formulario de qPCR Target Information</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información del objetivo de qPCR</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.gene_symbol.label }}
-            {{ form.gene_symbol(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.gene_symbol.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('geneSymbolHelp')">?</button>
+            <small id="geneSymbolHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El símbolo del gen se refiere al identificador estándar utilizado para representar un gen específico. Proporciona el símbolo del gen correspondiente al objetivo de la qPCR.
+        
+                Ejemplo: "El objetivo de la qPCR es el gen GAPDH (símbolo del gen: GAPDH)."
+            </small>
+            {{ form.gene_symbol(class="form-control", style="font-size: 23px;") }}
             {% if form.gene_symbol.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.gene_symbol.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.multiplex_efficiency_lod.label }}
-            {{ form.multiplex_efficiency_lod(class="form-control") }}
+        
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.multiplex_efficiency_lod.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('multiplexEfficiencyLODHelp')">?</button>
+            <small id="multiplexEfficiencyLODHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La eficiencia multiplex y el LOD (Límite de Detección) son medidas de rendimiento para cada ensayo de qPCR multiplex. La eficiencia multiplex se refiere a la capacidad de amplificar múltiples objetivos simultáneamente con eficiencia, mientras que el LOD indica la menor cantidad de objetivo que puede detectarse con certeza por encima del ruido de fondo.
+        
+                Ejemplo: "Para el ensayo multiplex de qPCR, se logró una eficiencia del 95% y un LOD de 10 copias por reacción para cada objetivo."
+            </small>
+            {{ form.multiplex_efficiency_lod(class="form-control", style="font-size: 23px;") }}
             {% if form.multiplex_efficiency_lod.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.multiplex_efficiency_lod.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.sequence_accession_number.label }}
-            {{ form.sequence_accession_number(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sequence_accession_number.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('sequenceAccessionNumberHelp')">?</button>
+            <small id="sequenceAccessionNumberHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                El número de acceso de la secuencia se refiere al identificador único asignado a la secuencia genética utilizada como objetivo en el ensayo de qPCR. Este número permite la referencia precisa de la secuencia en bases de datos públicas.
+        
+                Ejemplo: "El número de acceso de la secuencia utilizada fue NM_000123.1."
+            </small>
+            {{ form.sequence_accession_number(class="form-control", style="font-size: 23px;") }}
             {% if form.sequence_accession_number.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.sequence_accession_number.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.amplicon_location.label }}
-            {{ form.amplicon_location(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.amplicon_location.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('ampliconLocationHelp')">?</button>
+            <small id="ampliconLocationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La ubicación del amplicón se refiere a la posición específica en la secuencia genética donde se espera que se amplifique el producto de PCR. Debe especificarse en términos de coordenadas nucleotídicas (por ejemplo, inicio y fin).
+        
+                Ejemplo: "El amplicón se localiza en la región entre los nucleótidos 500 y 700 de la secuencia genética NM_000123.1."
+            </small>
+            {{ form.amplicon_location(class="form-control", style="font-size: 23px;") }}
             {% if form.amplicon_location.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.amplicon_location.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.amplicon_length.label }}
-            {{ form.amplicon_length(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.amplicon_length.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('ampliconLengthHelp')">?</button>
+            <small id="ampliconLengthHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La longitud del amplicón se refiere al tamaño esperado del fragmento amplificado en la reacción de PCR. Debe indicarse en pares de bases (pb).
+        
+                Ejemplo: "La longitud del amplicón esperado es de aproximadamente 150 pb."
+            </small>
+            {{ form.amplicon_length(class="form-control", style="font-size: 23px;") }}
             {% if form.amplicon_length.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.amplicon_length.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.in_silico_specificity_screening.label }}
-            {{ form.in_silico_specificity_screening(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.in_silico_specificity_screening.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('inSilicoSpecificityHelp')">?</button>
+            <small id="inSilicoSpecificityHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                La especificidad In Silico se refiere al análisis computacional realizado para evaluar la especificidad de los cebadores o sondas utilizados en la PCR.
+        
+                Ejemplo: "Se realizó un análisis BLAST para verificar la especificidad de los cebadores frente a otras secuencias genéticas conocidas."
+            </small>
+            {{ form.in_silico_specificity_screening(class="form-control", style="font-size: 23px;") }}
             {% if form.in_silico_specificity_screening.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.in_silico_specificity_screening.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.pseudogenes_homologs.label }}
-            {{ form.pseudogenes_homologs(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.pseudogenes_homologs.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('pseudogenesHomologsHelp')">?</button>
+            <small id="pseudogenesHomologsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la presencia de pseudogenes, retropseudogenes u otros homólogos similares que puedan interferir con la especificidad de la PCR.
+        
+                Ejemplo: "Se realizó un análisis bioinformático para identificar la presencia de pseudogenes que pudieran afectar la especificidad de la amplificación."
+            </small>
+            {{ form.pseudogenes_homologs(class="form-control", style="font-size: 23px;") }}
             {% if form.pseudogenes_homologs.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.pseudogenes_homologs.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.sequence_alignment.label }}
-            {{ form.sequence_alignment(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.sequence_alignment.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('sequenceAlignmentHelp')">?</button>
+            <small id="sequenceAlignmentHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al análisis de alineamiento de secuencias para verificar la especificidad de los cebadores y la identificación de variantes de empalme.
+        
+                Ejemplo: "Se realizó un alineamiento de las secuencias de los cebadores contra la secuencia objetivo para verificar la especificidad de la amplificación."
+            </small>
+            {{ form.sequence_alignment(class="form-control", style="font-size: 23px;") }}
             {% if form.sequence_alignment.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.sequence_alignment.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.amplicon_secondary_structure_analysis.label }}
-            {{ form.amplicon_secondary_structure_analysis(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.amplicon_secondary_structure_analysis.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('secondaryStructureAnalysisHelp')">?</button>
+            <small id="secondaryStructureAnalysisHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al análisis de la estructura secundaria del amplicón para evaluar la estabilidad y las características de plegamiento del ADN amplificado.
+        
+                Ejemplo: "Se realizó un análisis de la estructura secundaria del amplicón para evaluar la formación de estructuras secundarias que podrían afectar la eficiencia de la amplificación por PCR."
+            </small>
+            {{ form.amplicon_secondary_structure_analysis(class="form-control", style="font-size: 23px;") }}
             {% if form.amplicon_secondary_structure_analysis.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.amplicon_secondary_structure_analysis.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.primer_location_exon_intron.label }}
-            {{ form.primer_location_exon_intron(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.primer_location_exon_intron.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('primerLocationHelp')">?</button>
+            <small id="primerLocationHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a la ubicación específica del cebador (primer) en relación con la estructura del gen, indicando si está diseñado para un exón o un intrón.
+        
+                Ejemplo: "Los cebadores utilizados fueron diseñados para anclar en los exones de interés para la amplificación por PCR."
+            </small>
+            {{ form.primer_location_exon_intron(class="form-control", style="font-size: 23px;") }}
             {% if form.primer_location_exon_intron.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.primer_location_exon_intron.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.splicing_variants_targeted.label }}
-            {{ form.splicing_variants_targeted(class="form-control") }}
+        
+
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.splicing_variants_targeted.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('splicingVariantsHelp')">?</button>
+            <small id="splicingVariantsHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a las variantes de empalme específicas que están siendo investigadas o evaluadas mediante el diseño de los cebadores para PCR.
+        
+                Ejemplo: "Nuestro estudio se centra en las variantes de empalme conocidas en el gen X mediante el diseño de cebadores específicos para estas variantes."
+            </small>
+            {{ form.splicing_variants_targeted(class="form-control", style="font-size: 23px;") }}
             {% if form.splicing_variants_targeted.errors %}
-                <ul>
+                <ul class="errors">
                     {% for error in form.splicing_variants_targeted.errors %}
                         <li>{{ error }}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}

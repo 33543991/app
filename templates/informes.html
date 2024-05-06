@@ -1,0 +1,30 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}
+    Informes
+{% endblock %}
+
+{% block content %}
+
+    <h2 style="margin-top: 30px; margin-bottom: 20px; font-size: 40px; text-align: center;">Lista de Informes</h2>
+
+    <ul>
+        {% for informe in informes %}
+            <li>
+                <a href="{{ url_for('ver_informe', informe_id=informe.id) }}">
+                    {{ informe.fecha.strftime('%Y-%m-%d %H:%M:%S') }} - {{ informe.nombre_usuario }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
+
+
+
+
+!-- Nuevo div para los botones y enlaces -->
+<div style="clear:both;"></div>
+<div style="margin-top: 20px;">
+    <a href="{{ url_for('generate_pdf') }}" class="btn btn-primary" style="margin-top: 10px; font-size: 23px;">Generar PDF</a>
+</div>

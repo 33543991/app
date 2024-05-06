@@ -1,0 +1,15 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}
+    Detalle del Informe
+{% endblock %}
+
+{% block content %}
+    <h2 style="margin-top: 30px; margin-bottom: 20px; font-size: 40px; text-align: center;">Detalle del Informe</h2>
+
+    <p><strong>Fecha del Informe:</strong> {{ informe.fecha.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+    <p><strong>Nombre de Usuario:</strong> {{ informe.nombre_usuario }}</p>
+
+    <!-- Aquí puedes mostrar otros detalles del informe utilizando lógica de plantilla -->
+
+{% endblock %}

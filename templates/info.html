@@ -1,13 +1,11 @@
-<!-- info.html -->
-
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
     Información general
 {% endblock %}
 
 {% block content %}
-    <h1>Información general</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información general</h1> <!-- Ajustes de tamaño y espacio para el título -->
     {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
@@ -16,40 +14,40 @@
             </div>
         {% endfor %}
     {% endif %}
-{% endwith %}
+    {% endwith %}
 
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div class="form-group">
-            {{ form.experiment_date.label }}
-            {{ form.experiment_date(class="form-control") }}
+        <div class="form-group" style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.experiment_date.label }}</label>
+            {{ form.experiment_date(class="form-control", style="font-size: 23px;") }}
             {% for error in form.experiment_date.errors %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endfor %}
         </div>
-        <div class="form-group">
-            {{ form.experiment_number.label }}
-            {{ form.experiment_number(class="form-control") }}
+        <div class="form-group" style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.experiment_number.label }}</label>
+            {{ form.experiment_number(class="form-control", style="font-size: 23px;") }}
             {% for error in form.experiment_number.errors %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endfor %}
         </div>
-        <div class="form-group">
-            {{ form.principal_investigator.label }}
-            {{ form.principal_investigator(class="form-control") }}
+        <div class="form-group" style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.principal_investigator.label }}</label>
+            {{ form.principal_investigator(class="form-control", style="font-size: 23px;") }}
             {% for error in form.principal_investigator.errors %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endfor %}
         </div>
-        <div class="form-group">
-            {{ form.institution_lab.label }}
-            {{ form.institution_lab(class="form-control") }}
+        <div class="form-group" style="margin-bottom: 10px;"> <!-- Agregado el espacio -->
+            <label style="font-size: 25px;">{{ form.institution_lab.label }}</label>
+            {{ form.institution_lab(class="form-control", style="font-size: 23px;") }}
             {% for error in form.institution_lab.errors %}
                 <div class="alert alert-danger">{{ error }}</div>
             {% endfor %}
         </div>
         <div class="form-group">
-            <input type="submit" value="Enviar" class="btn btn-primary">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
 {% endblock %}

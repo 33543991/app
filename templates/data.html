@@ -1,16 +1,21 @@
-{% extends "layout.html" %}
+{% extends "dashboard.html" %}
 
 {% block title %}
-    Real-Time PCR Data Form
+    Información sobre PCR en tiempo real
 {% endblock %}
 
 {% block content %}
-    <h1>Real-Time PCR Data Form</h1>
+    <h1 style="margin-top: 20px; margin-bottom: 5px; font-size: 40px; line-height: 2.0;">Información sobre PCR en tiempo real</h1> <!-- Ajustes de tamaño y espacio para el título -->
     <form method="POST">
         {{ form.hidden_tag() }}
-        <div>
-            {{ form.data_analysis_software.label }}
-            {{ form.data_analysis_software(class="form-control") }}
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.data_analysis_software.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('dataAnalysisSoftwareHelp')">?</button>
+            <small id="dataAnalysisSoftwareHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al software utilizado para el análisis de los datos generados por la PCR en tiempo real.
+                <br>Ejemplo: "Se utilizó el software [Nombre del Software] versión [Versión del Software] para el análisis de datos."
+            </small>
+            {{ form.data_analysis_software(class="form-control", style="font-size: 23px;") }}
             {% if form.data_analysis_software.errors %}
                 <ul>
                     {% for error in form.data_analysis_software.errors %}
@@ -19,9 +24,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.quantification_method.label }}
-            {{ form.quantification_method(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.quantification_method.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('quantificationMethodHelp')">?</button>
+            <small id="quantificationMethodHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere al método utilizado para cuantificar los resultados de PCR en tiempo real, como ΔΔCt, análisis de curvas estándar, o métodos de comparación relativa.
+                <br>Ejemplo: "Se utilizó el método de comparación relativa ΔΔCt para cuantificar los niveles de expresión génica."
+            </small>
+            {{ form.quantification_method(class="form-control", style="font-size: 23px;") }}
             {% if form.quantification_method.errors %}
                 <ul>
                     {% for error in form.quantification_method.errors %}
@@ -30,9 +41,15 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.raw_data.label }}
-            {{ form.raw_data(class="form-control") }}
+        
+        <div style="margin-bottom: 10px;">
+            <label style="font-size: 25px;">{{ form.raw_data.label }}</label>
+            <button type="button" class="btn btn-sm btn-secondary" onclick="toggleHelp('rawDataHelp')">?</button>
+            <small id="rawDataHelp" style="display: none; font-size: 18px; margin-top: 5px; color: #6c757d;">
+                Este campo se refiere a los datos crudos generados durante el análisis de PCR en tiempo real, incluyendo los valores de Ct para el gen deseado y el gen de referencia, así como la eficiencia de amplificación.
+                <br>Ejemplo: "Datos Crudos: Gen Deseado (Nombre): Ct = 25.5, Gen de Referencia (Nombre): Ct = 20.1, Eficiencia de Amplificación = 95%."
+            </small>
+            {{ form.raw_data(class="form-control", style="font-size: 23px;") }}
             {% if form.raw_data.errors %}
                 <ul>
                     {% for error in form.raw_data.errors %}
@@ -41,8 +58,17 @@
                 </ul>
             {% endif %}
         </div>
-        <div>
-            {{ form.submit() }}
+        
+        <div class="form-group">
+            <input type="submit" value="Enviar" class="btn btn-primary" style="font-size: 25px; margin-top: 10px;"> <!-- Estilo para el botón -->
         </div>
     </form>
+    <script>
+        function toggleHelp(helpId) {
+            const helpText = document.getElementById(helpId);
+            if (helpText) {
+                helpText.style.display = (helpText.style.display === 'none' || helpText.style.display === '') ? 'block' : 'none';
+            }
+        }
+    </script>
 {% endblock %}
