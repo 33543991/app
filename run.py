@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField, FileField
+from wtforms import StringField, TextAreaField, PasswordField, SubmitField, SelectField
 from wtforms.validators import DataRequired, Email, EqualTo
 from flask_bcrypt import Bcrypt
 from reportlab.lib.pagesizes import letter
@@ -10,8 +10,7 @@ from datetime import datetime
 from uuid import uuid4 
 from io import BytesIO
 from datetime import datetime
-#from werkzeug.utils import secure_filename
-#import os
+
 
 app = Flask(__name__)
 app.secret_key = 'my_secret_key'
@@ -601,7 +600,7 @@ def index():
     return render_template('index.html')
 
 
-
+# LOGIN
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
